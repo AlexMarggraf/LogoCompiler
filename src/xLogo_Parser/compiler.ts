@@ -19,7 +19,7 @@ import {
 } from './ir/ast.js';
 import {ASTVisitor} from './ASTVisitor.js';
 
-import {BaseNode, Directive, ExpressionStatement, FunctionDeclaration, Identifier, Literal, ModuleDeclaration, Program, SimpleLiteral, Statement, VariableDeclaration} from 'estree';
+import {BaseNode, Directive, ModuleDeclaration, Program, SimpleLiteral, Statement} from 'estree';
 import assert from "assert";
 
 function compileCodeToAST(logocode: string): Program {
@@ -75,11 +75,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
 
     if (args == 0) {
       console.log("visiting top level seq");
-      return {
-        type: 'Program', 
-        sourceType: 'module',
-        body: body,
-      } as Program;
+      return new Script(body) as Program;
     } else {
       // assumption: we are in progdeclaration
       console.log("visiting seq, not at top level");
@@ -89,20 +85,10 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
 
   public visitProgDecl(ast: ProgDecl, args: number): BaseNode {
     const statements = this.visitChildren(ast, args + 1)[0]; // TODO figure out why statements is an array of array of object
-    const id = {type: 'Identifier', name: funcNameMangle(ast.name)};
-    const params = ast.args.map((ast) => {return {type: "Identifier", name: ast.name.slice(1)}})
-    return {
-      type: 'FunctionDeclaration',
-      id, 
-      params,
-      body: {
-        type: "BlockStatement", 
-        body: statements
-      },
-      generator: false,
-      expression: false,
-      async: false
-    } as FunctionDeclaration;
+    const funcname = funcNameMangle(ast.name);
+    const id = new Identifier(funcname);
+    const params = ast.args.map((ast) => {return new Identifier(ast.name.slice(1));})
+    return new FunctionDeclaration(new Identifier(funcname), params, new BlockStatement(statements), false);
   }
 
   public visitMakeStmt(ast: MakeStmt, args: number): BaseNode {
@@ -112,48 +98,30 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     const varname = ast.declName.name.slice(1)
     assert(varname.length > 0);
     const varnameMangled = varNameMangle(varname);
-    const id = {type: "Identifier", name: varnameMangled}
+    const id = new Identifier(varnameMangled);
     const assigner = this.visitChildren(ast, args + 1)[0];
     if (ast.declName.name.startsWith("\"")) {
-      return {type: 'VariableDeclaration', declarations: [{type: "VariableDeclarator", id, init: assigner}], kind: "let"} as VariableDeclaration;
+      return new VariableDeclaration([new VariableDeclarator(id, assigner)], "let")
     } else if (ast.declName.name.startsWith(":")) {
-      return {type: 'ExpressionStatement', expression: {type: "AssignmentExpression", operator: "=", left: id, right: assigner}} as ExpressionStatement;
+      return new ExpressionStatement(new AssignmentExpression("=", id, assigner))
     } else {
       throw new Error("should not be reached");
     }
   }
 
   public visitNumberConst(ast: NumberConst, args: number): BaseNode {
-    return {type: "Literal", value: ast.valueAsNumber, raw: ast.valueAsNumber.toString()} as SimpleLiteral;
+    return new Literal(ast.valueAsNumber, ast.valueAsNumber.toString())
   }
 
   public visitPrintStmt(ast: PrintStmt, args: number): BaseNode {
     const argsOfCall = this.visitChildren(ast, args + 1);
-    return {
-      type: "ExpressionStatement", 
-      expression: {
-        type: "CallExpression", 
-        callee: {
-          type: "MemberExpression", 
-          object: {
-            type: "Identifier", 
-            name: "console"
-          }, 
-          property: {
-            type: "Identifier", 
-            name: "log"
-          }, 
-          computed: false
-        },
-        arguments: argsOfCall
-      }
-    } as ExpressionStatement;
+    return new ExpressionStatement(new CallExpression(new StaticMemberExpression(new Identifier("console"), new Identifier("log")), argsOfCall));
   }
 
   public visitVarExpr(ast: VarExpr, args: number): BaseNode {
     assert(ast.name.startsWith(":"), "varname doesn't start with :");
     const varname = ast.name.slice(1);
-    return {type: "Identifier", name: varNameMangle(varname)} as Identifier;
+    return new Identifier(varNameMangle(varname));
   }
 
   // ASTVisitor requires a defaultResult method to be implemented. However, CompilerVisitor doesn't need it.
@@ -213,6 +181,7 @@ end
   `)*/
 
 import { diff, applyChangeset } from 'json-diff-ts';
+import { AssignmentExpression, BlockStatement, CallExpression, ExpressionStatement, FunctionDeclaration, Identifier, Literal, Script, StaticMemberExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
 
 const compiled = compileCodeToAST(`
 to main :x
