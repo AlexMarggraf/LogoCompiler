@@ -20,18 +20,20 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  if (url === "/client.js") {
-    const js = fs.readFileSync(
-      path.join(__dirname, "./client.js"),
-      "utf8"
-    );
+  if (url.endsWith(".js")) {
+    const filePath = path.join(__dirname, url.slice(1));
+
+    if (!fs.existsSync(filePath)) {
+      res.writeHead(404);
+      res.end("Not found");
+      return;
+    }
+
+    const js = fs.readFileSync(filePath, "utf8");
     res.writeHead(200, { "Content-Type": "application/javascript" });
     res.end(js);
     return;
   }
-
-  res.writeHead(404);
-  res.end("Not found");
 });
 
 server.listen(3000, () => {
