@@ -120,7 +120,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       const id = {type: "Identifier", name: varnameMangled}
       // For some reason this returns not an array but a single object
       const assigner = this.visitChildren(ast, args + 1)[0];
-      return {type: 'VariableDeclaration', declarations: [{type: "VariableDeclarator", id, init: assigner}], kind: "var"} as VariableDeclaration;
+      return {type: 'VariableDeclaration', declarations: [{type: "VariableDeclarator", id, init: assigner}], kind: "let"} as VariableDeclaration;
     } else if (ast.declName.name.startsWith(":")) {
       const varname = ast.declName.name.slice(1)
       assert(varname.length > 0);
@@ -226,12 +226,11 @@ to main :x
   make "a 6
   make :a 7
   print :a
-  fd 100
 end
 `);
 const reference = parseModule(`
 function main(x) {
-  var a = 6;
+  let a = 6;
   a = 7;
   console.log(a)
 }
