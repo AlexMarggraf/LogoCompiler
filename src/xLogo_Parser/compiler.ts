@@ -66,14 +66,15 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
 
   public visitSeq(ast: Seq, args: number): BaseNode[] | Program {
+    let body = this.visitChildren(ast, args + 1);
+    if (!body) throw new Error("body undefined");
+    if (!Array.isArray(body)) {
+      body = [body]
+    }
+    if (!isBody(body)) throw new Error("type error");
+
     if (args == 0) {
-      console.log("visiting seq with progdecls as children");
-      var body = this.visitChildren(ast, args + 1);
-      if (!body) throw new Error("body undefined");
-      if (!Array.isArray(body)) {
-        body = [body]
-      }
-      if (!isBody(body)) throw new Error("type error");
+      console.log("visiting top level seq");
       return {
         type: 'Program', 
         sourceType: 'module',
@@ -81,19 +82,13 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       } as Program;
     } else {
       // assumption: we are in progdeclaration
-      console.log("visiting seq otherwise");
-      var body = this.visitChildren(ast, args + 1);
-      if (!body) throw new Error("body undefined");
-      if (!Array.isArray(body)) {
-        body = [body]
-      }
-      if (!isBody(body)) throw new Error("type error");
+      console.log("visiting seq, not at top level");
       return body;
     }
   }
 
   public visitProgDecl(ast: ProgDecl, args: number): BaseNode {
-    const statements = this.visitChildren(ast, args + 1); // TODO figure out why statements is an array of array of object
+    const statements = this.visitChildren(ast, args + 1)[0]; // TODO figure out why statements is an array of array of object
     const id = {type: 'Identifier', name: funcNameMangle(ast.name)};
     const params = ast.args.map((ast) => {return {type: "Identifier", name: ast.name.slice(1)}})
     return {
@@ -102,39 +97,36 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       params,
       body: {
         type: "BlockStatement", 
-        body: statements[0]
+        body: statements
       },
       generator: false,
       expression: false,
       async: false
     } as FunctionDeclaration;
   }
+
   public visitMakeStmt(ast: MakeStmt, args: number): BaseNode {
     console.log(ast);
     assert(ast.declName instanceof VarDecl);
 
+    const varname = ast.declName.name.slice(1)
+    assert(varname.length > 0);
+    const varnameMangled = varNameMangle(varname);
+    const id = {type: "Identifier", name: varnameMangled}
+    const assigner = this.visitChildren(ast, args + 1)[0];
     if (ast.declName.name.startsWith("\"")) {
-      const varname = ast.declName.name.slice(1)
-      assert(varname.length > 0);
-      const varnameMangled = varNameMangle(varname);
-      const id = {type: "Identifier", name: varnameMangled}
-      // For some reason this returns not an array but a single object
-      const assigner = this.visitChildren(ast, args + 1)[0];
       return {type: 'VariableDeclaration', declarations: [{type: "VariableDeclarator", id, init: assigner}], kind: "let"} as VariableDeclaration;
     } else if (ast.declName.name.startsWith(":")) {
-      const varname = ast.declName.name.slice(1)
-      assert(varname.length > 0);
-      const varnameMangled = varNameMangle(varname);
-      const id = {type: "Identifier", name: varnameMangled}
-      const assigner = this.visitChildren(ast, args + 1)[0];
       return {type: 'ExpressionStatement', expression: {type: "AssignmentExpression", operator: "=", left: id, right: assigner}} as ExpressionStatement;
     } else {
       throw new Error("should not be reached");
     }
   }
+
   public visitNumberConst(ast: NumberConst, args: number): BaseNode {
     return {type: "Literal", value: ast.valueAsNumber, raw: ast.valueAsNumber.toString()} as SimpleLiteral;
   }
+
   public visitPrintStmt(ast: PrintStmt, args: number): BaseNode {
     const argsOfCall = this.visitChildren(ast, args + 1);
     return {
@@ -157,6 +149,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       }
     } as ExpressionStatement;
   }
+
   public visitVarExpr(ast: VarExpr, args: number): BaseNode {
     assert(ast.name.startsWith(":"), "varname doesn't start with :");
     const varname = ast.name.slice(1);
@@ -229,7 +222,7 @@ to main :x
 end
 `);
 const reference = parseModule(`
-function main(x) {
+function _XLogoCode_func_main(x) {
   let a = 6;
   a = 7;
   console.log(a)
