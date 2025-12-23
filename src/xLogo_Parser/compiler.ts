@@ -19,8 +19,9 @@ import {
 } from './ir/ast.js';
 import {ASTVisitor} from './ASTVisitor.js';
 
-import {BaseNode, Directive, ModuleDeclaration, Program, SimpleLiteral, Statement} from 'estree';
 import assert from "assert";
+import { AssignmentExpression, BlockStatement, CallExpression, ExpressionStatement, FunctionDeclaration, Identifier, Literal, Script, StaticMemberExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
+import { Program, BaseNode } from "estree";
 
 function compileCodeToAST(logocode: string): Program {
   const ast = parseCode(logocode);
@@ -181,7 +182,6 @@ end
   `)*/
 
 import { diff, applyChangeset } from 'json-diff-ts';
-import { AssignmentExpression, BlockStatement, CallExpression, ExpressionStatement, FunctionDeclaration, Identifier, Literal, Script, StaticMemberExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
 
 const compiled = compileCodeToAST(`
 to main :x
