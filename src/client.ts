@@ -5,6 +5,7 @@ const ctx = canvas.getContext("2d");
 
 if (!ctx) throw new Error("No 2D context");
 const script: string = `
+(async () => {
   act.fd(100);
   act.cs();
 
@@ -29,6 +30,8 @@ const script: string = `
   act.setheading(0);
   act.fd(100);
 
+  await act.wait(1000);
+
   act.setsc("green");
 
   act.mod(10, 3);
@@ -37,7 +40,8 @@ const script: string = `
   act.mod(-10, -3);
 
   act.ct();
+})();
 `;
 
-const act: LogActionSet = new LogActionSet(ctx);
+const act = new CanvasActionSet(ctx);
 eval(script);
