@@ -1,4 +1,4 @@
-import { XLogoVisitor } from './parser/XLogoVisitor';
+import { XLogoVisitor } from './parser/XLogoVisitor.js';
 import {
   AST,
   ProgDecl,
@@ -21,7 +21,7 @@ import {
   FuncExpr,
   VarDecl,
   Range,
-} from './ir/ast';
+} from './ir/ast.js';
 import {
   ProgContext,
   ProgramDeclarationContext,
@@ -46,15 +46,15 @@ import {
   ExprFuncOneArgContext,
   ExprInBracketsContext,
   InputLinesContext,
-} from './parser/XLogoParser';
+} from './parser/XLogoParser.js';
 
 import {
   Token,
   ParserRuleContext,
 } from 'antlr4ts';
-import {AbstractParseTreeVisitor} from 'antlr4ts/tree/AbstractParseTreeVisitor'
-import {getBuiltInCommandStructure} from './ir/builtInCommands';
-import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
+import {AbstractParseTreeVisitor} from 'antlr4ts/tree/AbstractParseTreeVisitor.js';
+import {getBuiltInCommandStructure} from './ir/builtInCommands.js';
+import { TerminalNode } from 'antlr4ts/tree/TerminalNode.js';
 
 export class AstTranslatorVisitor
   extends AbstractParseTreeVisitor<AST>

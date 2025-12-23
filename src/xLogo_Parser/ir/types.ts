@@ -2,7 +2,7 @@
  * Types for XLogo language. Each expression is always of one of those types.
  */
 
-import {Color} from './color';
+import {Color} from './color.js';
 
 export abstract class XLogoType {
   public abstract isAssignableTo(type: XLogoType): boolean;

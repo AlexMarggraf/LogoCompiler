@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A Compiler and Renderer vor the Logo implementation of the XLogoOnline Website",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "build": "npx tsc",
-    "start": "npm run build && node dist/server.js",
-    "generateparser": "npx antlr4ts -visitor -o src/xlogo_Parser/Parser src/xLogo_Parser/Grammar/XLogo.g4"
+    "start": "node dist/server.js",
+    "generateparser": "npx antlr4ts -visitor -o src/xlogo_Parser/Parser src/xLogo_Parser/Grammar/XLogo.g4 && node scripts/parserPostProcess.js"
   },
   "repository": {
     "type": "git",

@@ -10,8 +10,8 @@ import {
   FuncExpr,
   BuiltInCommand,
   NumberConst,
-} from '../ir/ast';
-import {ASTVisitor} from '../ASTVisitor';
+} from '../ir/ast.js';
+import {ASTVisitor} from '../ASTVisitor.js';
 
 export class DebugVisitor extends ASTVisitor<number, void> {
   public defaultNode(ast: AST, args: number): void {

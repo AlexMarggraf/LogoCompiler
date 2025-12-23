@@ -1,8 +1,8 @@
 import {Token, CharStream} from 'antlr4ts';
-import {ASTVisitor} from '../ASTVisitor';
-import {BuiltInCommandStructure, DefinedBuiltIns} from './builtInCommands';
-import {Color} from './color';
-import {UnknownType, XLogoType} from './types';
+import {ASTVisitor} from '../ASTVisitor.js';
+import {BuiltInCommandStructure, DefinedBuiltIns} from './builtInCommands.js';
+import {Color} from './color.js';
+import {UnknownType, XLogoType} from './types.js';
 
 export class Range {
   constructor(

@@ -1,11 +1,11 @@
-import {Color} from './color';
+import {Color} from './color.js';
 import {
   ColorType,
   NumberType,
   StringType,
   ValueObject,
   XLogoType,
-} from './types';
+} from './types.js';
 
 export class BuiltInActionSet {
   private actionMapping = new Map<

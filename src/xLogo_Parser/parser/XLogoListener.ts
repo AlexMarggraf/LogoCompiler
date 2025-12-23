@@ -1,35 +1,35 @@
 // Generated from src/xLogo_Parser/Grammar/XLogo.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
-import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";
+import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener.js";
 
-import { ExprLiteralContext } from "./XLogoParser";
-import { ExprColorContext } from "./XLogoParser";
-import { ExprInBracketsContext } from "./XLogoParser";
-import { ExprUnaryOpContext } from "./XLogoParser";
-import { ExprBOpMultContext } from "./XLogoParser";
-import { ExprFuncTwoArgContext } from "./XLogoParser";
-import { ExprFuncOneArgContext } from "./XLogoParser";
-import { ExprFuncNoArgContext } from "./XLogoParser";
-import { ExprBOpAddContext } from "./XLogoParser";
-import { ExprBOpCompContext } from "./XLogoParser";
-import { ExprBOpEqContext } from "./XLogoParser";
-import { ExprBOpAndContext } from "./XLogoParser";
-import { ExprBOpOrContext } from "./XLogoParser";
-import { ProgContext } from "./XLogoParser";
-import { InputLinesContext } from "./XLogoParser";
-import { ProgramDeclarationContext } from "./XLogoParser";
-import { ParamListContext } from "./XLogoParser";
-import { StmtContext } from "./XLogoParser";
-import { StmtBlockContext } from "./XLogoParser";
-import { RepeatStmtContext } from "./XLogoParser";
-import { IfStmtContext } from "./XLogoParser";
-import { WhileStmtContext } from "./XLogoParser";
-import { MakeStmtContext } from "./XLogoParser";
-import { PrintStmtContext } from "./XLogoParser";
-import { ProgCallStmtContext } from "./XLogoParser";
-import { ExprContext } from "./XLogoParser";
-import { LiteralContext } from "./XLogoParser";
+import { ExprLiteralContext } from "./XLogoParser.js";
+import { ExprColorContext } from "./XLogoParser.js";
+import { ExprInBracketsContext } from "./XLogoParser.js";
+import { ExprUnaryOpContext } from "./XLogoParser.js";
+import { ExprBOpMultContext } from "./XLogoParser.js";
+import { ExprFuncTwoArgContext } from "./XLogoParser.js";
+import { ExprFuncOneArgContext } from "./XLogoParser.js";
+import { ExprFuncNoArgContext } from "./XLogoParser.js";
+import { ExprBOpAddContext } from "./XLogoParser.js";
+import { ExprBOpCompContext } from "./XLogoParser.js";
+import { ExprBOpEqContext } from "./XLogoParser.js";
+import { ExprBOpAndContext } from "./XLogoParser.js";
+import { ExprBOpOrContext } from "./XLogoParser.js";
+import { ProgContext } from "./XLogoParser.js";
+import { InputLinesContext } from "./XLogoParser.js";
+import { ProgramDeclarationContext } from "./XLogoParser.js";
+import { ParamListContext } from "./XLogoParser.js";
+import { StmtContext } from "./XLogoParser.js";
+import { StmtBlockContext } from "./XLogoParser.js";
+import { RepeatStmtContext } from "./XLogoParser.js";
+import { IfStmtContext } from "./XLogoParser.js";
+import { WhileStmtContext } from "./XLogoParser.js";
+import { MakeStmtContext } from "./XLogoParser.js";
+import { PrintStmtContext } from "./XLogoParser.js";
+import { ProgCallStmtContext } from "./XLogoParser.js";
+import { ExprContext } from "./XLogoParser.js";
+import { LiteralContext } from "./XLogoParser.js";
 
 
 /**
