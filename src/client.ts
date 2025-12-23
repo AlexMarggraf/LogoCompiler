@@ -1,4 +1,4 @@
-import {CanvasActionSet} from "./ActionSet.js";
+import {CanvasActionSet, LogActionSet} from "./ActionSet.js";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
@@ -20,14 +20,24 @@ const script: string = `
   act.pe();
   act.bk(50);
   act.ppt();
-
-  // act.wash();
   
   for(let i = 0; i < 6; i++) {
     act.fd(30); 
     act.rt(60);
   }
+
+  act.setheading(0);
+  act.fd(100);
+
+  act.setsc("green");
+
+  act.mod(10, 3);
+  act.mod(-10, 3);
+  act.mod(10, -3);
+  act.mod(-10, -3);
+
+  act.ct();
 `;
 
-const act: CanvasActionSet = new CanvasActionSet(ctx);
+const act: LogActionSet = new LogActionSet(ctx);
 eval(script);
