@@ -1,26 +1,21 @@
-// Generated from Grammar/xLogo.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from src/xLogo_Parser/Grammar/XLogo.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
-// @ts-ignore
 import { ATN } from "antlr4ts/atn/ATN";
-// @ts-ignore
 import { ATNDeserializer } from "antlr4ts/atn/ATNDeserializer";
-// @ts-ignore
 import { CharStream } from "antlr4ts/CharStream";
-// @ts-ignore
 import { Lexer } from "antlr4ts/Lexer";
-// @ts-ignore
 import { LexerATNSimulator } from "antlr4ts/atn/LexerATNSimulator";
-// @ts-ignore
+import { NotNull } from "antlr4ts/Decorators";
+import { Override } from "antlr4ts/Decorators";
+import { RuleContext } from "antlr4ts/RuleContext";
 import { Vocabulary } from "antlr4ts/Vocabulary";
-// @ts-ignore
 import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
 
-// @ts-ignore
 import * as Utils from "antlr4ts/misc/Utils";
 
 
-export class xLogoLexer extends Lexer {
+export class XLogoLexer extends Lexer {
 	public static readonly T__0 = 1;
 	public static readonly T__1 = 2;
 	public static readonly T__2 = 3;
@@ -120,36 +115,35 @@ export class xLogoLexer extends Lexer {
 		"VarDecl", "Number", "Boolean", "Identifier", "COMMENT", "EOL", "WS", 
 		"ErrorCharacter",
 	];
-	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(xLogoLexer._LITERAL_NAMES, xLogoLexer._SYMBOLIC_NAMES, []);
-	private _interp: any;
+	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(XLogoLexer._LITERAL_NAMES, XLogoLexer._SYMBOLIC_NAMES, []);
 
 	// @Override
 	// @NotNull
 	public get vocabulary(): Vocabulary {
-		return xLogoLexer.VOCABULARY;
+		return XLogoLexer.VOCABULARY;
 	}
 	// tslint:enable:no-trailing-whitespace
 
 
 	constructor(input: CharStream) {
 		super(input);
-		this._interp = new LexerATNSimulator(xLogoLexer._ATN, this);
+		this._interp = new LexerATNSimulator(XLogoLexer._ATN, this);
 	}
 
 	// @Override
-	public get grammarFileName(): string { return "xLogo.g4"; }
+	public get grammarFileName(): string { return "XLogo.g4"; }
 
 	// @Override
-	public get ruleNames(): string[] { return xLogoLexer.ruleNames; }
+	public get ruleNames(): string[] { return XLogoLexer.ruleNames; }
 
 	// @Override
-	public get serializedATN(): string { return xLogoLexer._serializedATN; }
+	public get serializedATN(): string { return XLogoLexer._serializedATN; }
 
 	// @Override
-	public get channelNames(): string[] { return xLogoLexer.channelNames; }
+	public get channelNames(): string[] { return XLogoLexer.channelNames; }
 
 	// @Override
-	public get modeNames(): string[] { return xLogoLexer.modeNames; }
+	public get modeNames(): string[] { return XLogoLexer.modeNames; }
 
 	public static readonly _serializedATN: string =
 		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x02;\u0200\b\x01" +
@@ -400,11 +394,11 @@ export class xLogoLexer extends Lexer {
 		"\u01D3\u01D5\u01DF\u01E2\u01EA\u01F0\u01F3\u01FA\x03\b\x02\x02";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
-		if (!xLogoLexer.__ATN) {
-			xLogoLexer.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(xLogoLexer._serializedATN));
+		if (!XLogoLexer.__ATN) {
+			XLogoLexer.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(XLogoLexer._serializedATN));
 		}
 
-		return xLogoLexer.__ATN;
+		return XLogoLexer.__ATN;
 	}
 
 }

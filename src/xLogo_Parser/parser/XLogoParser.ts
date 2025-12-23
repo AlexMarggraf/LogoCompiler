@@ -1,4 +1,4 @@
-// Generated from Grammar/xLogo.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from src/xLogo_Parser/Grammar/XLogo.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ATN } from "antlr4ts/atn/ATN";
@@ -23,10 +23,11 @@ import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
 
 import * as Utils from "antlr4ts/misc/Utils";
 
-import { xLogoVisitor } from "./xLogoVisitor";
+import { XLogoListener } from "./XLogoListener";
+import { XLogoVisitor } from "./XLogoVisitor";
 
 
-export class xLogoParser extends Parser {
+export class XLogoParser extends Parser {
 	public static readonly T__0 = 1;
 	public static readonly T__1 = 2;
 	public static readonly T__2 = 3;
@@ -125,23 +126,23 @@ export class xLogoParser extends Parser {
 		"VarDecl", "Number", "Boolean", "Identifier", "COMMENT", "EOL", "WS", 
 		"ErrorCharacter",
 	];
-	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(xLogoParser._LITERAL_NAMES, xLogoParser._SYMBOLIC_NAMES, []);
+	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(XLogoParser._LITERAL_NAMES, XLogoParser._SYMBOLIC_NAMES, []);
 
 	// @Override
 	// @NotNull
 	public get vocabulary(): Vocabulary {
-		return xLogoParser.VOCABULARY;
+		return XLogoParser.VOCABULARY;
 	}
 	// tslint:enable:no-trailing-whitespace
 
 	// @Override
-	public get grammarFileName(): string { return "xLogo.g4"; }
+	public get grammarFileName(): string { return "XLogo.g4"; }
 
 	// @Override
-	public get ruleNames(): string[] { return xLogoParser.ruleNames; }
+	public get ruleNames(): string[] { return XLogoParser.ruleNames; }
 
 	// @Override
-	public get serializedATN(): string { return xLogoParser._serializedATN; }
+	public get serializedATN(): string { return XLogoParser._serializedATN; }
 
 	protected createFailedPredicateException(predicate?: string, message?: string): FailedPredicateException {
 		return new FailedPredicateException(this, predicate, message);
@@ -149,12 +150,12 @@ export class xLogoParser extends Parser {
 
 	constructor(input: TokenStream) {
 		super(input);
-		this._interp = new ParserATNSimulator(xLogoParser._ATN, this);
+		this._interp = new ParserATNSimulator(XLogoParser._ATN, this);
 	}
 	// @RuleVersion(0)
 	public prog(): ProgContext {
 		let _localctx: ProgContext = new ProgContext(this._ctx, this.state);
-		this.enterRule(_localctx, 0, xLogoParser.RULE_prog);
+		this.enterRule(_localctx, 0, XLogoParser.RULE_prog);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
@@ -162,11 +163,11 @@ export class xLogoParser extends Parser {
 			this.state = 31;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (_la === xLogoParser.EOL) {
+			while (_la === XLogoParser.EOL) {
 				{
 				{
 				this.state = 28;
-				this.match(xLogoParser.EOL);
+				this.match(XLogoParser.EOL);
 				}
 				}
 				this.state = 33;
@@ -176,22 +177,22 @@ export class xLogoParser extends Parser {
 			this.state = 44;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (_la === xLogoParser.To) {
+			if (_la === XLogoParser.To) {
 				{
 				this.state = 34;
 				this.programDeclaration();
 				this.state = 41;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				while (_la === xLogoParser.EOL) {
+				while (_la === XLogoParser.EOL) {
 					{
 					{
 					this.state = 35;
-					this.match(xLogoParser.EOL);
+					this.match(XLogoParser.EOL);
 					this.state = 37;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
-					if (_la === xLogoParser.To) {
+					if (_la === XLogoParser.To) {
 						{
 						this.state = 36;
 						this.programDeclaration();
@@ -210,15 +211,15 @@ export class xLogoParser extends Parser {
 			this.state = 47;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (_la === xLogoParser.T__0) {
+			if (_la === XLogoParser.T__0) {
 				{
 				this.state = 46;
-				this.match(xLogoParser.T__0);
+				this.match(XLogoParser.T__0);
 				}
 			}
 
 			this.state = 49;
-			this.match(xLogoParser.EOF);
+			this.match(XLogoParser.EOF);
 			}
 		}
 		catch (re) {
@@ -238,7 +239,7 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public inputLines(): InputLinesContext {
 		let _localctx: InputLinesContext = new InputLinesContext(this._ctx, this.state);
-		this.enterRule(_localctx, 2, xLogoParser.RULE_inputLines);
+		this.enterRule(_localctx, 2, XLogoParser.RULE_inputLines);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
@@ -246,26 +247,26 @@ export class xLogoParser extends Parser {
 			this.state = 55;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__3) | (1 << xLogoParser.T__4) | (1 << xLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (xLogoParser.Make - 32)) | (1 << (xLogoParser.Print - 32)) | (1 << (xLogoParser.Identifier - 32)) | (1 << (xLogoParser.EOL - 32)))) !== 0)) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__3) | (1 << XLogoParser.T__4) | (1 << XLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (XLogoParser.Make - 32)) | (1 << (XLogoParser.Print - 32)) | (1 << (XLogoParser.Identifier - 32)) | (1 << (XLogoParser.EOL - 32)))) !== 0)) {
 				{
 				this.state = 53;
 				this._errHandler.sync(this);
 				switch (this._input.LA(1)) {
-				case xLogoParser.T__3:
-				case xLogoParser.T__4:
-				case xLogoParser.T__5:
-				case xLogoParser.Make:
-				case xLogoParser.Print:
-				case xLogoParser.Identifier:
+				case XLogoParser.T__3:
+				case XLogoParser.T__4:
+				case XLogoParser.T__5:
+				case XLogoParser.Make:
+				case XLogoParser.Print:
+				case XLogoParser.Identifier:
 					{
 					this.state = 51;
 					this.stmt();
 					}
 					break;
-				case xLogoParser.EOL:
+				case XLogoParser.EOL:
 					{
 					this.state = 52;
-					this.match(xLogoParser.EOL);
+					this.match(XLogoParser.EOL);
 					}
 					break;
 				default:
@@ -277,7 +278,7 @@ export class xLogoParser extends Parser {
 				_la = this._input.LA(1);
 			}
 			this.state = 58;
-			this.match(xLogoParser.EOF);
+			this.match(XLogoParser.EOF);
 			}
 		}
 		catch (re) {
@@ -297,19 +298,19 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public programDeclaration(): ProgramDeclarationContext {
 		let _localctx: ProgramDeclarationContext = new ProgramDeclarationContext(this._ctx, this.state);
-		this.enterRule(_localctx, 4, xLogoParser.RULE_programDeclaration);
+		this.enterRule(_localctx, 4, XLogoParser.RULE_programDeclaration);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 60;
-			this.match(xLogoParser.To);
+			this.match(XLogoParser.To);
 			this.state = 61;
-			this.match(xLogoParser.Identifier);
+			this.match(XLogoParser.Identifier);
 			this.state = 63;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (_la === xLogoParser.Variable) {
+			if (_la === XLogoParser.Variable) {
 				{
 				this.state = 62;
 				this.paramList();
@@ -317,17 +318,17 @@ export class xLogoParser extends Parser {
 			}
 
 			this.state = 65;
-			this.match(xLogoParser.EOL);
+			this.match(XLogoParser.EOL);
 			this.state = 75;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__3) | (1 << xLogoParser.T__4) | (1 << xLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (xLogoParser.Make - 32)) | (1 << (xLogoParser.Print - 32)) | (1 << (xLogoParser.Identifier - 32)) | (1 << (xLogoParser.EOL - 32)))) !== 0)) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__3) | (1 << XLogoParser.T__4) | (1 << XLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (XLogoParser.Make - 32)) | (1 << (XLogoParser.Print - 32)) | (1 << (XLogoParser.Identifier - 32)) | (1 << (XLogoParser.EOL - 32)))) !== 0)) {
 				{
 				{
 				this.state = 69;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__3) | (1 << xLogoParser.T__4) | (1 << xLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (xLogoParser.Make - 32)) | (1 << (xLogoParser.Print - 32)) | (1 << (xLogoParser.Identifier - 32)))) !== 0)) {
+				while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__3) | (1 << XLogoParser.T__4) | (1 << XLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (XLogoParser.Make - 32)) | (1 << (XLogoParser.Print - 32)) | (1 << (XLogoParser.Identifier - 32)))) !== 0)) {
 					{
 					{
 					this.state = 66;
@@ -339,7 +340,7 @@ export class xLogoParser extends Parser {
 					_la = this._input.LA(1);
 				}
 				this.state = 72;
-				this.match(xLogoParser.EOL);
+				this.match(XLogoParser.EOL);
 				}
 				}
 				this.state = 77;
@@ -347,7 +348,7 @@ export class xLogoParser extends Parser {
 				_la = this._input.LA(1);
 			}
 			this.state = 78;
-			this.match(xLogoParser.End);
+			this.match(XLogoParser.End);
 			}
 		}
 		catch (re) {
@@ -367,7 +368,7 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public paramList(): ParamListContext {
 		let _localctx: ParamListContext = new ParamListContext(this._ctx, this.state);
-		this.enterRule(_localctx, 6, xLogoParser.RULE_paramList);
+		this.enterRule(_localctx, 6, XLogoParser.RULE_paramList);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
@@ -379,13 +380,13 @@ export class xLogoParser extends Parser {
 				{
 				{
 				this.state = 80;
-				this.match(xLogoParser.Variable);
+				this.match(XLogoParser.Variable);
 				}
 				}
 				this.state = 83;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			} while (_la === xLogoParser.Variable);
+			} while (_la === XLogoParser.Variable);
 			}
 		}
 		catch (re) {
@@ -405,47 +406,47 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public stmt(): StmtContext {
 		let _localctx: StmtContext = new StmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 8, xLogoParser.RULE_stmt);
+		this.enterRule(_localctx, 8, XLogoParser.RULE_stmt);
 		try {
 			this.state = 91;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case xLogoParser.Make:
+			case XLogoParser.Make:
 				this.enterOuterAlt(_localctx, 1);
 				{
 				this.state = 85;
 				this.makeStmt();
 				}
 				break;
-			case xLogoParser.Print:
+			case XLogoParser.Print:
 				this.enterOuterAlt(_localctx, 2);
 				{
 				this.state = 86;
 				this.printStmt();
 				}
 				break;
-			case xLogoParser.T__3:
+			case XLogoParser.T__3:
 				this.enterOuterAlt(_localctx, 3);
 				{
 				this.state = 87;
 				this.repeatStmt();
 				}
 				break;
-			case xLogoParser.T__4:
+			case XLogoParser.T__4:
 				this.enterOuterAlt(_localctx, 4);
 				{
 				this.state = 88;
 				this.ifStmt();
 				}
 				break;
-			case xLogoParser.T__5:
+			case XLogoParser.T__5:
 				this.enterOuterAlt(_localctx, 5);
 				{
 				this.state = 89;
 				this.whileStmt();
 				}
 				break;
-			case xLogoParser.Identifier:
+			case XLogoParser.Identifier:
 				this.enterOuterAlt(_localctx, 6);
 				{
 				this.state = 90;
@@ -473,36 +474,36 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public stmtBlock(): StmtBlockContext {
 		let _localctx: StmtBlockContext = new StmtBlockContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, xLogoParser.RULE_stmtBlock);
+		this.enterRule(_localctx, 10, XLogoParser.RULE_stmtBlock);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 93;
-			this.match(xLogoParser.T__1);
+			this.match(XLogoParser.T__1);
 			this.state = 98;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__3) | (1 << xLogoParser.T__4) | (1 << xLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (xLogoParser.Make - 32)) | (1 << (xLogoParser.Print - 32)) | (1 << (xLogoParser.Identifier - 32)) | (1 << (xLogoParser.EOL - 32)))) !== 0)) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__3) | (1 << XLogoParser.T__4) | (1 << XLogoParser.T__5))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (XLogoParser.Make - 32)) | (1 << (XLogoParser.Print - 32)) | (1 << (XLogoParser.Identifier - 32)) | (1 << (XLogoParser.EOL - 32)))) !== 0)) {
 				{
 				this.state = 96;
 				this._errHandler.sync(this);
 				switch (this._input.LA(1)) {
-				case xLogoParser.T__3:
-				case xLogoParser.T__4:
-				case xLogoParser.T__5:
-				case xLogoParser.Make:
-				case xLogoParser.Print:
-				case xLogoParser.Identifier:
+				case XLogoParser.T__3:
+				case XLogoParser.T__4:
+				case XLogoParser.T__5:
+				case XLogoParser.Make:
+				case XLogoParser.Print:
+				case XLogoParser.Identifier:
 					{
 					this.state = 94;
 					this.stmt();
 					}
 					break;
-				case xLogoParser.EOL:
+				case XLogoParser.EOL:
 					{
 					this.state = 95;
-					this.match(xLogoParser.EOL);
+					this.match(XLogoParser.EOL);
 					}
 					break;
 				default:
@@ -514,7 +515,7 @@ export class xLogoParser extends Parser {
 				_la = this._input.LA(1);
 			}
 			this.state = 101;
-			this.match(xLogoParser.T__2);
+			this.match(XLogoParser.T__2);
 			}
 		}
 		catch (re) {
@@ -534,12 +535,12 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public repeatStmt(): RepeatStmtContext {
 		let _localctx: RepeatStmtContext = new RepeatStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, xLogoParser.RULE_repeatStmt);
+		this.enterRule(_localctx, 12, XLogoParser.RULE_repeatStmt);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 103;
-			this.match(xLogoParser.T__3);
+			this.match(XLogoParser.T__3);
 			this.state = 104;
 			this.expr(0);
 			this.state = 105;
@@ -563,13 +564,13 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public ifStmt(): IfStmtContext {
 		let _localctx: IfStmtContext = new IfStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, xLogoParser.RULE_ifStmt);
+		this.enterRule(_localctx, 14, XLogoParser.RULE_ifStmt);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 107;
-			this.match(xLogoParser.T__4);
+			this.match(XLogoParser.T__4);
 			this.state = 108;
 			this.expr(0);
 			this.state = 109;
@@ -577,7 +578,7 @@ export class xLogoParser extends Parser {
 			this.state = 111;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (_la === xLogoParser.T__1) {
+			if (_la === XLogoParser.T__1) {
 				{
 				this.state = 110;
 				this.stmtBlock();
@@ -603,18 +604,18 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public whileStmt(): WhileStmtContext {
 		let _localctx: WhileStmtContext = new WhileStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, xLogoParser.RULE_whileStmt);
+		this.enterRule(_localctx, 16, XLogoParser.RULE_whileStmt);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 113;
-			this.match(xLogoParser.T__5);
+			this.match(XLogoParser.T__5);
 			this.state = 114;
-			this.match(xLogoParser.T__1);
+			this.match(XLogoParser.T__1);
 			this.state = 115;
 			this.expr(0);
 			this.state = 116;
-			this.match(xLogoParser.T__2);
+			this.match(XLogoParser.T__2);
 			this.state = 117;
 			this.stmtBlock();
 			}
@@ -636,7 +637,7 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public makeStmt(): MakeStmtContext {
 		let _localctx: MakeStmtContext = new MakeStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 18, xLogoParser.RULE_makeStmt);
+		this.enterRule(_localctx, 18, XLogoParser.RULE_makeStmt);
 		try {
 			this.state = 125;
 			this._errHandler.sync(this);
@@ -645,9 +646,9 @@ export class xLogoParser extends Parser {
 				this.enterOuterAlt(_localctx, 1);
 				{
 				this.state = 119;
-				this.match(xLogoParser.Make);
+				this.match(XLogoParser.Make);
 				this.state = 120;
-				this.match(xLogoParser.VarDecl);
+				this.match(XLogoParser.VarDecl);
 				this.state = 121;
 				this.expr(0);
 				}
@@ -657,9 +658,9 @@ export class xLogoParser extends Parser {
 				this.enterOuterAlt(_localctx, 2);
 				{
 				this.state = 122;
-				this.match(xLogoParser.Make);
+				this.match(XLogoParser.Make);
 				this.state = 123;
-				this.match(xLogoParser.Variable);
+				this.match(XLogoParser.Variable);
 				this.state = 124;
 				this.expr(0);
 				}
@@ -683,7 +684,7 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public printStmt(): PrintStmtContext {
 		let _localctx: PrintStmtContext = new PrintStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 20, xLogoParser.RULE_printStmt);
+		this.enterRule(_localctx, 20, XLogoParser.RULE_printStmt);
 		try {
 			let _alt: number;
 			this.state = 138;
@@ -693,9 +694,9 @@ export class xLogoParser extends Parser {
 				this.enterOuterAlt(_localctx, 1);
 				{
 				this.state = 127;
-				this.match(xLogoParser.Print);
+				this.match(XLogoParser.Print);
 				this.state = 128;
-				this.match(xLogoParser.T__1);
+				this.match(XLogoParser.T__1);
 				this.state = 132;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 16, this._ctx);
@@ -713,7 +714,7 @@ export class xLogoParser extends Parser {
 					_alt = this.interpreter.adaptivePredict(this._input, 16, this._ctx);
 				}
 				this.state = 135;
-				this.match(xLogoParser.T__2);
+				this.match(XLogoParser.T__2);
 				}
 				break;
 
@@ -721,7 +722,7 @@ export class xLogoParser extends Parser {
 				this.enterOuterAlt(_localctx, 2);
 				{
 				this.state = 136;
-				this.match(xLogoParser.Print);
+				this.match(XLogoParser.Print);
 				this.state = 137;
 				this.expr(0);
 				}
@@ -745,17 +746,17 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public progCallStmt(): ProgCallStmtContext {
 		let _localctx: ProgCallStmtContext = new ProgCallStmtContext(this._ctx, this.state);
-		this.enterRule(_localctx, 22, xLogoParser.RULE_progCallStmt);
+		this.enterRule(_localctx, 22, XLogoParser.RULE_progCallStmt);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 140;
-			this.match(xLogoParser.Identifier);
+			this.match(XLogoParser.Identifier);
 			this.state = 144;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__1) | (1 << xLogoParser.T__6) | (1 << xLogoParser.T__8) | (1 << xLogoParser.T__10) | (1 << xLogoParser.T__11) | (1 << xLogoParser.T__12) | (1 << xLogoParser.FuncNameNoArg) | (1 << xLogoParser.FuncNameOneArg) | (1 << xLogoParser.FuncNameTwoArg) | (1 << xLogoParser.Colorname))) !== 0) || ((((_la - 49)) & ~0x1F) === 0 && ((1 << (_la - 49)) & ((1 << (xLogoParser.Variable - 49)) | (1 << (xLogoParser.Number - 49)) | (1 << (xLogoParser.Boolean - 49)))) !== 0)) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__1) | (1 << XLogoParser.T__6) | (1 << XLogoParser.T__8) | (1 << XLogoParser.T__10) | (1 << XLogoParser.T__11) | (1 << XLogoParser.T__12) | (1 << XLogoParser.FuncNameNoArg) | (1 << XLogoParser.FuncNameOneArg) | (1 << XLogoParser.FuncNameTwoArg) | (1 << XLogoParser.Colorname))) !== 0) || ((((_la - 49)) & ~0x1F) === 0 && ((1 << (_la - 49)) & ((1 << (XLogoParser.Variable - 49)) | (1 << (XLogoParser.Number - 49)) | (1 << (XLogoParser.Boolean - 49)))) !== 0)) {
 				{
 				{
 				this.state = 141;
@@ -796,7 +797,7 @@ export class xLogoParser extends Parser {
 		let _localctx: ExprContext = new ExprContext(this._ctx, _parentState);
 		let _prevctx: ExprContext = _localctx;
 		let _startState: number = 24;
-		this.enterRecursionRule(_localctx, 24, xLogoParser.RULE_expr, _p);
+		this.enterRecursionRule(_localctx, 24, XLogoParser.RULE_expr, _p);
 		let _la: number;
 		try {
 			let _alt: number;
@@ -805,10 +806,10 @@ export class xLogoParser extends Parser {
 			this.state = 174;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case xLogoParser.Colorname:
-			case xLogoParser.Variable:
-			case xLogoParser.Number:
-			case xLogoParser.Boolean:
+			case XLogoParser.Colorname:
+			case XLogoParser.Variable:
+			case XLogoParser.Number:
+			case XLogoParser.Boolean:
 				{
 				_localctx = new ExprLiteralContext(_localctx);
 				this._ctx = _localctx;
@@ -818,13 +819,13 @@ export class xLogoParser extends Parser {
 				this.literal();
 				}
 				break;
-			case xLogoParser.T__6:
+			case XLogoParser.T__6:
 				{
 				_localctx = new ExprColorContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 				this.state = 149;
-				this.match(xLogoParser.T__6);
+				this.match(XLogoParser.T__6);
 				this.state = 150;
 				this.expr(0);
 				this.state = 151;
@@ -832,16 +833,16 @@ export class xLogoParser extends Parser {
 				this.state = 152;
 				this.expr(0);
 				this.state = 153;
-				this.match(xLogoParser.T__7);
+				this.match(XLogoParser.T__7);
 				}
 				break;
-			case xLogoParser.T__1:
+			case XLogoParser.T__1:
 				{
 				_localctx = new ExprColorContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 				this.state = 155;
-				this.match(xLogoParser.T__1);
+				this.match(XLogoParser.T__1);
 				this.state = 156;
 				this.expr(0);
 				this.state = 157;
@@ -849,32 +850,32 @@ export class xLogoParser extends Parser {
 				this.state = 158;
 				this.expr(0);
 				this.state = 159;
-				this.match(xLogoParser.T__2);
+				this.match(XLogoParser.T__2);
 				}
 				break;
-			case xLogoParser.T__8:
+			case XLogoParser.T__8:
 				{
 				_localctx = new ExprInBracketsContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 				this.state = 161;
-				this.match(xLogoParser.T__8);
+				this.match(XLogoParser.T__8);
 				this.state = 162;
 				this.expr(0);
 				this.state = 163;
-				this.match(xLogoParser.T__9);
+				this.match(XLogoParser.T__9);
 				}
 				break;
-			case xLogoParser.T__10:
-			case xLogoParser.T__11:
-			case xLogoParser.T__12:
+			case XLogoParser.T__10:
+			case XLogoParser.T__11:
+			case XLogoParser.T__12:
 				{
 				_localctx = new ExprUnaryOpContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 				this.state = 165;
 				_la = this._input.LA(1);
-				if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__10) | (1 << xLogoParser.T__11) | (1 << xLogoParser.T__12))) !== 0))) {
+				if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__10) | (1 << XLogoParser.T__11) | (1 << XLogoParser.T__12))) !== 0))) {
 				this._errHandler.recoverInline(this);
 				} else {
 					if (this._input.LA(1) === Token.EOF) {
@@ -888,37 +889,37 @@ export class xLogoParser extends Parser {
 				this.expr(10);
 				}
 				break;
-			case xLogoParser.FuncNameTwoArg:
+			case XLogoParser.FuncNameTwoArg:
 				{
 				_localctx = new ExprFuncTwoArgContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 				this.state = 167;
-				this.match(xLogoParser.FuncNameTwoArg);
+				this.match(XLogoParser.FuncNameTwoArg);
 				this.state = 168;
 				this.expr(0);
 				this.state = 169;
 				this.expr(8);
 				}
 				break;
-			case xLogoParser.FuncNameOneArg:
+			case XLogoParser.FuncNameOneArg:
 				{
 				_localctx = new ExprFuncOneArgContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 				this.state = 171;
-				this.match(xLogoParser.FuncNameOneArg);
+				this.match(XLogoParser.FuncNameOneArg);
 				this.state = 172;
 				this.expr(7);
 				}
 				break;
-			case xLogoParser.FuncNameNoArg:
+			case XLogoParser.FuncNameNoArg:
 				{
 				_localctx = new ExprFuncNoArgContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 				this.state = 173;
-				this.match(xLogoParser.FuncNameNoArg);
+				this.match(XLogoParser.FuncNameNoArg);
 				}
 				break;
 			default:
@@ -941,14 +942,14 @@ export class xLogoParser extends Parser {
 					case 1:
 						{
 						_localctx = new ExprBOpMultContext(new ExprContext(_parentctx, _parentState));
-						this.pushNewRecursionContext(_localctx, _startState, xLogoParser.RULE_expr);
+						this.pushNewRecursionContext(_localctx, _startState, XLogoParser.RULE_expr);
 						this.state = 176;
 						if (!(this.precpred(this._ctx, 9))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 9)");
 						}
 						this.state = 177;
 						_la = this._input.LA(1);
-						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__13) | (1 << xLogoParser.T__14) | (1 << xLogoParser.T__15))) !== 0))) {
+						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__13) | (1 << XLogoParser.T__14) | (1 << XLogoParser.T__15))) !== 0))) {
 						this._errHandler.recoverInline(this);
 						} else {
 							if (this._input.LA(1) === Token.EOF) {
@@ -966,14 +967,14 @@ export class xLogoParser extends Parser {
 					case 2:
 						{
 						_localctx = new ExprBOpAddContext(new ExprContext(_parentctx, _parentState));
-						this.pushNewRecursionContext(_localctx, _startState, xLogoParser.RULE_expr);
+						this.pushNewRecursionContext(_localctx, _startState, XLogoParser.RULE_expr);
 						this.state = 179;
 						if (!(this.precpred(this._ctx, 5))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 5)");
 						}
 						this.state = 180;
 						_la = this._input.LA(1);
-						if (!(_la === xLogoParser.T__10 || _la === xLogoParser.T__11)) {
+						if (!(_la === XLogoParser.T__10 || _la === XLogoParser.T__11)) {
 						this._errHandler.recoverInline(this);
 						} else {
 							if (this._input.LA(1) === Token.EOF) {
@@ -991,14 +992,14 @@ export class xLogoParser extends Parser {
 					case 3:
 						{
 						_localctx = new ExprBOpCompContext(new ExprContext(_parentctx, _parentState));
-						this.pushNewRecursionContext(_localctx, _startState, xLogoParser.RULE_expr);
+						this.pushNewRecursionContext(_localctx, _startState, XLogoParser.RULE_expr);
 						this.state = 182;
 						if (!(this.precpred(this._ctx, 4))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 4)");
 						}
 						this.state = 183;
 						_la = this._input.LA(1);
-						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << xLogoParser.T__16) | (1 << xLogoParser.T__17) | (1 << xLogoParser.T__18) | (1 << xLogoParser.T__19))) !== 0))) {
+						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << XLogoParser.T__16) | (1 << XLogoParser.T__17) | (1 << XLogoParser.T__18) | (1 << XLogoParser.T__19))) !== 0))) {
 						this._errHandler.recoverInline(this);
 						} else {
 							if (this._input.LA(1) === Token.EOF) {
@@ -1016,14 +1017,14 @@ export class xLogoParser extends Parser {
 					case 4:
 						{
 						_localctx = new ExprBOpEqContext(new ExprContext(_parentctx, _parentState));
-						this.pushNewRecursionContext(_localctx, _startState, xLogoParser.RULE_expr);
+						this.pushNewRecursionContext(_localctx, _startState, XLogoParser.RULE_expr);
 						this.state = 185;
 						if (!(this.precpred(this._ctx, 3))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
 						this.state = 186;
 						_la = this._input.LA(1);
-						if (!(_la === xLogoParser.T__20 || _la === xLogoParser.T__21)) {
+						if (!(_la === XLogoParser.T__20 || _la === XLogoParser.T__21)) {
 						this._errHandler.recoverInline(this);
 						} else {
 							if (this._input.LA(1) === Token.EOF) {
@@ -1041,13 +1042,13 @@ export class xLogoParser extends Parser {
 					case 5:
 						{
 						_localctx = new ExprBOpAndContext(new ExprContext(_parentctx, _parentState));
-						this.pushNewRecursionContext(_localctx, _startState, xLogoParser.RULE_expr);
+						this.pushNewRecursionContext(_localctx, _startState, XLogoParser.RULE_expr);
 						this.state = 188;
 						if (!(this.precpred(this._ctx, 2))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
 						this.state = 189;
-						this.match(xLogoParser.T__22);
+						this.match(XLogoParser.T__22);
 						this.state = 190;
 						this.expr(3);
 						}
@@ -1056,13 +1057,13 @@ export class xLogoParser extends Parser {
 					case 6:
 						{
 						_localctx = new ExprBOpOrContext(new ExprContext(_parentctx, _parentState));
-						this.pushNewRecursionContext(_localctx, _startState, xLogoParser.RULE_expr);
+						this.pushNewRecursionContext(_localctx, _startState, XLogoParser.RULE_expr);
 						this.state = 191;
 						if (!(this.precpred(this._ctx, 1))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
 						this.state = 192;
-						this.match(xLogoParser.T__23);
+						this.match(XLogoParser.T__23);
 						this.state = 193;
 						this.expr(2);
 						}
@@ -1093,14 +1094,14 @@ export class xLogoParser extends Parser {
 	// @RuleVersion(0)
 	public literal(): LiteralContext {
 		let _localctx: LiteralContext = new LiteralContext(this._ctx, this.state);
-		this.enterRule(_localctx, 26, xLogoParser.RULE_literal);
+		this.enterRule(_localctx, 26, XLogoParser.RULE_literal);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
 			this.state = 199;
 			_la = this._input.LA(1);
-			if (!(((((_la - 30)) & ~0x1F) === 0 && ((1 << (_la - 30)) & ((1 << (xLogoParser.Colorname - 30)) | (1 << (xLogoParser.Variable - 30)) | (1 << (xLogoParser.Number - 30)) | (1 << (xLogoParser.Boolean - 30)))) !== 0))) {
+			if (!(((((_la - 30)) & ~0x1F) === 0 && ((1 << (_la - 30)) & ((1 << (XLogoParser.Colorname - 30)) | (1 << (XLogoParser.Variable - 30)) | (1 << (XLogoParser.Number - 30)) | (1 << (XLogoParser.Boolean - 30)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1250,24 +1251,24 @@ export class xLogoParser extends Parser {
 		"!\'+.179AGMU]bdq\x7F\x86\x8C\x92\xB0\xC4\xC6";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
-		if (!xLogoParser.__ATN) {
-			xLogoParser.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(xLogoParser._serializedATN));
+		if (!XLogoParser.__ATN) {
+			XLogoParser.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(XLogoParser._serializedATN));
 		}
 
-		return xLogoParser.__ATN;
+		return XLogoParser.__ATN;
 	}
 
 }
 
 export class ProgContext extends ParserRuleContext {
-	public EOF(): TerminalNode { return this.getToken(xLogoParser.EOF, 0); }
+	public EOF(): TerminalNode { return this.getToken(XLogoParser.EOF, 0); }
 	public EOL(): TerminalNode[];
 	public EOL(i: number): TerminalNode;
 	public EOL(i?: number): TerminalNode | TerminalNode[] {
 		if (i === undefined) {
-			return this.getTokens(xLogoParser.EOL);
+			return this.getTokens(XLogoParser.EOL);
 		} else {
-			return this.getToken(xLogoParser.EOL, i);
+			return this.getToken(XLogoParser.EOL, i);
 		}
 	}
 	public programDeclaration(): ProgramDeclarationContext[];
@@ -1283,9 +1284,21 @@ export class ProgContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_prog; }
+	public get ruleIndex(): number { return XLogoParser.RULE_prog; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterProg) {
+			listener.enterProg(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitProg) {
+			listener.exitProg(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitProg) {
 			return visitor.visitProg(this);
 		} else {
@@ -1296,7 +1309,7 @@ export class ProgContext extends ParserRuleContext {
 
 
 export class InputLinesContext extends ParserRuleContext {
-	public EOF(): TerminalNode { return this.getToken(xLogoParser.EOF, 0); }
+	public EOF(): TerminalNode { return this.getToken(XLogoParser.EOF, 0); }
 	public stmt(): StmtContext[];
 	public stmt(i: number): StmtContext;
 	public stmt(i?: number): StmtContext | StmtContext[] {
@@ -1310,18 +1323,30 @@ export class InputLinesContext extends ParserRuleContext {
 	public EOL(i: number): TerminalNode;
 	public EOL(i?: number): TerminalNode | TerminalNode[] {
 		if (i === undefined) {
-			return this.getTokens(xLogoParser.EOL);
+			return this.getTokens(XLogoParser.EOL);
 		} else {
-			return this.getToken(xLogoParser.EOL, i);
+			return this.getToken(XLogoParser.EOL, i);
 		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_inputLines; }
+	public get ruleIndex(): number { return XLogoParser.RULE_inputLines; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterInputLines) {
+			listener.enterInputLines(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitInputLines) {
+			listener.exitInputLines(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitInputLines) {
 			return visitor.visitInputLines(this);
 		} else {
@@ -1332,18 +1357,18 @@ export class InputLinesContext extends ParserRuleContext {
 
 
 export class ProgramDeclarationContext extends ParserRuleContext {
-	public To(): TerminalNode { return this.getToken(xLogoParser.To, 0); }
-	public Identifier(): TerminalNode { return this.getToken(xLogoParser.Identifier, 0); }
+	public To(): TerminalNode { return this.getToken(XLogoParser.To, 0); }
+	public Identifier(): TerminalNode { return this.getToken(XLogoParser.Identifier, 0); }
 	public EOL(): TerminalNode[];
 	public EOL(i: number): TerminalNode;
 	public EOL(i?: number): TerminalNode | TerminalNode[] {
 		if (i === undefined) {
-			return this.getTokens(xLogoParser.EOL);
+			return this.getTokens(XLogoParser.EOL);
 		} else {
-			return this.getToken(xLogoParser.EOL, i);
+			return this.getToken(XLogoParser.EOL, i);
 		}
 	}
-	public End(): TerminalNode { return this.getToken(xLogoParser.End, 0); }
+	public End(): TerminalNode { return this.getToken(XLogoParser.End, 0); }
 	public paramList(): ParamListContext | undefined {
 		return this.tryGetRuleContext(0, ParamListContext);
 	}
@@ -1360,9 +1385,21 @@ export class ProgramDeclarationContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_programDeclaration; }
+	public get ruleIndex(): number { return XLogoParser.RULE_programDeclaration; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterProgramDeclaration) {
+			listener.enterProgramDeclaration(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitProgramDeclaration) {
+			listener.exitProgramDeclaration(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitProgramDeclaration) {
 			return visitor.visitProgramDeclaration(this);
 		} else {
@@ -1377,18 +1414,30 @@ export class ParamListContext extends ParserRuleContext {
 	public Variable(i: number): TerminalNode;
 	public Variable(i?: number): TerminalNode | TerminalNode[] {
 		if (i === undefined) {
-			return this.getTokens(xLogoParser.Variable);
+			return this.getTokens(XLogoParser.Variable);
 		} else {
-			return this.getToken(xLogoParser.Variable, i);
+			return this.getToken(XLogoParser.Variable, i);
 		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_paramList; }
+	public get ruleIndex(): number { return XLogoParser.RULE_paramList; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterParamList) {
+			listener.enterParamList(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitParamList) {
+			listener.exitParamList(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitParamList) {
 			return visitor.visitParamList(this);
 		} else {
@@ -1421,9 +1470,21 @@ export class StmtContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_stmt; }
+	public get ruleIndex(): number { return XLogoParser.RULE_stmt; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterStmt) {
+			listener.enterStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitStmt) {
+			listener.exitStmt(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitStmt) {
 			return visitor.visitStmt(this);
 		} else {
@@ -1447,18 +1508,30 @@ export class StmtBlockContext extends ParserRuleContext {
 	public EOL(i: number): TerminalNode;
 	public EOL(i?: number): TerminalNode | TerminalNode[] {
 		if (i === undefined) {
-			return this.getTokens(xLogoParser.EOL);
+			return this.getTokens(XLogoParser.EOL);
 		} else {
-			return this.getToken(xLogoParser.EOL, i);
+			return this.getToken(XLogoParser.EOL, i);
 		}
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_stmtBlock; }
+	public get ruleIndex(): number { return XLogoParser.RULE_stmtBlock; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterStmtBlock) {
+			listener.enterStmtBlock(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitStmtBlock) {
+			listener.exitStmtBlock(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitStmtBlock) {
 			return visitor.visitStmtBlock(this);
 		} else {
@@ -1479,9 +1552,21 @@ export class RepeatStmtContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_repeatStmt; }
+	public get ruleIndex(): number { return XLogoParser.RULE_repeatStmt; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterRepeatStmt) {
+			listener.enterRepeatStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitRepeatStmt) {
+			listener.exitRepeatStmt(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitRepeatStmt) {
 			return visitor.visitRepeatStmt(this);
 		} else {
@@ -1508,9 +1593,21 @@ export class IfStmtContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_ifStmt; }
+	public get ruleIndex(): number { return XLogoParser.RULE_ifStmt; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterIfStmt) {
+			listener.enterIfStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitIfStmt) {
+			listener.exitIfStmt(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitIfStmt) {
 			return visitor.visitIfStmt(this);
 		} else {
@@ -1531,9 +1628,21 @@ export class WhileStmtContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_whileStmt; }
+	public get ruleIndex(): number { return XLogoParser.RULE_whileStmt; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterWhileStmt) {
+			listener.enterWhileStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitWhileStmt) {
+			listener.exitWhileStmt(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitWhileStmt) {
 			return visitor.visitWhileStmt(this);
 		} else {
@@ -1544,19 +1653,31 @@ export class WhileStmtContext extends ParserRuleContext {
 
 
 export class MakeStmtContext extends ParserRuleContext {
-	public Make(): TerminalNode { return this.getToken(xLogoParser.Make, 0); }
-	public VarDecl(): TerminalNode | undefined { return this.tryGetToken(xLogoParser.VarDecl, 0); }
+	public Make(): TerminalNode { return this.getToken(XLogoParser.Make, 0); }
+	public VarDecl(): TerminalNode | undefined { return this.tryGetToken(XLogoParser.VarDecl, 0); }
 	public expr(): ExprContext {
 		return this.getRuleContext(0, ExprContext);
 	}
-	public Variable(): TerminalNode | undefined { return this.tryGetToken(xLogoParser.Variable, 0); }
+	public Variable(): TerminalNode | undefined { return this.tryGetToken(XLogoParser.Variable, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_makeStmt; }
+	public get ruleIndex(): number { return XLogoParser.RULE_makeStmt; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterMakeStmt) {
+			listener.enterMakeStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitMakeStmt) {
+			listener.exitMakeStmt(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitMakeStmt) {
 			return visitor.visitMakeStmt(this);
 		} else {
@@ -1567,7 +1688,7 @@ export class MakeStmtContext extends ParserRuleContext {
 
 
 export class PrintStmtContext extends ParserRuleContext {
-	public Print(): TerminalNode { return this.getToken(xLogoParser.Print, 0); }
+	public Print(): TerminalNode { return this.getToken(XLogoParser.Print, 0); }
 	public expr(): ExprContext | undefined {
 		return this.tryGetRuleContext(0, ExprContext);
 	}
@@ -1575,9 +1696,21 @@ export class PrintStmtContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_printStmt; }
+	public get ruleIndex(): number { return XLogoParser.RULE_printStmt; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterPrintStmt) {
+			listener.enterPrintStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitPrintStmt) {
+			listener.exitPrintStmt(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitPrintStmt) {
 			return visitor.visitPrintStmt(this);
 		} else {
@@ -1588,7 +1721,7 @@ export class PrintStmtContext extends ParserRuleContext {
 
 
 export class ProgCallStmtContext extends ParserRuleContext {
-	public Identifier(): TerminalNode { return this.getToken(xLogoParser.Identifier, 0); }
+	public Identifier(): TerminalNode { return this.getToken(XLogoParser.Identifier, 0); }
 	public expr(): ExprContext[];
 	public expr(i: number): ExprContext;
 	public expr(i?: number): ExprContext | ExprContext[] {
@@ -1602,9 +1735,21 @@ export class ProgCallStmtContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_progCallStmt; }
+	public get ruleIndex(): number { return XLogoParser.RULE_progCallStmt; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterProgCallStmt) {
+			listener.enterProgCallStmt(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitProgCallStmt) {
+			listener.exitProgCallStmt(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitProgCallStmt) {
 			return visitor.visitProgCallStmt(this);
 		} else {
@@ -1619,7 +1764,7 @@ export class ExprContext extends ParserRuleContext {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_expr; }
+	public get ruleIndex(): number { return XLogoParser.RULE_expr; }
 	public copyFrom(ctx: ExprContext): void {
 		super.copyFrom(ctx);
 	}
@@ -1633,7 +1778,19 @@ export class ExprLiteralContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprLiteral) {
+			listener.enterExprLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprLiteral) {
+			listener.exitExprLiteral(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprLiteral) {
 			return visitor.visitExprLiteral(this);
 		} else {
@@ -1656,7 +1813,19 @@ export class ExprColorContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprColor) {
+			listener.enterExprColor(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprColor) {
+			listener.exitExprColor(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprColor) {
 			return visitor.visitExprColor(this);
 		} else {
@@ -1673,7 +1842,19 @@ export class ExprInBracketsContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprInBrackets) {
+			listener.enterExprInBrackets(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprInBrackets) {
+			listener.exitExprInBrackets(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprInBrackets) {
 			return visitor.visitExprInBrackets(this);
 		} else {
@@ -1690,7 +1871,19 @@ export class ExprUnaryOpContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprUnaryOp) {
+			listener.enterExprUnaryOp(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprUnaryOp) {
+			listener.exitExprUnaryOp(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprUnaryOp) {
 			return visitor.visitExprUnaryOp(this);
 		} else {
@@ -1713,7 +1906,19 @@ export class ExprBOpMultContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprBOpMult) {
+			listener.enterExprBOpMult(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprBOpMult) {
+			listener.exitExprBOpMult(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprBOpMult) {
 			return visitor.visitExprBOpMult(this);
 		} else {
@@ -1722,7 +1927,7 @@ export class ExprBOpMultContext extends ExprContext {
 	}
 }
 export class ExprFuncTwoArgContext extends ExprContext {
-	public FuncNameTwoArg(): TerminalNode { return this.getToken(xLogoParser.FuncNameTwoArg, 0); }
+	public FuncNameTwoArg(): TerminalNode { return this.getToken(XLogoParser.FuncNameTwoArg, 0); }
 	public expr(): ExprContext[];
 	public expr(i: number): ExprContext;
 	public expr(i?: number): ExprContext | ExprContext[] {
@@ -1737,7 +1942,19 @@ export class ExprFuncTwoArgContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprFuncTwoArg) {
+			listener.enterExprFuncTwoArg(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprFuncTwoArg) {
+			listener.exitExprFuncTwoArg(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprFuncTwoArg) {
 			return visitor.visitExprFuncTwoArg(this);
 		} else {
@@ -1746,7 +1963,7 @@ export class ExprFuncTwoArgContext extends ExprContext {
 	}
 }
 export class ExprFuncOneArgContext extends ExprContext {
-	public FuncNameOneArg(): TerminalNode { return this.getToken(xLogoParser.FuncNameOneArg, 0); }
+	public FuncNameOneArg(): TerminalNode { return this.getToken(XLogoParser.FuncNameOneArg, 0); }
 	public expr(): ExprContext {
 		return this.getRuleContext(0, ExprContext);
 	}
@@ -1755,7 +1972,19 @@ export class ExprFuncOneArgContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprFuncOneArg) {
+			listener.enterExprFuncOneArg(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprFuncOneArg) {
+			listener.exitExprFuncOneArg(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprFuncOneArg) {
 			return visitor.visitExprFuncOneArg(this);
 		} else {
@@ -1764,13 +1993,25 @@ export class ExprFuncOneArgContext extends ExprContext {
 	}
 }
 export class ExprFuncNoArgContext extends ExprContext {
-	public FuncNameNoArg(): TerminalNode { return this.getToken(xLogoParser.FuncNameNoArg, 0); }
+	public FuncNameNoArg(): TerminalNode { return this.getToken(XLogoParser.FuncNameNoArg, 0); }
 	constructor(ctx: ExprContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprFuncNoArg) {
+			listener.enterExprFuncNoArg(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprFuncNoArg) {
+			listener.exitExprFuncNoArg(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprFuncNoArg) {
 			return visitor.visitExprFuncNoArg(this);
 		} else {
@@ -1793,7 +2034,19 @@ export class ExprBOpAddContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprBOpAdd) {
+			listener.enterExprBOpAdd(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprBOpAdd) {
+			listener.exitExprBOpAdd(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprBOpAdd) {
 			return visitor.visitExprBOpAdd(this);
 		} else {
@@ -1816,7 +2069,19 @@ export class ExprBOpCompContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprBOpComp) {
+			listener.enterExprBOpComp(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprBOpComp) {
+			listener.exitExprBOpComp(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprBOpComp) {
 			return visitor.visitExprBOpComp(this);
 		} else {
@@ -1839,7 +2104,19 @@ export class ExprBOpEqContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprBOpEq) {
+			listener.enterExprBOpEq(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprBOpEq) {
+			listener.exitExprBOpEq(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprBOpEq) {
 			return visitor.visitExprBOpEq(this);
 		} else {
@@ -1862,7 +2139,19 @@ export class ExprBOpAndContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprBOpAnd) {
+			listener.enterExprBOpAnd(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprBOpAnd) {
+			listener.exitExprBOpAnd(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprBOpAnd) {
 			return visitor.visitExprBOpAnd(this);
 		} else {
@@ -1885,7 +2174,19 @@ export class ExprBOpOrContext extends ExprContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterExprBOpOr) {
+			listener.enterExprBOpOr(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitExprBOpOr) {
+			listener.exitExprBOpOr(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitExprBOpOr) {
 			return visitor.visitExprBOpOr(this);
 		} else {
@@ -1896,17 +2197,29 @@ export class ExprBOpOrContext extends ExprContext {
 
 
 export class LiteralContext extends ParserRuleContext {
-	public Variable(): TerminalNode | undefined { return this.tryGetToken(xLogoParser.Variable, 0); }
-	public Number(): TerminalNode | undefined { return this.tryGetToken(xLogoParser.Number, 0); }
-	public Colorname(): TerminalNode | undefined { return this.tryGetToken(xLogoParser.Colorname, 0); }
-	public Boolean(): TerminalNode | undefined { return this.tryGetToken(xLogoParser.Boolean, 0); }
+	public Variable(): TerminalNode | undefined { return this.tryGetToken(XLogoParser.Variable, 0); }
+	public Number(): TerminalNode | undefined { return this.tryGetToken(XLogoParser.Number, 0); }
+	public Colorname(): TerminalNode | undefined { return this.tryGetToken(XLogoParser.Colorname, 0); }
+	public Boolean(): TerminalNode | undefined { return this.tryGetToken(XLogoParser.Boolean, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
 	// @Override
-	public get ruleIndex(): number { return xLogoParser.RULE_literal; }
+	public get ruleIndex(): number { return XLogoParser.RULE_literal; }
 	// @Override
-	public accept<Result>(visitor: xLogoVisitor<Result>): Result {
+	public enterRule(listener: XLogoListener): void {
+		if (listener.enterLiteral) {
+			listener.enterLiteral(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: XLogoListener): void {
+		if (listener.exitLiteral) {
+			listener.exitLiteral(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: XLogoVisitor<Result>): Result {
 		if (visitor.visitLiteral) {
 			return visitor.visitLiteral(this);
 		} else {

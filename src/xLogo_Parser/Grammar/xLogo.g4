@@ -3,7 +3,7 @@
 // Build instructions: This grammar is _not_ integrated into the build process and needs to be
 // manually rebuilt after modification
 
-grammar xLogo;
+grammar XLogo;
 
 // Parser rules
 

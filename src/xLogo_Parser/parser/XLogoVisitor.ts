@@ -1,48 +1,48 @@
-// Generated from Grammar/xLogo.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from src/xLogo_Parser/Grammar/XLogo.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
-import { ExprLiteralContext } from "./xLogoParser";
-import { ExprColorContext } from "./xLogoParser";
-import { ExprInBracketsContext } from "./xLogoParser";
-import { ExprUnaryOpContext } from "./xLogoParser";
-import { ExprBOpMultContext } from "./xLogoParser";
-import { ExprFuncTwoArgContext } from "./xLogoParser";
-import { ExprFuncOneArgContext } from "./xLogoParser";
-import { ExprFuncNoArgContext } from "./xLogoParser";
-import { ExprBOpAddContext } from "./xLogoParser";
-import { ExprBOpCompContext } from "./xLogoParser";
-import { ExprBOpEqContext } from "./xLogoParser";
-import { ExprBOpAndContext } from "./xLogoParser";
-import { ExprBOpOrContext } from "./xLogoParser";
-import { ProgContext } from "./xLogoParser";
-import { InputLinesContext } from "./xLogoParser";
-import { ProgramDeclarationContext } from "./xLogoParser";
-import { ParamListContext } from "./xLogoParser";
-import { StmtContext } from "./xLogoParser";
-import { StmtBlockContext } from "./xLogoParser";
-import { RepeatStmtContext } from "./xLogoParser";
-import { IfStmtContext } from "./xLogoParser";
-import { WhileStmtContext } from "./xLogoParser";
-import { MakeStmtContext } from "./xLogoParser";
-import { PrintStmtContext } from "./xLogoParser";
-import { ProgCallStmtContext } from "./xLogoParser";
-import { ExprContext } from "./xLogoParser";
-import { LiteralContext } from "./xLogoParser";
+import { ExprLiteralContext } from "./XLogoParser";
+import { ExprColorContext } from "./XLogoParser";
+import { ExprInBracketsContext } from "./XLogoParser";
+import { ExprUnaryOpContext } from "./XLogoParser";
+import { ExprBOpMultContext } from "./XLogoParser";
+import { ExprFuncTwoArgContext } from "./XLogoParser";
+import { ExprFuncOneArgContext } from "./XLogoParser";
+import { ExprFuncNoArgContext } from "./XLogoParser";
+import { ExprBOpAddContext } from "./XLogoParser";
+import { ExprBOpCompContext } from "./XLogoParser";
+import { ExprBOpEqContext } from "./XLogoParser";
+import { ExprBOpAndContext } from "./XLogoParser";
+import { ExprBOpOrContext } from "./XLogoParser";
+import { ProgContext } from "./XLogoParser";
+import { InputLinesContext } from "./XLogoParser";
+import { ProgramDeclarationContext } from "./XLogoParser";
+import { ParamListContext } from "./XLogoParser";
+import { StmtContext } from "./XLogoParser";
+import { StmtBlockContext } from "./XLogoParser";
+import { RepeatStmtContext } from "./XLogoParser";
+import { IfStmtContext } from "./XLogoParser";
+import { WhileStmtContext } from "./XLogoParser";
+import { MakeStmtContext } from "./XLogoParser";
+import { PrintStmtContext } from "./XLogoParser";
+import { ProgCallStmtContext } from "./XLogoParser";
+import { ExprContext } from "./XLogoParser";
+import { LiteralContext } from "./XLogoParser";
 
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced
- * by `xLogoParser`.
+ * by `XLogoParser`.
  *
  * @param <Result> The return type of the visit operation. Use `void` for
  * operations with no return type.
  */
-export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
+export interface XLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 	/**
 	 * Visit a parse tree produced by the `ExprLiteral`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -50,7 +50,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprColor`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -58,7 +58,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprInBrackets`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -66,7 +66,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprUnaryOp`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -74,7 +74,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprBOpMult`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -82,7 +82,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprFuncTwoArg`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -90,7 +90,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprFuncOneArg`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -98,7 +98,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprFuncNoArg`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -106,7 +106,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprBOpAdd`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -114,7 +114,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprBOpComp`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -122,7 +122,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprBOpEq`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -130,7 +130,7 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprBOpAnd`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -138,105 +138,105 @@ export interface xLogoVisitor<Result> extends ParseTreeVisitor<Result> {
 
 	/**
 	 * Visit a parse tree produced by the `ExprBOpOr`
-	 * labeled alternative in `xLogoParser.expr`.
+	 * labeled alternative in `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitExprBOpOr?: (ctx: ExprBOpOrContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.prog`.
+	 * Visit a parse tree produced by `XLogoParser.prog`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitProg?: (ctx: ProgContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.inputLines`.
+	 * Visit a parse tree produced by `XLogoParser.inputLines`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitInputLines?: (ctx: InputLinesContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.programDeclaration`.
+	 * Visit a parse tree produced by `XLogoParser.programDeclaration`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitProgramDeclaration?: (ctx: ProgramDeclarationContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.paramList`.
+	 * Visit a parse tree produced by `XLogoParser.paramList`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitParamList?: (ctx: ParamListContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.stmt`.
+	 * Visit a parse tree produced by `XLogoParser.stmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitStmt?: (ctx: StmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.stmtBlock`.
+	 * Visit a parse tree produced by `XLogoParser.stmtBlock`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitStmtBlock?: (ctx: StmtBlockContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.repeatStmt`.
+	 * Visit a parse tree produced by `XLogoParser.repeatStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitRepeatStmt?: (ctx: RepeatStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.ifStmt`.
+	 * Visit a parse tree produced by `XLogoParser.ifStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitIfStmt?: (ctx: IfStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.whileStmt`.
+	 * Visit a parse tree produced by `XLogoParser.whileStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitWhileStmt?: (ctx: WhileStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.makeStmt`.
+	 * Visit a parse tree produced by `XLogoParser.makeStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitMakeStmt?: (ctx: MakeStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.printStmt`.
+	 * Visit a parse tree produced by `XLogoParser.printStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitPrintStmt?: (ctx: PrintStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.progCallStmt`.
+	 * Visit a parse tree produced by `XLogoParser.progCallStmt`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitProgCallStmt?: (ctx: ProgCallStmtContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.expr`.
+	 * Visit a parse tree produced by `XLogoParser.expr`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitExpr?: (ctx: ExprContext) => Result;
 
 	/**
-	 * Visit a parse tree produced by `xLogoParser.literal`.
+	 * Visit a parse tree produced by `XLogoParser.literal`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */

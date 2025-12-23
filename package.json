@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "A Compiler and Renderer vor the Logo implementation of the XLogoOnline Website",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
-    "start": "npm run build && node dist/server.js"
+    "start": "npm run build && node dist/server.js",
+    "generateparser": "npx antlr4ts -visitor -o src/xlogo_Parser/Parser src/xLogo_Parser/Grammar/XLogo.g4"
   },
   "repository": {
     "type": "git",
@@ -20,11 +21,15 @@
   },
   "homepage": "https://github.com/AlexMarggraf/LogoCompiler#readme",
   "devDependencies": {
+    "@types/escodegen": "^0.0.10",
     "@types/node": "^25.0.3",
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "antlr4ts": "^0.5.0-alpha.4",
+    "antlr4ts-cli": "^0.5.0-alpha.4",
     "better-turtle": "^1.5.2",
-    "canvas": "^3.2.0"
+    "canvas": "^3.2.0",
+    "escodegen": "^2.1.0"
   }
 }
