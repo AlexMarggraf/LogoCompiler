@@ -69,9 +69,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitSeq(ast: Seq, args: number): BaseNode[] | Program {
     let body = this.visitChildren(ast, args + 1);
     if (!body) throw new Error("body undefined");
-    if (!Array.isArray(body)) {
-      body = [body]
-    }
     if (!isBody(body)) throw new Error("type error");
 
     if (args == 0) {
@@ -93,6 +90,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
 
   public visitMakeStmt(ast: MakeStmt, args: number): BaseNode {
+    // TODO how do we handle assignments before declaration? the implementation of xlogoonline doesn't care. 
     console.log(ast);
     assert(ast.declName instanceof VarDecl);
 

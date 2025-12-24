@@ -7,6 +7,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
+    "test": "node --test ./dist/tests/*.js",
     "generateparser": "npx antlr4ts -visitor -o src/xlogo_Parser/Parser src/xLogo_Parser/Grammar/XLogo.g4 && node scripts/parserPostProcess.js"
   },
   "repository": {
