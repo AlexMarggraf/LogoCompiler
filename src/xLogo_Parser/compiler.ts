@@ -1,6 +1,5 @@
-import { parseCode } from "./parser.js"
-import {generate} from "escodegen"
-import { parseModule, parseScript } from "esprima";
+import { parseCode } from "./parser.js";
+import {generate} from "escodegen";
 import {
   AST as XLogoAST,
   ProgDecl,
@@ -20,10 +19,10 @@ import {
 import {ASTVisitor} from './ASTVisitor.js';
 
 import assert from "assert";
-import { ArrowFunctionExpression, AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, CallExpression, ExpressionStatement, FunctionDeclaration, Identifier, Literal, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
+import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, CallExpression, ExpressionStatement, Identifier, Literal, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
 import { Program, BaseNode } from "estree";
 
-function compileCodeToAST(logocode: string): Program {
+export function compileCodeToAST(logocode: string): Program {
   const ast = parseCode(logocode.toLowerCase());
 
   //ast.accept(new DebugVisitor(), 0)
@@ -34,9 +33,9 @@ function compileCodeToAST(logocode: string): Program {
 export function compileCode(logocode: string): string {
   var code = generate(compileCodeToAST(logocode));
   code = `
-  const pi = 3.14159265358979323846264338327950288419716939937510582097;
-  const e = 2.718281828459045235360287471352662497757247093699959574966;
-  ` + code;
+const pi = 3.14159265358979323846264338327950288419716939937510582097;
+const e = 2.718281828459045235360287471352662497757247093699959574966;
+` + code;
   return code;
 }
 
@@ -85,7 +84,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
 
     if (args == 0) {
       console.log("visiting top level seq");
-      return new Script([new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(body), true), [])]) as Program;
+      return new Script([new ExpressionStatement(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(body), false), []))]) as Program;
     } else {
       // assumption: we are in progdeclaration
       console.log("visiting seq, not at top level");
@@ -107,7 +106,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitProgDecl(ast: ProgDecl, args: number): BaseNode {
     const statements = this.visitChildren(ast, args + 1)[0]; // TODO figure out why visitChildren gives back an array of array of object
     if (ast.name === "main") { // insert entrypoint into script. in code this would look like: (() => {...})()
-      return new CallExpression(new ArrowFunctionExpression([], new BlockStatement(statements), false), []);
+      return new ExpressionStatement(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(statements), false), []));
     }
     const funcname = funcNameMangle(ast.name);
     const params = ast.args.map((ast) => {return new Identifier(ast.name.slice(1));})
@@ -199,110 +198,3 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     return [];
   };
 }
-
-/*compileCode(`
-to main
-  fd 10
-  lt 90 bk 20
-  rt 270 fd 30
-  setpc red rt 90 fd 40
-  setsc black
-  wash
-  setpc [43 167 200] rt 90 fd 50
-  setsc [23 20 67]
-  # ignore this twin ✌️
-  setpw 5 rt 90 fd 60 setpw 1
-  pu rt 90 fd 70 pd
-  rt 90 fd 80 bk 40 pe fd 40 ppt
-  cs
-  setx -70
-  sety 70
-  home
-  setxy 70 70
-  setheading 180
-  fd random 90
-  rt 90 fd mod 1000 300
-  rt 90 fd power 2 7
-  rt 90 fd sqrt 14400
-  rt 90 fd log 1000
-  rt 90 fd abs -140
-  rt 90 fd 100 * sin 0.4
-  rt 90 fd 100 * cos 0.4
-  rt 90 fd 100 * tan 0.4
-  rt 90 fd 100 * arcsin 0.4
-  rt 90 fd 100 * arccos 0.4
-  rt 90 fd 100 * arctan 0.4
-  rt 90 fd 100 * PI
-  rt 90 fd 100 * E
-  print 67
-  print [yoplait]
-  ct
-  repeat 4 [fd 100 rt 90]
-  make "a 6
-  while[:a > 0][fd 30 rt 60 make :a :a - 1]
-  IF(:a >= 0)[rt 90 bk 100]
-  make :a 67
-  if(:a = 67)[rt 90 fd 50]
-  if(:a <= 67)[lt 90 fd 67][lt 90 bk 67]
-  repeat 5 [rt 72 fd 100 stop]
-  wait 100
-  rt 90 fd 100
-end
-  `)*/
-
-import { diff, applyChangeset } from 'json-diff-ts';
-import { DebugVisitor } from "./debug/debugVisitor.js";
-const reference = parseModule(`
-  funccall("string");
-`)
-console.log(JSON.stringify(reference, null, 2));
-
-const compiled = compileCodeToAST(`
-to coolfun :x
-  fd 10
-  lt 90 bk 20
-  rt 270 fd 30
-  #setpc red rt 90 fd 40
-  #setsc black
-  wash
-  #setpc [43 167 200] rt 90 fd 50
-  #setsc [23 20 67]
-  # ignore this twin ✌️
-  setpw 5 rt 90 fd 60 setpw 1
-  pu rt 90 fd 70 pd
-  rt 90 fd 80 bk 40 pe fd 40 ppt
-  cs
-  setx -70
-  sety 70
-  home
-  setxy 70 70
-  setheading 180
-  fd random 90
-  rt 90 fd mod 1000 300
-  rt 90 fd power 2 7
-  rt 90 fd sqrt 14400
-  rt 90 fd log 1000
-  rt 90 fd abs -140
-  rt 90 fd 100 * sin 0.4
-  rt 90 fd 100 * cos 0.4
-  rt 90 fd 100 * tan 0.4
-  rt 90 fd 100 * arcsin 0.4
-  rt 90 fd 100 * arccos 0.4
-  rt 90 fd 100 * arctan 0.4
-  rt 90 fd 100 * PI # TODO
-  rt 90 fd 100 * E # TODO
-  print 67
-  print [yoplait]
-  ct
-  make "a 6
-  make :a 67
-  wait 100
-  rt 90 fd 100
-  customfun 345
-end
-to customfun :x
-  print :x
-end`);
-
-//console.log(JSON.stringify(diff(compiled, reference), null, 2))
-console.log(generate(compiled))
