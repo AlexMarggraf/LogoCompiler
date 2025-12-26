@@ -155,6 +155,7 @@ export class CanvasActionSet implements ActionSet{
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
+<<<<<<< Updated upstream
   public setx(x: number) {
     this.turtleX = x;
   }
@@ -166,6 +167,19 @@ export class CanvasActionSet implements ActionSet{
   public setxy(x: number, y: number) {
     this.turtleX = x;
     this.turtleY = y;
+=======
+  public setX(x: number) {
+    this.turtleX = this.ctx.canvas.width/2 + x;
+  }
+
+  public setY(y: number) {
+    this.turtleY = this.ctx.canvas.height/2 + y;
+  }
+
+  public setXY(x: number, y: number) {
+    this.turtleX = this.ctx.canvas.width/2 + x;
+    this.turtleY = this.ctx.canvas.height/2 + y;
+>>>>>>> Stashed changes
   }
 
   public home() {
@@ -345,6 +359,7 @@ export class LogActionSet implements ActionSet{
     console.log('wash()');
   }
 
+<<<<<<< Updated upstream
   public setx(x: number) {
     this.turtleX = x;
     console.log(`setX(${x}), x = ${this.turtleX}`);
@@ -358,6 +373,21 @@ export class LogActionSet implements ActionSet{
   public setxy(x: number, y: number) {
     this.turtleX = x;
     this.turtleY = y;
+=======
+  public setX(x: number) {
+    this.turtleX = this.ctx.canvas.width/2 + x;
+    console.log(`setX(${x}), x = ${this.turtleX}`);
+  }
+
+  public setY(y: number) {
+    this.turtleY = this.ctx.canvas.height/2 + y;
+    console.log(`setY(${y}), y = ${this.turtleY}`);
+  }
+
+  public setXY(x: number, y: number) {
+    this.turtleX = this.ctx.canvas.height/2 + x;
+    this.turtleY = this.ctx.canvas.height/2 + y;
+>>>>>>> Stashed changes
     console.log(`setXY(${x}, ${y}), x = ${this.turtleX}, y = ${this.turtleY}`);
   }
 
