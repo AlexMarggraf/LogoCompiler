@@ -6,40 +6,33 @@ const ctx = canvas.getContext("2d");
 if (!ctx) throw new Error("No 2D context");
 const script: string = `
 (async () => {
-  act.fd(100);
-  act.cs();
 
-  act.setpw(3);
-  act.setpc("blue");
-
-  act.pu();
-  act.fd(100);
-  act.pd();
-
-  act.rt(90);
-  act.fd(100);
-  act.pe();
-  act.bk(50);
-  act.ppt();
+  let y = 0;
+  let iter = 0;
   
-  for(let i = 0; i < 6; i++) {
-    act.fd(30); 
-    act.rt(60);
+  function cube(){
+    for(let i = 4; i > 0; i--) {
+      act.fd(100);
+      act.rt(90);
+    }
   }
 
-  act.setheading(0);
-  act.fd(100);
+  while(true) {
+    act.wash();
 
-  await act.wait(1000);
-
-  act.setsc("green");
-
-  act.mod(10, 3);
-  act.mod(-10, 3);
-  act.mod(10, -3);
-  act.mod(-10, -3);
-
-  act.ct();
+    if(iter % 100 < 50) {
+    y += 2;
+    act.setY(y);
+    cube();
+    } else {
+      y -= 2;
+      act.setY(y);
+      cube();
+    }
+    
+    iter += 1;
+    await act.wait(50);
+  }
 })();
 `;
 

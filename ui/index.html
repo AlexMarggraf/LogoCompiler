@@ -5,7 +5,84 @@
     <title>Logo Compiler</title>
   </head>
   <body>
-    <canvas id="canvas" width="600" height="600"></canvas>
+    <div style="display: flex; padding-left: 40px; align-items: center">
+      <button class="button" id="render_button"> Click Me Twin </button>
+      <label class="button">
+        Select Me Twin
+        <input type="file" id="file_button" hidden>
+      </label>
+      <p class="filename"> Show What File Is Selected Twin </p>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <canvas class="canvas" id="canvas"></canvas>
+      <div class="container" id="compiled_field"></div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById('canvas');
+      const container = document.getElementById('compiled_field');
+
+      function size() {
+        canvas.width = window.innerWidth * 0.6;
+        container.style.width = window.innerWidth * 0.3 + "px";
+
+        canvas.height = window.innerHeight * 0.8;
+        container.style.height = window.innerHeight * 0.8 + "px";
+
+        canvas.r
+      }
+
+      window.addEventListener('resize', size);
+      size();
+    </script>
     <script type="module" src="/client.js"></script>
+
+    <style>
+      .button {
+        background-color: #1E1E1E;
+        color: #E0E0E0;
+        padding: 12px;
+        margin: 20px 10px 20px 10px;
+        border: 3px solid #2C2C2C;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        background-color: #343434;
+      }
+
+      .button:active {
+        transform: translateY(4px);
+      }
+
+      .container {
+        display: inline-block;
+        border: 3px solid #2C2C2C;
+        padding: 12px;
+        margin: 20px 10px 20px 10px;
+        border-radius: 4px;
+        background: #1E1E1E;
+        font-family: monospace;
+        overflow: auto;
+      }
+
+      .canvas{
+        display: inline-block;
+        border: 3px solid #2C2C2C;
+        padding: 12px;
+        margin: 20px 10px 20px 10px;
+        border-radius: 4px;
+      }
+
+      .filename{
+        color: #E0E0E0;
+        margin: 0px 0px 0px 10px;
+      }
+
+      body{
+        background-color: #121212;
+      }
+    </style>
   </body>
 </html>

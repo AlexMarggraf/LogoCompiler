@@ -63,9 +63,12 @@ export class CanvasActionSet implements ActionSet{
     this.turtleX = ctx.canvas.width/2;
     this.turtleY = ctx.canvas.height/2;
     this.turtleAngle = toRadians(270);
-    this.penColor = "black";
-    this.screenColor = "white"
+    this.penColor = "#E0E0E0";
+    this.screenColor = "#1E1E1E"
     this.penDown = true;
+
+    this.setpc("#E0E0E0");
+    this.setsc("#1E1E1E");
   }
 
   public fd(steps: number) {
@@ -111,8 +114,8 @@ export class CanvasActionSet implements ActionSet{
     this.turtleX = this.ctx.canvas.width/2;
     this.turtleY = this.ctx.canvas.height/2;
     this.turtleAngle = toRadians(270);
-    this.setpc("black");
-    this.setsc("white");
+    this.setpc("#E0E0E0");
+    this.setsc("#1E1E1E");
   }
 
   public setpc(color: string) {
@@ -144,6 +147,7 @@ export class CanvasActionSet implements ActionSet{
 
   public ppt() {
     this.ctx.globalCompositeOperation = "source-over";
+    this.setpc(this.penColor);
     this.ctx.lineWidth -= 1;
   }
 
@@ -251,9 +255,12 @@ export class LogActionSet implements ActionSet{
     this.turtleX = ctx.canvas.width/2;
     this.turtleY = ctx.canvas.height/2;
     this.turtleAngle = toRadians(270);
-    this.penColor = "black";
-    this.screenColor = "white"
+    this.penColor = "#E0E0E0";
+    this.screenColor = "#1E1E1E"
     this.penDown = true;
+
+    this.setpc("#E0E0E0");
+    this.setsc("#1E1E1E");
   }
 
   public fd(steps: number) {
@@ -290,8 +297,8 @@ export class LogActionSet implements ActionSet{
     this.turtleX = this.ctx.canvas.width/2;
     this.turtleY = this.ctx.canvas.height/2;
     this.turtleAngle = toRadians(270);
-    this.setpc("black");
-    this.setsc("white");
+    this.setpc("#E0E0E0");
+    this.setsc("#1E1E1E");
 
     console.log(`cs(), x = ${this.turtleX}, y = ${this.turtleY}, angle = ${(toDegrees(this.turtleAngle) - 270) % 360}, pen color = ${this.penColor}, screen color = ${this.screenColor}`);
   }
