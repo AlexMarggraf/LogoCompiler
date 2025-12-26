@@ -19,9 +19,9 @@ export interface ActionSet {
 
   wash(): void;
 
-  setX(x: number): void;
-  setY(y: number): void;
-  setXY(x: number, y: number): void;
+  setx(x: number): void;
+  sety(y: number): void;
+  setxy(x: number, y: number): void;
 
   home(): void;
   setheading(angle: number): void;
@@ -151,15 +151,15 @@ export class CanvasActionSet implements ActionSet{
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
-  public setX(x: number) {
+  public setx(x: number) {
     this.turtleX = x;
   }
 
-  public setY(y: number) {
+  public sety(y: number) {
     this.turtleY = y;
   }
 
-  public setXY(x: number, y: number) {
+  public setxy(x: number, y: number) {
     this.turtleX = x;
     this.turtleY = y;
   }
@@ -338,17 +338,17 @@ export class LogActionSet implements ActionSet{
     console.log('wash()');
   }
 
-  public setX(x: number) {
+  public setx(x: number) {
     this.turtleX = x;
     console.log(`setX(${x}), x = ${this.turtleX}`);
   }
 
-  public setY(y: number) {
+  public sety(y: number) {
     this.turtleY = y;
     console.log(`setY(${y}), y = ${this.turtleY}`);
   }
 
-  public setXY(x: number, y: number) {
+  public setxy(x: number, y: number) {
     this.turtleX = x;
     this.turtleY = y;
     console.log(`setXY(${x}, ${y}), x = ${this.turtleX}, y = ${this.turtleY}`);
