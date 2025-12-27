@@ -6,16 +6,22 @@
   </head>
   <body>
     <div style="display: flex; padding-left: 40px; align-items: center">
-      <button class="button" id="render_button"> Click Me Twin </button>
+      <button class="button" id="render_button">Run Code</button>
+      <button class="button" id="compile_button">Compile Code</button>
       <label class="button">
-        Select Me Twin
+        Open File
         <input type="file" id="file_button" hidden>
       </label>
-      <p class="filename"> Show What File Is Selected Twin </p>
+      <p class="filename" id="selectedfile"></p>
     </div>
     <div style="display: flex; justify-content: center">
-      <canvas class="canvas" id="canvas"></canvas>
-      <div class="container" id="compiled_field"></div>
+      <div>
+        <canvas class="canvas" id="canvas"></canvas>
+      </div>
+      <div>
+        <textarea class="container" id="source_field"></textarea>
+        <textarea class="container" id="compiled_field"></textarea>
+      </div>
     </div>
     <audio id="music" autoplay>
       <source src="music/game4.mp3" type="audio/mpeg">
@@ -23,62 +29,6 @@
     </audio>
     <!-- the following has to be added to make the escodegen dependency work in the browser -->
     <script src="deps/escodegen.browser.min.js"></script>
-    <script>
-      const playlist = [
-        "music/game4.mp3",
-        "music/game5.mp3",
-        "music/game6.mp3",
-        "music/game7.mp3",
-        "music/game8.mp3",
-        "music/game9.mp3",
-        "music/game10.mp3",
-        "music/game11.mp3",
-        "music/game12.mp3",
-        "music/game13.mp3",
-        "music/game.mp3",
-        "music/game2.mp3",
-        "music/game3.mp3"
-      ];
-
-      let current = 0;
-
-      const audio = document.getElementById('music');
-      audio.volume = 0.15;
-      audio.play();
-
-      const canvas = document.getElementById('canvas');
-      const container = document.getElementById('compiled_field');
-      const music = document.getElementById('music');
-
-      function size() {
-        canvas.width = window.innerWidth * 0.6;
-        container.style.width = window.innerWidth * 0.3 + "px";
-
-        canvas.height = window.innerHeight * 0.8;
-        container.style.height = window.innerHeight * 0.8 + "px";
-      }
-
-      function playAudioOnce() {
-        audio.play();
-        document.removeEventListener('click', playAudioOnce);
-      }
-
-      function nextSong() {
-        if (current < 12) {
-          current++;
-        } else {
-          current = 0;
-        }
-
-        audio.src = playlist[current];
-        audio.play();
-      }
-
-      document.addEventListener('click', playAudioOnce);
-      audio.addEventListener('ended', nextSong);
-      window.addEventListener('resize', size);
-      size();
-    </script>
     <script type="module" src="/out.js"></script>
 
     <style>
@@ -104,19 +54,24 @@
         display: inline-block;
         border: 3px solid #2C2C2C;
         padding: 12px;
-        margin: 20px 10px 20px 10px;
+        margin: 10px 10px 10px 10px;
         border-radius: 4px;
         background: #1E1E1E;
         font-family: monospace;
+        -webkit-text-fill-color: #E0E0E0;
         overflow: auto;
+        white-space-collapse: preserve;
+        resize: none;
+        caret-color: aqua;
       }
 
       .canvas{
         display: inline-block;
         border: 3px solid #2C2C2C;
         padding: 12px;
-        margin: 20px 10px 20px 10px;
+        margin: 10px 10px 10px 10px;
         border-radius: 4px;
+        resize: both;
       }
 
       .filename{
@@ -126,6 +81,7 @@
 
       body{
         background-color: #121212;
+        font-family: sans-serif;
       }
     </style>
   </body>
