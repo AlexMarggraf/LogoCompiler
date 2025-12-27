@@ -1,40 +1,20 @@
 import {CanvasActionSet, LogActionSet} from "./ActionSet.js";
+import { compileCode } from "./xLogo_Parser/compiler.js";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
 
 if (!ctx) throw new Error("No 2D context");
-const script: string = `
-(async () => {
-
-  let y = 0;
-  let iter = 0;
-  
-  function cube(){
-    for(let i = 4; i > 0; i--) {
-      act.fd(100);
-      act.rt(90);
-    }
-  }
-
-  while(true) {
-    act.wash();
-
-    if(iter % 50 < 25) {
-    y += 10;
-    act.sety(y);
-    cube();
-    } else {
-      y -= 10;
-      act.sety(y);
-      cube();
-    }
-    
-    iter += 1;
-    await act.wait(50);
-  }
-})();
-`;
+const script = compileCode("to main \n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "end");
 
 const act = new CanvasActionSet(ctx);
-eval(script);
+(new Function("act",script))(act);

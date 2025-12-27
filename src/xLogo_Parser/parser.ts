@@ -1,4 +1,4 @@
-import { CharStreams, CommonTokenStream }  from 'antlr4ts';
+import { CharStream, CommonTokenStream }  from 'antlr4ng';
 import { XLogoLexer } from './parser/XLogoLexer.js';
 import { ExprBOpAddContext, ExprBOpAndContext, ExprBOpCompContext, ExprBOpEqContext, ExprBOpMultContext, ExprBOpOrContext, ExprColorContext, ExprContext, ExprFuncNoArgContext, ExprFuncOneArgContext, ExprFuncTwoArgContext, ExprInBracketsContext, ExprLiteralContext, ExprUnaryOpContext, IfStmtContext, InputLinesContext, LiteralContext, MakeStmtContext, ParamListContext, PrintStmtContext, ProgCallStmtContext, ProgContext, ProgramDeclarationContext, RepeatStmtContext, StmtBlockContext, StmtContext, WhileStmtContext, XLogoParser } from './parser/XLogoParser.js';
 import { AstTranslatorVisitor } from './ASTTranslator.js';
@@ -6,7 +6,7 @@ import { DebugVisitor } from './debug/debugVisitor.js';
 import { AST } from './ir/ast.js';
 
 export function parseCode(logocode: string, debug: boolean =false): AST {
-  const chars = CharStreams.fromString(logocode); // replace this with a FileStream as required
+  const chars = CharStream.fromString(logocode); // replace this with a FileStream as required
   const lexer = new XLogoLexer(chars);
   const tokens = new CommonTokenStream(lexer);
   const parser = new XLogoParser(tokens);
@@ -21,7 +21,7 @@ export function parseCode(logocode: string, debug: boolean =false): AST {
   return a;
 }
 
-if (process.argv[1] === import.meta.filename) {
+/*if (process.argv[1] === import.meta.filename) {
   const input = `
 to prog1 :x :y
   print :x + 2
@@ -36,4 +36,4 @@ to prog2 :x :y
   ]
 end`;
   parseCode(input, true);
-}
+}*/

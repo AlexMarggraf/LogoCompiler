@@ -18,7 +18,7 @@ import {
   BoolConst,
   ColorConst,
   VarDecl,
-} from './ir/ast';
+} from './ir/ast.js';
 
 export abstract class ASTVisitor<Args, Result> {
   public visit(ast: AST, args: Args): Result {

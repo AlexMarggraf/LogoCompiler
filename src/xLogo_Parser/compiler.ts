@@ -1,5 +1,4 @@
 import { parseCode } from "./parser.js";
-import {generate} from "escodegen";
 import {
   AST as XLogoAST,
   ProgDecl,
@@ -18,9 +17,19 @@ import {
 } from './ir/ast.js';
 import {ASTVisitor} from './ASTVisitor.js';
 
-import assert from "assert";
-import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, CallExpression, ExpressionStatement, Identifier, Literal, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
+import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, CallExpression, ExpressionStatement, Identifier, Literal, Module, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
 import { Program, BaseNode } from "estree";
+
+function assert(cond: any, msg: string | undefined =undefined) {
+  if (!msg) {
+    msg = "";
+  } else {
+    msg = ": " + msg;
+  }
+  if (!cond) {
+    throw new Error("Assertion Error" + msg);
+  }
+}
 
 export function compileCodeToAST(logocode: string): Program {
   const ast = parseCode(logocode.toLowerCase());
@@ -29,14 +38,6 @@ export function compileCodeToAST(logocode: string): Program {
   const esast = ast.accept(new CompilerVisitor(), 0);
   //console.log(JSON.stringify(esast, null, 2));
   return esast;
-}
-export function compileCode(logocode: string): string {
-  var code = generate(compileCodeToAST(logocode));
-  code = `
-const pi = 3.14159265358979323846264338327950288419716939937510582097;
-const e = 2.718281828459045235360287471352662497757247093699959574966;
-` + code;
-  return code;
 }
 
 function isBody(body: any): body is Array<BaseNode> {
@@ -197,4 +198,27 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   protected defaultResult(): BaseNode[] {
     return [];
   };
+}
+
+declare namespace escodegen {
+  function generate(s: Script | Module): string;
+}
+
+// some goofy shenanigans to make this work in the browser. 
+let lib: any;
+if (typeof escodegen === "undefined") {
+  lib = await import("escodegen");
+} else {
+  lib = escodegen;
+}
+
+export function compileCode(logocode: string): string {
+  const ast =  compileCodeToAST(logocode);
+  console.log(ast)
+  let code = lib.generate(ast);
+  code = `
+const pi = 2.14159265358979323846264338327950288419716939937510582097;
+const e = 1.718281828459045235360287471352662497757247093699959574966;
+` + code;
+  return code;
 }

@@ -1,4 +1,4 @@
-import { XLogoVisitor } from './parser/XLogoVisitor.js';
+import {XLogoVisitor} from './parser/XLogoVisitor.js';
 import {
   AST,
   ProgDecl,
@@ -49,37 +49,38 @@ import {
 } from './parser/XLogoParser.js';
 
 import {
+  AbstractParseTreeVisitor,
+  TerminalNode,
   Token,
   ParserRuleContext,
-} from 'antlr4ts';
-import {AbstractParseTreeVisitor} from 'antlr4ts/tree/AbstractParseTreeVisitor.js';
+  ParseTree,
+} from 'antlr4ng';
 import {getBuiltInCommandStructure} from './ir/builtInCommands.js';
-import { TerminalNode } from 'antlr4ts/tree/TerminalNode.js';
 
 export class AstTranslatorVisitor
   extends AbstractParseTreeVisitor<AST>
   implements XLogoVisitor<AST>
 {
   private static getRangeFromContext(ctx: ParserRuleContext) {
-    if (!ctx.stop) throw Error("bruh3");
+    if (!ctx.start || !ctx.stop) throw new Error("context not defined properly");
     return new Range(
-      ctx.start.startIndex,
+      ctx.start.start,
       ctx.start.line,
-      ctx.start.charPositionInLine,
-      ctx.stop.stopIndex,
+      ctx.start.column,
+      ctx.stop.stop,
       ctx.stop.line,
-      ctx.stop.charPositionInLine + (ctx.stop.stopIndex - ctx.stop.startIndex) + 1,
+      ctx.stop.column + (ctx.stop.stop - ctx.stop.start) + 1,
     );
   }
 
   private getRangeFromToken(token: Token) {
     return new Range(
-      token.startIndex,
+      token.start,
       token.line,
-      token.charPositionInLine,
-      token.stopIndex,
+      token.column,
+      token.stop,
       token.line,
-      token.charPositionInLine + 1 + (token.stopIndex - token.startIndex),
+      token.column + 1 + (token.stop - token.start),
     );
   }
 
@@ -109,7 +110,7 @@ export class AstTranslatorVisitor
     const decls: AST[] = [];
     ctx.programDeclaration().forEach((decl) => {
       try {
-        const prog = this.visit(decl) as ProgDecl;
+        const prog = this.visit(decl as unknown as ParseTree) as ProgDecl;
         if (prog.name && !this.programBlackList.includes(prog.name)) {
           decls.push(prog);
         }
@@ -162,6 +163,7 @@ export class AstTranslatorVisitor
       });
     }
 
+    if (!ctx.start) throw new Error("ctx.start not defined");
     return new ProgDecl(
       AstTranslatorVisitor.getRangeFromContext(ctx),
       ctx.start.inputStream,
@@ -178,7 +180,8 @@ export class AstTranslatorVisitor
       args.push(this.visit(item) as Expr);
     });
     const callRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
-    const builtin = getBuiltInCommandStructure(ctx.Identifier().text);
+    const builtin = getBuiltInCommandStructure(ctx.Identifier().getText());
+    if (!ctx.start) throw new Error("ctx.start not defined");
     if (builtin) {
       return new BuiltInCommand(
         callRange,
@@ -205,8 +208,9 @@ export class AstTranslatorVisitor
       varToken = ctx.Variable();
     }
     if (!varToken) {
-      throw new Error("bruh");
+      throw new Error("varToken not defined");
     }
+    if (!ctx.start) throw new Error("ctx.start not defined");
     return new MakeStmt(
       AstTranslatorVisitor.getRangeFromContext(ctx),
       ctx.start.inputStream,
@@ -225,6 +229,7 @@ export class AstTranslatorVisitor
   public visitPrintStmt(ctx: PrintStmtContext): AST {
     const cur = ctx.expr();
     const printRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
+    if (!ctx.start) throw new Error("ctx.start not defined");
     if (cur) {
       const value = this.visit(cur) as Expr;
       return new PrintStmt(
@@ -238,8 +243,8 @@ export class AstTranslatorVisitor
     // We have to skip the token 'print' and '['. That's why we start counting at 2
     // We also do not include the last token since that would be the ']' token
     let printString = '';
-    for (let i = 2; i < ctx.childCount - 1; i++) {
-      printString += ctx.getChild(i).text + ' ';
+    for (let i = 2; i < ctx.getChildCount() - 1; i++) {
+      printString += ctx.getChild(i)?.getText() + ' ';
       // TODO: Either make here better or change lexer to only provide one token
     }
 
@@ -255,6 +260,7 @@ export class AstTranslatorVisitor
   public visitRepeatStmt(ctx: RepeatStmtContext): AST {
     const repeatCount = this.visit(ctx.expr()) as Expr;
     const stmtBlock = this.visit(ctx.stmtBlock()) as Seq;
+    if (!ctx.start) throw new Error("ctx.start not defined");
 
     return new RepeatStmt(
       AstTranslatorVisitor.getRangeFromContext(ctx),
@@ -274,6 +280,7 @@ export class AstTranslatorVisitor
     if (blocks.length === 2) {
       elseBlock = this.visit(blocks[1]) as Seq;
     }
+    if (!ctx.start) throw new Error("ctx.start not defined");
     return new IfElseStmt(
       AstTranslatorVisitor.getRangeFromContext(ctx),
       ctx.start.inputStream,
@@ -289,6 +296,7 @@ export class AstTranslatorVisitor
     const condition = this.visit(ctx.expr()) as Expr;
     const whileBlock = this.visit(ctx.stmtBlock()) as Seq;
 
+    if (!ctx.start) throw new Error("ctx.start not defined");
     return new WhileStmt(
       AstTranslatorVisitor.getRangeFromContext(ctx),
       ctx.start.inputStream,
@@ -312,10 +320,13 @@ export class AstTranslatorVisitor
   // -------------------
 
   public visitExprColor(ctx: ExprColorContext): AST {
-    const red = this.visit(ctx.expr(0)) as Expr;
-    const green = this.visit(ctx.expr(1)) as Expr;
-    const blue = this.visit(ctx.expr(2)) as Expr;
+    const e0 = ctx.expr(0), e1 = ctx.expr(1), e2 = ctx.expr(2);
+    if (!e0 || !e1 || !e2) throw new Error("ctx.expr not defined everywhere");
+    const red = this.visit(e0) as Expr;
+    const green = this.visit(e1) as Expr;
+    const blue = this.visit(e2) as Expr;
 
+    if (!ctx.start) throw new Error("ctx.start not defined");
     return new ColorExpr(
       AstTranslatorVisitor.getRangeFromContext(ctx),
       ctx.start.inputStream,
@@ -336,6 +347,7 @@ export class AstTranslatorVisitor
     const operator = ctx.getChild(0);
     const uOpRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
     if (operator instanceof TerminalNode) {
+      if (!ctx.start) throw new Error("ctx.start not defined");
       var text = ctx.start.text;
       if (!text) throw new Error("bruh2");
       return new UnaryOpExpr(
@@ -352,8 +364,10 @@ export class AstTranslatorVisitor
   }
 
   public visitExprBOpMult(ctx: ExprBOpMultContext): AST {
-    const left = this.visit(ctx.expr(0)) as Expr;
-    const right = this.visit(ctx.expr(1)) as Expr;
+    const e0 = ctx.expr(0), e1 = ctx.expr(1);
+    if (!e0 || !e1) throw new Error("ctx.expr not defined everywhere");
+    const left = this.visit(e0) as Expr;
+    const right = this.visit(e1) as Expr;
     const bOpRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
     const operator = ctx.getChild(1);
     if (operator instanceof TerminalNode) {
@@ -375,8 +389,10 @@ export class AstTranslatorVisitor
   }
 
   public visitExprBOpAdd(ctx: ExprBOpAddContext): AST {
-    const left = this.visit(ctx.expr(0)) as Expr;
-    const right = this.visit(ctx.expr(1)) as Expr;
+    const e0 = ctx.expr(0), e1 = ctx.expr(1);
+    if (!e0 || !e1) throw new Error("ctx.expr not defined everywhere");
+    const left = this.visit(e0) as Expr;
+    const right = this.visit(e1) as Expr;
     const bOpRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
     const operator = ctx.getChild(1);
     if (operator instanceof TerminalNode) {
@@ -398,8 +414,10 @@ export class AstTranslatorVisitor
   }
 
   public visitExprBOpComp(ctx: ExprBOpCompContext): AST {
-    const left = this.visit(ctx.expr(0)) as Expr;
-    const right = this.visit(ctx.expr(1)) as Expr;
+    const e0 = ctx.expr(0), e1 = ctx.expr(1);
+    if (!e0 || !e1) throw new Error("ctx.expr not defined everywhere");
+    const left = this.visit(e0) as Expr;
+    const right = this.visit(e1) as Expr;
     const bOpRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
     const operator = ctx.getChild(1);
     if (operator instanceof TerminalNode) {
@@ -421,8 +439,10 @@ export class AstTranslatorVisitor
   }
 
   public visitExprBOpEq(ctx: ExprBOpEqContext): AST {
-    const left = this.visit(ctx.expr(0)) as Expr;
-    const right = this.visit(ctx.expr(1)) as Expr;
+    const e0 = ctx.expr(0), e1 = ctx.expr(1);
+    if (!e0 || !e1) throw new Error("ctx.expr not defined everywhere");
+    const left = this.visit(e0) as Expr;
+    const right = this.visit(e1) as Expr;
     const bOpRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
     const operator = ctx.getChild(1);
     if (operator instanceof TerminalNode) {
@@ -444,8 +464,10 @@ export class AstTranslatorVisitor
   }
 
   public visitExprBOpAnd(ctx: ExprBOpAndContext): AST {
-    const left = this.visit(ctx.expr(0)) as Expr;
-    const right = this.visit(ctx.expr(1)) as Expr;
+    const e0 = ctx.expr(0), e1 = ctx.expr(1);
+    if (!e0 || !e1) throw new Error("ctx.expr not defined everywhere");
+    const left = this.visit(e0) as Expr;
+    const right = this.visit(e1) as Expr;
     const bOpRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
     const operator = ctx.getChild(1);
     if (operator instanceof TerminalNode) {
@@ -467,8 +489,10 @@ export class AstTranslatorVisitor
   }
 
   public visitExprBOpOr(ctx: ExprBOpOrContext): AST {
-    const left = this.visit(ctx.expr(0)) as Expr;
-    const right = this.visit(ctx.expr(1)) as Expr;
+    const e0 = ctx.expr(0), e1 = ctx.expr(1);
+    if (!e0 || !e1) throw new Error("ctx.expr not defined everywhere");
+    const left = this.visit(e0) as Expr;
+    const right = this.visit(e1) as Expr;
     const bOpRange: Range = AstTranslatorVisitor.getRangeFromContext(ctx);
     const operator = ctx.getChild(1);
     if (operator instanceof TerminalNode) {
@@ -510,6 +534,7 @@ export class AstTranslatorVisitor
   }
 
   public visitExprFuncOneArg(ctx: ExprFuncOneArgContext): AST {
+    if (!ctx.start) throw new Error("ctx.start not defined");
     if (!ctx.start.text) {
       throw Error('Token for FuncNoArg has no text.');
     }
@@ -528,6 +553,7 @@ export class AstTranslatorVisitor
   }
 
   public visitExprFuncNoArg(ctx: ExprFuncNoArgContext): AST {
+    if (!ctx.start) throw new Error("ctx.start not defined");
     if (!ctx.start.text) {
       throw Error('Token for FuncNoArg has no text.');
     }
@@ -545,6 +571,7 @@ export class AstTranslatorVisitor
   }
 
   public visitLiteral(ctx: LiteralContext): AST {
+    if (!ctx.start) throw new Error("ctx.start not defined");
     if (!ctx.start.text) {
       throw Error('Token for literal has no text.');
     }

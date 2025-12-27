@@ -1,4 +1,4 @@
-import {Token, CharStream} from 'antlr4ts';
+import {Token, CharStream} from 'antlr4ng';
 import {ASTVisitor} from '../ASTVisitor.js';
 import {BuiltInCommandStructure, DefinedBuiltIns} from './builtInCommands.js';
 import {Color} from './color.js';
@@ -17,12 +17,12 @@ export class Range {
 
 function getRangeFromToken(token: Token) {
   return new Range(
-    token.startIndex,
+    token.start,
     token.line,
-    token.charPositionInLine,
-    token.stopIndex,
+    token.column,
+    token.stop,
     token.line,
-    token.charPositionInLine + 1 + (token.stopIndex - token.startIndex),
+    token.column + 1 + (token.stop - token.start),
   );
 }
 

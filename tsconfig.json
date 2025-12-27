@@ -3,16 +3,17 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "module": "es2020",
+    "module": "es2022",
     "moduleResolution": "node",
     "target": "ES2022",
-    "lib": ["dom", "es2020"],
+    "lib": ["dom", "es2022"],
 
     "types": ["node"],
 
     "sourceMap": true,
 
     "strict": true,
+    "strictNullChecks": false,
     "esModuleInterop": true,
     "skipLibCheck": false
   }

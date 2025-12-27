@@ -54,57 +54,24 @@ end
 import { diff, applyChangeset } from 'json-diff-ts';
 import { DebugVisitor } from "./debug/debugVisitor.js";
 import { compileCodeToAST } from "./compiler.js";
+import { compileCode } from "./compiler.js";
 const reference = parseModule(`
   funccall("string");
 `)
 //console.log(JSON.stringify(reference, null, 2));
 
-const compiled = compileCodeToAST(`
-to coolfun :x
-  fd 10
-  lt 90 bk 20
-  rt 270 fd 30
-  #setpc red rt 90 fd 40
-  #setsc black
-  wash
-  #setpc [43 167 200] rt 90 fd 50
-  #setsc [23 20 67]
-  # ignore this twin ✌️
-  setpw 5 rt 90 fd 60 setpw 1
-  pu rt 90 fd 70 pd
-  rt 90 fd 80 bk 40 pe fd 40 ppt
-  cs
-  setx -70
-  sety 70
-  home
-  setxy 70 70
-  setheading 180
-  fd random 90
-  rt 90 fd mod 1000 300
-  rt 90 fd power 2 7
-  rt 90 fd sqrt 14400
-  rt 90 fd log 1000
-  rt 90 fd abs -140
-  rt 90 fd 100 * sin 0.4
-  rt 90 fd 100 * cos 0.4
-  rt 90 fd 100 * tan 0.4
-  rt 90 fd 100 * arcsin 0.4
-  rt 90 fd 100 * arccos 0.4
-  rt 90 fd 100 * arctan 0.4
-  rt 90 fd 100 * PI # TODO
-  rt 90 fd 100 * E # TODO
-  print 67
-  print [yoplait]
-  ct
-  make "a 6
-  make :a 67
-  wait 100
-  rt 90 fd 100
-  customfun 345
-end
-to customfun :x
-  print :x
-end`);
+const code = "to main \n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "  fd 100\n" +
+  "  rt 90\n" +
+  "end";
+const compiled = compileCodeToAST(code);
 
 console.log(JSON.stringify(diff(compiled, reference), null, 2))
 console.log(generate(compiled))
+console.log(compileCode(code))
