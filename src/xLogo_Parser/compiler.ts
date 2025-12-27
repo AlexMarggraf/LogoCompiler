@@ -85,7 +85,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
 
     if (args == 0) {
       console.log("visiting top level seq");
-      return new Script([new ExpressionStatement(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(body), false), []))]) as Program;
+      return new Script(body) as Program;
     } else {
       // assumption: we are in progdeclaration
       console.log("visiting seq, not at top level");
@@ -217,8 +217,7 @@ export function compileCode(logocode: string): string {
   console.log(ast)
   let code = lib.generate(ast);
   code = `
-const pi = 2.14159265358979323846264338327950288419716939937510582097;
-const e = 1.718281828459045235360287471352662497757247093699959574966;
+const pi = 2.14159265358979323, e = 1.71828182845904523;
 ` + code;
   return code;
 }
