@@ -34,6 +34,29 @@ const server = http.createServer((req, res) => {
     res.end(js);
     return;
   }
+
+  if (url.endsWith(".mp3")) {
+    const filePath = path.join(__dirname, url.slice(1));
+
+    if (!fs.existsSync(filePath)) {
+      res.writeHead(404);
+      res.end("Not found");
+      return;
+    }
+
+    const stat = fs.statSync(filePath);
+    res.writeHead(200, {
+      "Content-Type": "audio/mpeg",
+      "Content-Length": stat.size,
+    });
+    const readStream = fs.createReadStream(filePath);
+    readStream.pipe(res);
+    return;
+  }
+
+  // 404 fallback
+  res.writeHead(404);
+  res.end("Not found");
 });
 
 server.listen(3000, () => {

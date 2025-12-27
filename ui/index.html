@@ -17,10 +17,37 @@
       <canvas class="canvas" id="canvas"></canvas>
       <div class="container" id="compiled_field"></div>
     </div>
+    <audio id="music" autoplay>
+      <source src="music/game4.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
 
     <script>
+      const playlist = [
+        "music/game4.mp3",
+        "music/game5.mp3",
+        "music/game6.mp3",
+        "music/game7.mp3",
+        "music/game8.mp3",
+        "music/game9.mp3",
+        "music/game10.mp3",
+        "music/game11.mp3",
+        "music/game12.mp3",
+        "music/game13.mp3",
+        "music/game.mp3",
+        "music/game2.mp3",
+        "music/game3.mp3"
+      ];
+
+      let current = 0;
+
+      const audio = document.getElementById('music');
+      audio.volume = 0.15;
+      audio.play();
+
       const canvas = document.getElementById('canvas');
       const container = document.getElementById('compiled_field');
+      const music = document.getElementById('music');
 
       function size() {
         canvas.width = window.innerWidth * 0.6;
@@ -28,10 +55,26 @@
 
         canvas.height = window.innerHeight * 0.8;
         container.style.height = window.innerHeight * 0.8 + "px";
-
-        canvas.r
       }
 
+      function playAudioOnce() {
+        audio.play();
+        document.removeEventListener('click', playAudioOnce);
+      }
+
+      function nextSong() {
+        if (current < 12) {
+          current++;
+        } else {
+          current = 0;
+        }
+
+        audio.src = playlist[current];
+        audio.play();
+      }
+
+      document.addEventListener('click', playAudioOnce);
+      audio.addEventListener('ended', nextSong);
       window.addEventListener('resize', size);
       size();
     </script>

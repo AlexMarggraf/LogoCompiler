@@ -20,13 +20,13 @@ const script: string = `
   while(true) {
     act.wash();
 
-    if(iter % 100 < 50) {
-    y += 2;
-    act.setY(y);
+    if(iter % 50 < 25) {
+    y += 10;
+    act.sety(y);
     cube();
     } else {
-      y -= 2;
-      act.setY(y);
+      y -= 10;
+      act.sety(y);
       cube();
     }
     

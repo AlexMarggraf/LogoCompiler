@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npx tsc",
+    "build": "npx tsc && cpy music/*.mp3 dist/music/",
     "start": "node dist/server.js",
     "test": "node --test ./dist/tests/*.js",
     "generateparser": "npx antlr4ts -visitor -o src/xlogo_Parser/Parser src/xLogo_Parser/Grammar/XLogo.g4 && node scripts/parserPostProcess.js"
@@ -25,6 +25,7 @@
     "@types/escodegen": "^0.0.10",
     "@types/esprima": "^4.0.6",
     "@types/node": "^25.0.3",
+    "cpy-cli": "^6.0.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {

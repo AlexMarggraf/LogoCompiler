@@ -156,16 +156,16 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public setx(x: number) {
-    this.turtleX = this.ctx.canvas.width/2 + x;
+    this.turtleX = this.ctx.canvas.width/2 - x;
   }
 
   public sety(y: number) {
-    this.turtleY = this.ctx.canvas.height/2 + y;
+    this.turtleY = this.ctx.canvas.height/2 - y;
   }
 
   public setxy(x: number, y: number) {
-    this.turtleX = this.ctx.canvas.width/2 + x;
-    this.turtleY = this.ctx.canvas.height/2 + y;
+    this.turtleX = this.ctx.canvas.width/2 - x;
+    this.turtleY = this.ctx.canvas.height/2 - y;
   }
 
   public home() {
@@ -346,18 +346,18 @@ export class LogActionSet implements ActionSet{
   }
 
   public setx(x: number) {
-    this.turtleX = this.ctx.canvas.width/2 + x;
+    this.turtleX = this.ctx.canvas.width/2 - x;
     console.log(`setX(${x}), x = ${this.turtleX}`);
   }
 
   public sety(y: number) {
-    this.turtleY = this.ctx.canvas.height/2 + y;
+    this.turtleY = this.ctx.canvas.height/2 - y;
     console.log(`setY(${y}), y = ${this.turtleY}`);
   }
 
   public setxy(x: number, y: number) {
-    this.turtleX = this.ctx.canvas.height/2 + x;
-    this.turtleY = this.ctx.canvas.height/2 + y;
+    this.turtleX = this.ctx.canvas.height/2 - x;
+    this.turtleY = this.ctx.canvas.height/2 - y;
     console.log(`setXY(${x}, ${y}), x = ${this.turtleX}, y = ${this.turtleY}`);
   }
 
