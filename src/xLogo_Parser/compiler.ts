@@ -14,6 +14,8 @@ import {
   Seq,
   MakeStmt,
   VarDecl,
+  ColorConst,
+  ColorExpr,
 } from './ir/ast.js';
 import {ASTVisitor} from './ASTVisitor.js';
 
@@ -56,6 +58,11 @@ function varNameMangle(name: string): string {
 
 function funcNameMangle(name: string): string {
   return "" + name;
+}
+
+function toHex(c: number): string {
+  const hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
 }
 
 function generateActionSetCall(callname: string, args: any[]): BaseNode {
@@ -140,7 +147,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       const callArgs = this.visitChildren(ast, args + 1);
       return generateActionSetCall(ast.name, callArgs);
     } else if (consts.includes(ast.name)) {
-      return new Identifier(ast.name);
+      return new Identifier("_" + ast.name);
     } else {
       throw new Error("should not be reached!")
     }
@@ -194,6 +201,20 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     return new Identifier(varNameMangle(varname));
   }
 
+  public visitColorConst(ast: ColorConst, args: number) {
+    const colorStr = "#" + toHex(ast.color.red) + toHex(ast.color.green) + toHex(ast.color.blue);
+    return new Literal(colorStr, "\"" + colorStr + "\"");
+  }
+
+  public visitColorExpr(ast: ColorExpr, args: number) {
+    // TODO this at the moment only handles constants. Should be extended to handle expressions as well
+    console.log(ast);
+    const colorStr = "#" + ast.rwChildren.map((e) => {
+      return toHex((e as NumberConst).valueAsNumber);
+    }).join("");
+    return new Literal(colorStr, "\"" + colorStr + "\"");
+  }
+
   // ASTVisitor requires a defaultResult method to be implemented. However, CompilerVisitor doesn't need it.
   protected defaultResult(): BaseNode[] {
     return [];
@@ -217,7 +238,7 @@ export function compileCode(logocode: string): string {
   console.log(ast)
   let code = lib.generate(ast);
   code = `
-const pi = 2.14159265358979323, e = 1.71828182845904523;
+const _pi = 2.14159265358979323, _e = 1.71828182845904523;
 ` + code;
   return code;
 }
