@@ -5,12 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npx tsc && cpy music/*.mp3 dist/music/ && cpy deps/* dist/deps/ && esbuild dist/client.js --bundle --outfile=dist/out.js --format=esm --target=esnext --log-limit=0",
-    "esbuild": "esbuild dist/client.js --bundle --outfile=dist/out.js --format=esm --target=esnext --log-limit=0 --watch",
-    "dev": "concurrently \"npm run esbuild\" \"tsc -w\"",
+    "build": "npx tsc && cpy music/*.mp3 dist/music/ && cpy deps/* dist/deps/ && npm run esbuild",
+    "esbuild": "esbuild dist/client.js --bundle --outfile=dist/out.js --format=esm --target=esnext --log-limit=0",
+    "dev": "concurrently \"npm run esbuild -- --watch\" \"tsc -w\"",
     "start": "node dist/server.js",
     "test": "node --test ./dist/tests/*.js",
-    "generateparser": "npx antlr4ng --generate-visitor -o src/xlogo_Parser/Parser src/xLogo_Parser/Grammar/XLogo.g4 && node scripts/parserPostProcess.js",
     "generate-parser": "antlr-ng --define language=TypeScript --generate-listener --generate-visitor --output-directory ./src/xLogo_parser/parser src/xLogo_parser/grammar/XLogo.g4"
   },
   "repository": {
