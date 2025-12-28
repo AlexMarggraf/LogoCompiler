@@ -16,10 +16,13 @@ import {
   VarDecl,
   ColorConst,
   ColorExpr,
+  RepeatStmt,
+  WhileStmt,
+  IfElseStmt,
 } from './ir/ast.js';
 import {ASTVisitor} from './ASTVisitor.js';
 
-import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, CallExpression, ExpressionStatement, Identifier, Literal, Module, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator } from "./esnodes.js";
+import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, BreakStatement, CallExpression, ExpressionStatement, ForStatement, Identifier, IfStatement, Literal, Module, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator, WhileStatement } from "./esnodes.js";
 import { Program, BaseNode } from "estree";
 
 function assert(cond: any, msg: string | undefined =undefined) {
@@ -31,6 +34,12 @@ function assert(cond: any, msg: string | undefined =undefined) {
   if (!cond) {
     throw new Error("Assertion Error" + msg);
   }
+}
+
+let currLiteral = 0;
+function nextIdentifier(): string {
+  currLiteral++;
+  return "_" + currLiteral;
 }
 
 export function compileCodeToAST(logocode: string): Program {
@@ -75,6 +84,7 @@ function generateActionSetCall(callname: string, args: any[]): BaseNode {
 
 export class CompilerVisitor extends ASTVisitor<number, any> {
   public defaultNode(ast: XLogoAST, args: number): BaseNode {
+    console.log(ast)
     throw new Error("not implemented yet!")
   }
 
@@ -108,6 +118,9 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitBuiltInCommand(ast: BuiltInCommand, args: number) {
     //console.log("in visitBuiltinCommand\n", ast)
     const callArgs = this.visitChildren(ast, args + 1);
+    if (ast.commandName == "stop") {
+      return new BreakStatement(null);
+    }
     return generateActionSetCall(ast.commandName, callArgs);
   }
 
@@ -172,8 +185,12 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitBinaryOpExpr(ast: BinaryOpExpr, args: number): BaseNode {
     const opArgs = this.visitChildren(ast, args + 1);
     assert(opArgs.length == 2);
-    if (["+", "-", "*", "/", "%"].includes(ast.operator)) {
-      return new BinaryExpression(ast.operator, opArgs[0], opArgs[1]);
+    let op: string = ast.operator;
+    if (["+", "-", "*", "/", "%", "<", ">", "<=", ">=", "=", "!=", "&&", "||"].includes(op)) {
+      if (op === "=") {
+        op = "==";
+      }
+      return new BinaryExpression(op, opArgs[0], opArgs[1]);
     } else {
       throw new Error("not implemented yet!");
     }
@@ -208,11 +225,39 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
 
   public visitColorExpr(ast: ColorExpr, args: number) {
     // TODO this at the moment only handles constants. Should be extended to handle expressions as well
-    console.log(ast);
     const colorStr = "#" + ast.rwChildren.map((e) => {
       return toHex((e as NumberConst).valueAsNumber);
     }).join("");
     return new Literal(colorStr, "\"" + colorStr + "\"");
+  }
+
+  public visitRepeatStmt(ast: RepeatStmt, args: number) {
+    const [num, body] = this.visitChildren(ast, args + 1);
+    const runningVar = new Identifier(nextIdentifier());
+    return new ForStatement(
+      new VariableDeclaration([new VariableDeclarator(runningVar, new Literal(0, "0"))], "let"), 
+      new BinaryExpression("<", runningVar, num), 
+      new UnaryExpression("++", runningVar), 
+      new BlockStatement(body));
+    throw new Error("not implemented yet!");
+  }
+  
+  public visitWhileStmt(ast: WhileStmt, args: number) {
+    const [test, body] = this.visitChildren(ast, args + 1);
+    return new WhileStatement(test, new BlockStatement(body));
+  }
+
+  public visitIfElseStmt(ast: IfElseStmt, args: number) {
+    let [test, body, orelse] = this.visitChildren(ast, args + 1);
+    if (orelse) {
+      orelse = new BlockStatement(orelse);
+    }
+    return new IfStatement(test, new BlockStatement(body), orelse);
+  }
+
+  public visitBoolConst(ast: BoolConst, args: number) {
+    const bool = ast.valueAsBool;
+    return new Literal(bool, bool ? "true" : "false");
   }
 
   // ASTVisitor requires a defaultResult method to be implemented. However, CompilerVisitor doesn't need it.
