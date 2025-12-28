@@ -7,6 +7,7 @@ export interface ActionSet {
 
   cs(): void;
 
+  // TODO convert color strings to arrays ([number, number, number]) or an object
   setpc(color: string): void;
   setsc(color: string): void;
   setpw(width: number): void;
@@ -26,6 +27,7 @@ export interface ActionSet {
   home(): void;
   setheading(angle: number): void;
 
+  // TODO remove math functions (shall be hardcoded into compiled code)
   random(max: number): number | void;
   mod(a: number, b: number): number | void;
   power(a: number, b: number): number | void;

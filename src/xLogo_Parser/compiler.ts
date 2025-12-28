@@ -24,52 +24,47 @@ import {ASTVisitor} from './ASTVisitor.js';
 
 import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, BreakStatement, CallExpression, ExpressionStatement, ForStatement, Identifier, IfStatement, Literal, Module, ReturnStatement, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator, WhileStatement } from "./esnodes.js";
 import { Program, BaseNode } from "estree";
+import { ActionSet } from "../ActionSet.js";
 
-function assert(cond: any, msg: string | undefined =undefined) {
-  if (!msg) {
-    msg = "";
-  } else {
-    msg = ": " + msg;
-  }
-  if (!cond) {
-    throw new Error("Assertion Error" + msg);
-  }
+// some goofy shenanigans to make this work in the browser. 
+declare namespace escodegen {
+  function generate(s: Script | Module): string;
+}
+let lib: any;
+if (typeof escodegen === "undefined") {
+  lib = await import("escodegen");
+} else {
+  lib = escodegen;
 }
 
+export function compileCode(logocode: string): string {
+  const ast = compileCodeToAST(logocode);
+  console.log(ast)
+  const code = lib.generate(ast);
+  return code;
+}
+
+// TODO extend this with definitions of functions _random, _mod, etc.
+const prefix = `const _pi = 2.14159265358979323, _e = 1.71828182845904523;`
+
+// TODO test this function
+export function runnableFromCode(script: string): (act: ActionSet, runid: number | undefined) => Promise<void> {
+  return new Function("act", "_runid", 
+    prefix + `return new Promise (async (_resolve) => {` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid: number | undefined) => Promise<void>;
+}
 
 export function compileCodeToAST(logocode: string): Program {
   const ast = parseCode(logocode.toLowerCase());
 
   //ast.accept(new DebugVisitor(), 0)
   const esast = ast.accept(new CompilerVisitor(), 0);
-  //console.log(JSON.stringify(esast, null, 2));
   return esast;
 }
 
-function isBody(body: any): body is Array<BaseNode> {
-  if (!Array.isArray(body)) return false;
-  for (const element of body) {
-    // TODO implement this correctly if there is time/necessity
-    if (element.type === undefined) 
-      return false;
-  }
-  return true;
-}
-
-function varNameMangle(name: string): string {
-  return "" + name;
-}
-
-function funcNameMangle(name: string): string {
-  return "" + name;
-}
-
-function toHex(c: number): string {
-  const hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
-}
-
 function generateActionSetCall(callname: string, args: any[]): BaseNode {
+  // act.<callname>(<args>); <-- currently implemented
+  // vs.
+  // act["<callname>"](<args>);
   const res = new CallExpression(new StaticMemberExpression(new Identifier("act"), new Identifier(callname)), args);
   if (callname === "wait") {
     return new AwaitExpression(res);
@@ -110,6 +105,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       });
     }
   }
+
   public visitBuiltInCommand(ast: BuiltInCommand, args: number) {
     //console.log("in visitBuiltinCommand\n", ast)
     const callArgs = this.visitChildren(ast, args + 1) as any[];
@@ -122,8 +118,9 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     }
     if (ast.commandName == "wait") {
       return new BlockStatement(
-        [new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("act"), new Identifier("runid"))), new ReturnStatement(null), null),
-        generateActionSetCall(ast.commandName, callArgs)]
+        // TODO experiment with this
+        [generateActionSetCall(ast.commandName, callArgs), 
+          new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("act"), new Identifier("runid"))), new ReturnStatement(null), null)]
       )
     }
     return generateActionSetCall(ast.commandName, callArgs);
@@ -135,7 +132,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       return new ExpressionStatement(new AwaitExpression(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(statements), false), [])));
     }
     const funcname = funcNameMangle(ast.name);
-    const params = ast.args.map((ast) => {return new Identifier(ast.name.slice(1));})
+    const params = ast.args.map((arg) => {return new Identifier(arg.name.slice(1));})
     return new AsyncFunctionDeclaration(new Identifier(funcname), params, new BlockStatement(statements));
   }
 
@@ -159,6 +156,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
 
   public visitFuncExpr(ast: FuncExpr, args: number): BaseNode {
+    // TODO change this to use functions _random, _mod, etc.
     const actionsetfuncs = ["random", "mod", "power", "sqrt", "log", "abs", "sin", "cos", "tan", "arcsin", "arccos", "arctan"]
     const consts = ["pi", "e"];
     if (actionsetfuncs.includes(ast.name)) {
@@ -244,7 +242,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       new BinaryExpression("<", runningVar, num), 
       new UnaryExpression("++", runningVar), 
       new BlockStatement(body));
-    throw new Error("not implemented yet!");
   }
   
   public visitWhileStmt(ast: WhileStmt, args: number) {
@@ -277,24 +274,40 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   };
 }
 
-declare namespace escodegen {
-  function generate(s: Script | Module): string;
+function isBody(body: any): body is Array<BaseNode> {
+  if (!Array.isArray(body)) return false;
+  for (const element of body) {
+    // TODO implement this correctly if there is time/necessity
+    if (element.type === undefined) 
+      return false;
+  }
+  return true;
 }
 
-// some goofy shenanigans to make this work in the browser. 
-let lib: any;
-if (typeof escodegen === "undefined") {
-  lib = await import("escodegen");
-} else {
-  lib = escodegen;
+// At the moment these name mangling functions are just identity 
+//   but they could become useful when dealing with name collisions. 
+function varNameMangle(name: string): string {
+  return "" + name;
 }
 
-export function compileCode(logocode: string): string {
-  const ast =  compileCodeToAST(logocode);
-  console.log(ast)
-  let code = lib.generate(ast);
-  code = `
-const _pi = 2.14159265358979323, _e = 1.71828182845904523;
-` + code;
-  return code;
+function funcNameMangle(name: string): string {
+  return "" + name;
+}
+
+// Convert number (integer from 0 to 255) to 0 padded hex string. 
+// TODO insert check to ensure the number is in this range.
+function toHex(c: number): string {
+  const hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function assert(cond: any, msg: string | undefined =undefined) {
+  if (!msg) {
+    msg = "";
+  } else {
+    msg = ": " + msg;
+  }
+  if (!cond) {
+    throw new Error("Assertion Error" + msg);
+  }
 }

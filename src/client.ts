@@ -1,5 +1,5 @@
 import {CanvasActionSet, LogActionSet} from "./ActionSet.js";
-import { compileCode } from "./xLogo_Parser/compiler.js";
+import { compileCode, runnableFromCode } from "./xLogo_Parser/compiler.js";
 // const playlist = [
 //   "music/game4.mp3",
 //   "music/game5.mp3",
@@ -56,7 +56,6 @@ const act = new CanvasActionSet(ctx);
 let runningCode: Promise<void> | undefined = undefined;
 act.runid = 0;
 if (!ctx) throw new Error("No 2D context");
-let ac = new AbortController();
 runButton.addEventListener("click", runCode);
 compileButton.addEventListener("click", compileSource);
 
@@ -102,13 +101,12 @@ function size() {
 async function runCode() {
   let script = compiledContainer.value;
   act.runid++
-  //(new Function("act", script.split("\n").join(`if (act.runid != ${act.runid}) return;\n`)))(act);
   if (runningCode) {
-    console.log("awaiting promise");
+    console.log("awaiting promise with runid:", act.runid - 1);
+    console.log(runningCode);
     await runningCode;
   }
-  console.log("starting new execution");
-  runningCode = (new Function("act", "_runid", `return new Promise (async (_resolve) => {` + script + ` console.log("promise fulfilled"); _resolve();});`))(act, act.runid);
-
+  console.log("starting new promise with runid:", act.runid);
+  runningCode = (runnableFromCode(script)(act, act.runid));
 }
 

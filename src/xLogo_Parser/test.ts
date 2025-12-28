@@ -51,27 +51,15 @@ to main
 end
   `)*/
 
-import { diff, applyChangeset } from 'json-diff-ts';
+import { diff } from 'json-diff-ts';
 import { DebugVisitor } from "./debug/debugVisitor.js";
 import { compileCodeToAST } from "./compiler.js";
 import { compileCode } from "./compiler.js";
 const reference = parseModule(`
-  funccall("string");
+  {
+    let a = 10;
+  }
 `)
-//console.log(JSON.stringify(reference, null, 2));
+console.log(JSON.stringify(reference, null, 2));
+console.log(generate(reference));
 
-const code = "to main \n" +
-  "  fd 100\n" +
-  "  rt 90\n" +
-  "  fd 100\n" +
-  "  rt 90\n" +
-  "  fd 100\n" +
-  "  rt 90\n" +
-  "  fd 100\n" +
-  "  rt 90\n" +
-  "end";
-const compiled = compileCodeToAST(code);
-
-console.log(JSON.stringify(diff(compiled, reference), null, 2))
-console.log(generate(compiled))
-console.log(compileCode(code))
