@@ -43,7 +43,7 @@ export interface ActionSet {
 
   print(content: number | string): void;
   ct(): void;
-  wait(ms: number): Promise<void> | void;
+  wait(centiseconds: number): Promise<void> | void;
 }
 
 export class CanvasActionSet implements ActionSet{
@@ -233,8 +233,8 @@ export class CanvasActionSet implements ActionSet{
     console.clear();
   }
 
-  public wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  public wait(centiseconds: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, centiseconds * 10));
   }
 };
 
@@ -428,8 +428,8 @@ export class LogActionSet implements ActionSet{
     console.log('ct()');
   }
 
-  public wait(ms: number) {
-    console.log(`wait(${ms})`);
+  public wait(centiseconds: number) {
+    console.log(`wait(${centiseconds})`);
   }
 };
 
