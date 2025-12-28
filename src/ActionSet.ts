@@ -47,6 +47,7 @@ export interface ActionSet {
 }
 
 export class CanvasActionSet implements ActionSet{
+  public runid: number;
   private ctx: CanvasRenderingContext2D;
   private turtleX: number;
   private turtleY: number;

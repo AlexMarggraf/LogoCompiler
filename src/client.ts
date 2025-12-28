@@ -52,7 +52,11 @@ fileinput.addEventListener("input", filenameChanged);
 window.addEventListener('resize', size);
 size();
 const ctx = canvas.getContext("2d");
+const act = new CanvasActionSet(ctx);
+let runningCode: Promise<void> | undefined = undefined;
+act.runid = 0;
 if (!ctx) throw new Error("No 2D context");
+let ac = new AbortController();
 runButton.addEventListener("click", runCode);
 compileButton.addEventListener("click", compileSource);
 
@@ -95,21 +99,16 @@ function size() {
   compiledContainer.style.height = (canvasHeight / 2 - 25) + "px";
 }
 
-function runCode() {
+async function runCode() {
   let script = compiledContainer.value;
-  if (script === "") {
-    script = compileCode("to main \n" +
-      "  fd 100\n" +
-      "  rt 90\n" +
-      "  fd 100\n" +
-      "  rt 90\n" +
-      "  fd 100\n" +
-      "  rt 90\n" +
-      "  fd 100\n" +
-      "  rt 90\n" +
-      "end");
+  act.runid++
+  //(new Function("act", script.split("\n").join(`if (act.runid != ${act.runid}) return;\n`)))(act);
+  if (runningCode) {
+    console.log("awaiting promise");
+    await runningCode;
   }
-  const act = new CanvasActionSet(ctx);
-  (new Function("act", script))(act);
+  console.log("starting new execution");
+  runningCode = (new Function("act", "_runid", `return new Promise (async (_resolve) => {` + script + ` console.log("promise fulfilled"); _resolve();});`))(act, act.runid);
+
 }
 

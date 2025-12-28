@@ -22,7 +22,7 @@ import {
 } from './ir/ast.js';
 import {ASTVisitor} from './ASTVisitor.js';
 
-import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, BreakStatement, CallExpression, ExpressionStatement, ForStatement, Identifier, IfStatement, Literal, Module, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator, WhileStatement } from "./esnodes.js";
+import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, BreakStatement, CallExpression, ExpressionStatement, ForStatement, Identifier, IfStatement, Literal, Module, ReturnStatement, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator, WhileStatement } from "./esnodes.js";
 import { Program, BaseNode } from "estree";
 
 function assert(cond: any, msg: string | undefined =undefined) {
@@ -36,11 +36,6 @@ function assert(cond: any, msg: string | undefined =undefined) {
   }
 }
 
-let currLiteral = 0;
-function nextIdentifier(): string {
-  currLiteral++;
-  return "_" + currLiteral;
-}
 
 export function compileCodeToAST(logocode: string): Program {
   const ast = parseCode(logocode.toLowerCase());
@@ -108,7 +103,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       console.log("visiting seq, not at top level");
       // we have to convert expressions to statements
       return body.map((exp) => {
-        if (exp.type == "VariableDeclaration") {
+        if (exp.type == "VariableDeclaration" || exp.type == "ExpressionStatement" || exp.type == "BlockStatement") {
           return exp;
         }
         return new ExpressionStatement(exp)
@@ -117,9 +112,19 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
   public visitBuiltInCommand(ast: BuiltInCommand, args: number) {
     //console.log("in visitBuiltinCommand\n", ast)
-    const callArgs = this.visitChildren(ast, args + 1);
+    const callArgs = this.visitChildren(ast, args + 1) as any[];
     if (ast.commandName == "stop") {
+      console.log("args", args)
+      if (args == 3) { // in a program declaration (which is at level 3) a stop has the meaning of a return statement.
+        return new ReturnStatement(null);
+      }
       return new BreakStatement(null);
+    }
+    if (ast.commandName == "wait") {
+      return new BlockStatement(
+        [new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("act"), new Identifier("runid"))), new ReturnStatement(null), null),
+        generateActionSetCall(ast.commandName, callArgs)]
+      )
     }
     return generateActionSetCall(ast.commandName, callArgs);
   }
@@ -127,7 +132,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitProgDecl(ast: ProgDecl, args: number): BaseNode {
     const statements = this.visitChildren(ast, args + 1)[0]; // TODO figure out why visitChildren gives back an array of array of object
     if (ast.name === "main") { // insert entrypoint into script. in code this would look like: (() => {...})()
-      return new ExpressionStatement(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(statements), false), []));
+      return new ExpressionStatement(new AwaitExpression(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(statements), false), [])));
     }
     const funcname = funcNameMangle(ast.name);
     const params = ast.args.map((ast) => {return new Identifier(ast.name.slice(1));})
@@ -233,7 +238,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
 
   public visitRepeatStmt(ast: RepeatStmt, args: number) {
     const [num, body] = this.visitChildren(ast, args + 1);
-    const runningVar = new Identifier(nextIdentifier());
+    const runningVar = new Identifier(this.nextIdentifier());
     return new ForStatement(
       new VariableDeclaration([new VariableDeclarator(runningVar, new Literal(0, "0"))], "let"), 
       new BinaryExpression("<", runningVar, num), 
@@ -258,6 +263,12 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitBoolConst(ast: BoolConst, args: number) {
     const bool = ast.valueAsBool;
     return new Literal(bool, bool ? "true" : "false");
+  }
+
+  private currLiteral: number = 0;
+  private nextIdentifier(): string {
+    this.currLiteral++;
+    return "_" + this.currLiteral;
   }
 
   // ASTVisitor requires a defaultResult method to be implemented. However, CompilerVisitor doesn't need it.
