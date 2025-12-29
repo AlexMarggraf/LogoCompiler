@@ -19,7 +19,7 @@ const playlist = [
 let current = 0;
 
 const audio = document.getElementById('music') as HTMLAudioElement;
-audio.volume = 0.2;
+audio.volume = 0;
 audio.play();
 
 function playAudioOnce() {
