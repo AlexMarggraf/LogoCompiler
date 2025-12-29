@@ -8,8 +8,8 @@ export interface ActionSet {
   cs(): void;
 
   // TODO convert color strings to arrays ([number, number, number]) or an object
-  setpc(color: string): void;
-  setsc(color: string): void;
+  setpc(color: [number, number, number]): void;
+  setsc(color: [number, number, number]): void;
   setpw(width: number): void;
 
   pu(): void;
@@ -54,8 +54,8 @@ export class CanvasActionSet implements ActionSet{
   private turtleX: number;
   private turtleY: number;
   private turtleAngle: number;
-  private penColor: string;
-  private screenColor: string;
+  private penColor: [number, number, number];
+  private screenColor: [number, number, number];
   private penDown: boolean;
 
   static readonly PI: number = Math.PI;
@@ -65,18 +65,18 @@ export class CanvasActionSet implements ActionSet{
     this.ctx = ctx
     this.turtleX = ctx.canvas.width/2;
     this.turtleY = ctx.canvas.height/2;
-    this.turtleAngle = toRadians(270);
-    this.penColor = "#E0E0E0";
-    this.screenColor = "#1E1E1E"
+    this.turtleAngle = 270;
+    this.penColor = [224, 224, 224];
+    this.screenColor = [30, 30, 30];
     this.penDown = true;
 
-    this.setpc("#E0E0E0");
-    this.setsc("#1E1E1E");
+    this.setpc([224, 224, 224]);
+    this.setsc([30, 30, 30]);
   }
 
   public fd(steps: number) {
-    const newX: number = this.turtleX + steps*Math.cos(this.turtleAngle)
-    const newY: number = this.turtleY + steps*Math.sin(this.turtleAngle)
+    const newX: number = this.turtleX + steps*Math.cos(toRadians(this.turtleAngle));
+    const newY: number = this.turtleY + steps*Math.sin(toRadians(this.turtleAngle));
 
     if (this.penDown) {
         this.ctx.beginPath();
@@ -90,8 +90,8 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public bk(steps: number) {
-    const newX: number = this.turtleX - steps*Math.cos(this.turtleAngle)
-    const newY: number = this.turtleY - steps*Math.sin(this.turtleAngle)
+    const newX: number = this.turtleX - steps*Math.cos(toRadians(this.turtleAngle));
+    const newY: number = this.turtleY - steps*Math.sin(toRadians(this.turtleAngle));
 
     if (this.penDown) {
         this.ctx.beginPath();
@@ -105,30 +105,30 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public rt(angle: number) {
-    this.turtleAngle += toRadians(angle)
+    this.turtleAngle = (this.turtleAngle + angle) % 360
   }
 
   public lt(angle: number) {
-    this.turtleAngle -= toRadians(angle)
+    this.turtleAngle = (this.turtleAngle - angle) % 360
   }
 
   public cs() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.turtleX = this.ctx.canvas.width/2;
     this.turtleY = this.ctx.canvas.height/2;
-    this.turtleAngle = toRadians(270);
-    this.setpc("#E0E0E0");
-    this.setsc("#1E1E1E");
+    this.turtleAngle = 270;
+    this.setpc([224, 224, 224]);
+    this.setsc([30, 30, 30]);
   }
 
-  public setpc(color: string) {
+  public setpc(color: [number, number, number]) {
     this.penColor = color;
-    this.ctx.strokeStyle = color;
+    this.ctx.strokeStyle = `rgb(${color.join(", ")})`;
   }
 
-  public setsc(color: string) {
+  public setsc(color: [number, number, number]) {
     this.screenColor = color;
-    this.ctx.canvas.style.backgroundColor = color;
+    this.ctx.canvas.style.backgroundColor = `rgb(${color.join(", ")})`;
   }
 
   public setpw(width: number) {
@@ -159,7 +159,7 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public setx(x: number) {
-    this.turtleX = this.ctx.canvas.width/2 - x;
+    this.turtleX = this.ctx.canvas.width/2 + x;
   }
 
   public sety(y: number) {
@@ -167,17 +167,18 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public setxy(x: number, y: number) {
-    this.turtleX = this.ctx.canvas.width/2 - x;
+    this.turtleX = this.ctx.canvas.width/2 + x;
     this.turtleY = this.ctx.canvas.height/2 - y;
   }
 
   public home() {
-    this.turtleX = 0;
-    this.turtleY = 0;
+    this.turtleAngle = 270;
+    this.turtleX = this.ctx.canvas.width/2;
+    this.turtleY = this.ctx.canvas.height/2;
   }
 
   public setheading(angle: number) {
-    this.turtleAngle = toRadians(270 + angle);
+    this.turtleAngle = (270 + angle) % 360;
   }
 
   public random(max: number): number {
@@ -193,6 +194,7 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public sqrt(a: number): number {
+    console.log(Math.sqrt(a));
     return Math.sqrt(a);
   }
 
@@ -205,27 +207,27 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public sin(a: number): number {
-    return Math.sin(toRadians(a));
+    return Math.sin(a);
   }
 
   public cos(a: number): number {
-    return Math.cos(toRadians(a));
+    return Math.cos(a);
   }
 
   public tan(a: number): number {
-    return Math.tan(toRadians(a));
+    return Math.tan(a);
   }
 
   public arcsin(a: number): number {
-    return Math.asin(toRadians(a));
+    return Math.asin(a);
   }
 
   public arccos(a: number): number {
-    return Math.acos(toRadians(a));
+    return Math.acos(a);
   }
 
   public arctan(a: number): number {
-    return Math.atan(toRadians(a));
+    return Math.atan(a);
   }
 
   public print(content: number | string){
@@ -242,12 +244,13 @@ export class CanvasActionSet implements ActionSet{
 };
 
 export class LogActionSet implements ActionSet{
+  public runid: number;
   private ctx: CanvasRenderingContext2D;
   private turtleX: number;
   private turtleY: number;
   private turtleAngle: number;
-  private penColor: string;
-  private screenColor: string;
+  private penColor: [number, number, number];
+  private screenColor: [number, number, number];
   private penDown: boolean;
 
   static readonly PI: number = Math.PI;
@@ -257,18 +260,18 @@ export class LogActionSet implements ActionSet{
     this.ctx = ctx;
     this.turtleX = ctx.canvas.width/2;
     this.turtleY = ctx.canvas.height/2;
-    this.turtleAngle = toRadians(270);
-    this.penColor = "#E0E0E0";
-    this.screenColor = "#1E1E1E"
+    this.turtleAngle = 270;
+    this.penColor = [224, 224, 224];
+    this.screenColor = [30, 30, 30]
     this.penDown = true;
 
-    this.setpc("#E0E0E0");
-    this.setsc("#1E1E1E");
+    this.setpc([224, 224, 224]);
+    this.setsc([30, 30, 30]);
   }
 
   public fd(steps: number) {
-    const newX: number = this.turtleX + steps*Math.cos(this.turtleAngle)
-    const newY: number = this.turtleY + steps*Math.sin(this.turtleAngle)
+    const newX: number = this.turtleX + steps*Math.cos(toRadians(this.turtleAngle));
+    const newY: number = this.turtleY + steps*Math.sin(toRadians(this.turtleAngle));
 
     this.turtleX = newX;
     this.turtleY = newY;
@@ -277,8 +280,8 @@ export class LogActionSet implements ActionSet{
   }
 
   public bk(steps: number) {
-    const newX: number = this.turtleX - steps*Math.cos(this.turtleAngle)
-    const newY: number = this.turtleY - steps*Math.sin(this.turtleAngle)
+    const newX: number = this.turtleX - steps*Math.cos(toRadians(this.turtleAngle));
+    const newY: number = this.turtleY - steps*Math.sin(toRadians(this.turtleAngle));
 
     this.turtleX = newX;
     this.turtleY = newY;
@@ -287,31 +290,31 @@ export class LogActionSet implements ActionSet{
   }
 
   public rt(angle: number) {
-    this.turtleAngle += toRadians(angle)
-    console.log(`rt(${angle}), angle = ${(toDegrees(this.turtleAngle) - 270) % 360}`);
+    this.turtleAngle = (this.turtleAngle + angle) % 360
+    console.log(`rt(${angle}), angle = ${this.turtleAngle}`);
   }
 
   public lt(angle: number) {
-    this.turtleAngle -= toRadians(angle)
-    console.log(`rt(${angle}), angle = ${(toDegrees(this.turtleAngle) - 270) % 360}`);
+    this.turtleAngle = (this.turtleAngle - angle) % 360
+    console.log(`rt(${angle}), angle = ${this.turtleAngle}`);
   }
 
   public cs() {
     this.turtleX = this.ctx.canvas.width/2;
     this.turtleY = this.ctx.canvas.height/2;
-    this.turtleAngle = toRadians(270);
-    this.setpc("#E0E0E0");
-    this.setsc("#1E1E1E");
+    this.turtleAngle = 270;
+    this.setpc([224, 224, 224]);
+    this.setsc([30, 30, 30]);
 
-    console.log(`cs(), x = ${this.turtleX}, y = ${this.turtleY}, angle = ${(toDegrees(this.turtleAngle) - 270) % 360}, pen color = ${this.penColor}, screen color = ${this.screenColor}`);
+    console.log(`cs(), x = ${this.turtleX}, y = ${this.turtleY}, angle = ${this.turtleAngle}, pen color = ${this.penColor}, screen color = ${this.screenColor}`);
   }
 
-  public setpc(color: string) {
+  public setpc(color: [number, number, number]) {
     this.penColor = color;
     console.log(`setpc(${color}), pen color = ${this.penColor}`);
   }
 
-  public setsc(color: string) {
+  public setsc(color: [number, number, number]) {
     this.screenColor = color;
     console.log(`setsc(${color}), screen color = ${this.screenColor}`);
   }
@@ -349,7 +352,7 @@ export class LogActionSet implements ActionSet{
   }
 
   public setx(x: number) {
-    this.turtleX = this.ctx.canvas.width/2 - x;
+    this.turtleX = this.ctx.canvas.width/2 + x;
     console.log(`setX(${x}), x = ${this.turtleX}`);
   }
 
@@ -359,20 +362,21 @@ export class LogActionSet implements ActionSet{
   }
 
   public setxy(x: number, y: number) {
-    this.turtleX = this.ctx.canvas.height/2 - x;
+    this.turtleX = this.ctx.canvas.height/2 + x;
     this.turtleY = this.ctx.canvas.height/2 - y;
     console.log(`setXY(${x}, ${y}), x = ${this.turtleX}, y = ${this.turtleY}`);
   }
 
   public home() {
-    this.turtleX = 0;
-    this.turtleY = 0;
+    this.turtleAngle = 270;
+    this.turtleX = this.ctx.canvas.width/2;
+    this.turtleY = this.ctx.canvas.height/2;
     console.log(`home(), x = ${this.turtleX}, y = ${this.turtleY}`);
   }
 
   public setheading(angle: number) {
-    this.turtleAngle = toRadians(270 + angle);
-    console.log(`setheading(${angle}), angle = ${(toDegrees(this.turtleAngle) - 270) % 360}`);
+    this.turtleAngle = (270 + angle) % 360;
+    console.log(`setheading(${angle}), angle = ${this.turtleAngle}`);
   }
 
   public random(max: number) {
@@ -400,27 +404,27 @@ export class LogActionSet implements ActionSet{
   }
 
   public sin(a: number) {
-    console.log(`sin(${a}), result = ${Math.sin(toRadians(a))}`);
+    console.log(`sin(${a}), result = ${Math.sin(a)}`);
   }
 
   public cos(a: number) {
-    console.log(`cos(${a}), result = ${Math.cos(toRadians(a))}`);
+    console.log(`cos(${a}), result = ${Math.cos(a)}`);
   }
 
   public tan(a: number) {
-    console.log(`tan(${a}), result = ${Math.tan(toRadians(a))}`);
+    console.log(`tan(${a}), result = ${Math.tan(a)}`);
   }
 
   public arcsin(a: number) {
-    console.log(`arcsin(${a}), result = ${Math.asin(toRadians(a))}`);
+    console.log(`arcsin(${a}), result = ${Math.asin(a)}`);
   }
 
   public arccos(a: number) {
-    console.log(`arccos(${a}), result = ${Math.acos(toRadians(a))}`);
+    console.log(`arccos(${a}), result = ${Math.acos(a)}`);
   }
 
   public arctan(a: number) {
-    console.log(`arctan(${a}), result = ${Math.atan(toRadians(a))}`);
+    console.log(`arctan(${a}), result = ${Math.atan(a)}`);
   }
 
   public print(content: number | string){

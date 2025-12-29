@@ -22,7 +22,31 @@ import {
 } from './ir/ast.js';
 import {ASTVisitor} from './ASTVisitor.js';
 
-import { AssignmentExpression, AsyncArrowFunctionExpression, AsyncFunctionDeclaration, AwaitExpression, BinaryExpression, BlockStatement, BreakStatement, CallExpression, ExpressionStatement, ForStatement, Identifier, IfStatement, Literal, Module, ReturnStatement, Script, StaticMemberExpression, UnaryExpression, VariableDeclaration, VariableDeclarator, WhileStatement } from "./esnodes.js";
+import {
+  ArrayExpression,
+  AssignmentExpression,
+  AsyncArrowFunctionExpression,
+  AsyncFunctionDeclaration,
+  AwaitExpression,
+  BinaryExpression,
+  BlockStatement,
+  BreakStatement,
+  CallExpression,
+  ExpressionStatement,
+  ForStatement,
+  Identifier,
+  IfStatement,
+  Literal,
+  Module,
+  ReturnStatement,
+  Script,
+  StaticMemberExpression,
+  UnaryExpression,
+  VariableDeclaration,
+  VariableDeclarator,
+  WhileStatement
+} from "./esnodes.js";
+
 import { Program, BaseNode } from "estree";
 import { ActionSet } from "../ActionSet.js";
 
@@ -45,15 +69,18 @@ export function compileCode(logocode: string): string {
 }
 
 // TODO extend this with definitions of functions _random, _mod, etc.
-const prefix = `const _pi = 2.14159265358979323, _e = 1.71828182845904523;`
+const prefix = `const _pi = 3.14159265358979323, _e = 1.71828182845904523;`
 
 // TODO test this function
 export function runnableFromCode(script: string): (act: ActionSet, runid: number | undefined) => Promise<void> {
   return new Function("act", "_runid", 
-    prefix + `return new Promise (async (_resolve) => {` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid: number | undefined) => Promise<void>;
+    prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid: number | undefined) => Promise<void>;
 }
 
 export function compileCodeToAST(logocode: string): Program {
+  // What is this??? Is this allowed???????
+  const logoCodeArray = logocode.split("main");
+  logocode = logoCodeArray[0] + "main\n  cs" + logoCodeArray.slice(1).join("");
   const ast = parseCode(logocode.toLowerCase());
 
   //ast.accept(new DebugVisitor(), 0)
@@ -222,16 +249,18 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
 
   public visitColorConst(ast: ColorConst, args: number) {
-    const colorStr = "#" + toHex(ast.color.red) + toHex(ast.color.green) + toHex(ast.color.blue);
-    return new Literal(colorStr, "\"" + colorStr + "\"");
+    return new ArrayExpression([new Literal(ast.color.red.valueOf(), ast.color.red.toString()),
+      new Literal(ast.color.green.valueOf(), ast.color.green.toString()),
+      new Literal(ast.color.blue.valueOf(), ast.color.blue.toString())
+    ]);
   }
 
   public visitColorExpr(ast: ColorExpr, args: number) {
     // TODO this at the moment only handles constants. Should be extended to handle expressions as well
-    const colorStr = "#" + ast.rwChildren.map((e) => {
-      return toHex((e as NumberConst).valueAsNumber);
-    }).join("");
-    return new Literal(colorStr, "\"" + colorStr + "\"");
+    // Ts is probably not what twin wanted fr ong ☠️. Mostly i dont know what expressions can show up here but if you do setpc [...] its literal nodes so ts works fine for now.
+    console.log(ast.rwChildren);
+    const colorArray = this.visitChildren(ast, args + 1);
+    return new ArrayExpression(colorArray);
   }
 
   public visitRepeatStmt(ast: RepeatStmt, args: number) {
