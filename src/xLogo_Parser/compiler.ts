@@ -69,7 +69,20 @@ export function compileCode(logocode: string): string {
 }
 
 // TODO extend this with definitions of functions _random, _mod, etc.
-const prefix = `const _pi = 3.14159265358979323, _e = 1.71828182845904523;`
+const prefix = `const _pi = Math.PI, _e = Math.E;
+  const _random = (max) => {return Math.random() * max};
+  const _mod = (a, b) => {return a % b};
+  const _power = (a, b) => {return Math.pow(a, b)};
+  const _sqrt = (a) => {return Math.sqrt(a)};
+  const _log = (a) => {return Math.log10(a)};
+  const _abs = (a) => {return Math.abs(a)};
+  const _sin = (a) => {return Math.sin(a)};
+  const _cos = (a) => {return Math.cos(a)};
+  const _tan = (a) => {return Math.tan(a)};
+  const _arcsin = (a) => {return Math.asin(a)};
+  const _arccos = (a) => {return Math.acos(a)};
+  const _arctan = (a) => {return Math.atan(a)};
+`
 
 // TODO test this function
 export function runnableFromCode(script: string): (act: ActionSet, runid: number | undefined) => Promise<void> {
@@ -188,7 +201,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     const consts = ["pi", "e"];
     if (actionsetfuncs.includes(ast.name)) {
       const callArgs = this.visitChildren(ast, args + 1);
-      return generateActionSetCall(ast.name, callArgs);
+      return new CallExpression(new Identifier("_" + ast.name), callArgs);
     } else if (consts.includes(ast.name)) {
       return new Identifier("_" + ast.name);
     } else {

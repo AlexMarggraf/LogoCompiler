@@ -28,7 +28,7 @@ export interface ActionSet {
   setheading(angle: number): void;
 
   // TODO remove math functions (shall be hardcoded into compiled code)
-  random(max: number): number | void;
+  /* random(max: number): number | void;
   mod(a: number, b: number): number | void;
   power(a: number, b: number): number | void;
   sqrt(a: number): number | void;
@@ -41,7 +41,7 @@ export interface ActionSet {
 
   arcsin(a: number): number | void;
   arccos(a: number): number | void;
-  arctan(a: number): number | void
+  arctan(a: number): number | void */
 
   print(content: number | string): void;
   ct(): void;
@@ -181,7 +181,7 @@ export class CanvasActionSet implements ActionSet{
     this.turtleAngle = (270 + angle) % 360;
   }
 
-  public random(max: number): number {
+  /* public random(max: number): number {
     return Math.random() * max;
   }
 
@@ -194,7 +194,6 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public sqrt(a: number): number {
-    console.log(Math.sqrt(a));
     return Math.sqrt(a);
   }
 
@@ -228,7 +227,7 @@ export class CanvasActionSet implements ActionSet{
 
   public arctan(a: number): number {
     return Math.atan(a);
-  }
+  } */
 
   public print(content: number | string){
     console.log(content);
