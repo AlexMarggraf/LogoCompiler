@@ -5,7 +5,7 @@
     <title>Logo Compiler</title>
   </head>
   <body>
-    <div style="display: flex; padding-left: 40px; align-items: center">
+    <div style="display: flex; padding-left: 38px; align-items: center">
       <button class="button" id="render_button">Run Code</button>
       <button class="button" id="compile_button">Compile Code</button>
       <label class="button">
@@ -14,7 +14,7 @@
       </label>
       <p class="filename" id="selectedfile"></p>
     </div>
-    <div style="display: flex; justify-content: center">
+    <div style="display: flex; justify-content: center;">
       <div>
         <canvas class="canvas" id="canvas"></canvas>
       </div>
@@ -33,13 +33,19 @@
 
     <style>
       .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 130px;
         background-color: #1E1E1E;
         color: #E0E0E0;
-        padding: 12px;
+        padding: 12px 0px 12px 0px;
         margin: 20px 10px 20px 10px;
         border: 3px solid #2C2C2C;
         border-radius: 6px;
         cursor: pointer;
+        font-size: 14px;
+        font-family: Poppins;
       }
 
       .button:hover {
@@ -53,12 +59,13 @@
       .container {
         display: inline-block;
         border: 3px solid #2C2C2C;
-        padding: 12px;
-        margin: 10px 10px 10px 10px;
+        padding: 5px;
         border-radius: 4px;
         background: #1E1E1E;
         font-family: monospace;
         -webkit-text-fill-color: #E0E0E0;
+        margin-top: 10px;
+        margin-bottom: 10px;
         overflow: auto;
         white-space-collapse: preserve;
         resize: none;
@@ -68,8 +75,8 @@
       .canvas{
         display: inline-block;
         border: 3px solid #2C2C2C;
-        padding: 12px;
-        margin: 10px 10px 10px 10px;
+        padding: 5px;
+        margin-top: 10px;
         border-radius: 4px;
         resize: both;
       }

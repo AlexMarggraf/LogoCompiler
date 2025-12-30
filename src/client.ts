@@ -56,6 +56,7 @@ size();
 const ctx = canvas.getContext("2d");
 const act = new CanvasActionSet(ctx);
 let runningCode: Promise<void> | undefined = undefined;
+let rendering = false;
 act.runid = 0;
 if (!ctx) throw new Error("No 2D context");
 runButton.addEventListener("click", runCode);
@@ -95,14 +96,21 @@ function size() {
   const screenColor = canvas.style.backgroundColor;
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-  canvas.width = window.innerWidth * 0.6;
-  sourceContainer.style.width = window.innerWidth * 0.3 + "px";
-  compiledContainer.style.width = window.innerWidth * 0.3 + "px";
+  const wWidth = window.innerWidth;
+  const wHeight = window.innerHeight;
 
-  const canvasHeight = window.innerHeight * 0.8;
-  canvas.height = canvasHeight;
-  sourceContainer.style.height = (canvasHeight / 2 - 25) + "px";
-  compiledContainer.style.height = (canvasHeight / 2 - 25) + "px";
+  canvas.width = wWidth * 0.615;
+  sourceContainer.style.width = wWidth * 0.3 + "px";
+  compiledContainer.style.width = wWidth * 0.3 + "px";
+  canvas.style.margin = `10px ${wWidth * 0.005}px 10px ${wWidth * 0.025}px`;
+  sourceContainer.style.margin = `10px ${wWidth * 0.025}px 10px ${wWidth * 0.005}px`;
+  compiledContainer.style.margin = `10px ${wWidth * 0.025}px 10px ${wWidth * 0.005}px`;
+
+  console.log(wWidth * 0.025);
+
+  canvas.height = wHeight * 0.8;
+  sourceContainer.style.height = (wHeight * 0.8 / 2 - 20) + "px";
+  compiledContainer.style.height = (wHeight * 0.8 / 2 - 20) + "px";
 
   ctx.putImageData(imageData, 0, 0);
   ctx.strokeStyle = penColor;
@@ -110,14 +118,23 @@ function size() {
 }
 
 async function runCode() {
-  let script = compiledContainer.value;
-  act.runid++
-  if (runningCode) {
-    console.log("awaiting promise with runid:", act.runid - 1);
-    console.log(runningCode);
-    await runningCode;
+  if(rendering) {
+    act.runid += 1;
+    act.cs();
+    runButton.textContent = "Run Code"
+  } else {
+    runButton.textContent = "Stop";
+    let script = compiledContainer.value;
+    act.runid++
+    if (runningCode) {
+      console.log("awaiting promise with runid:", act.runid - 1);
+      console.log(runningCode);
+      await runningCode;
+    }
+    console.log("starting new promise with runid:", act.runid);
+    runningCode = (runnableFromCode(script)(act, act.runid));
   }
-  console.log("starting new promise with runid:", act.runid);
-  runningCode = (runnableFromCode(script)(act, act.runid));
+
+  rendering = !rendering;
 }
 

@@ -91,9 +91,6 @@ export function runnableFromCode(script: string): (act: ActionSet, runid: number
 }
 
 export function compileCodeToAST(logocode: string): Program {
-  // What is this??? Is this allowed???????
-  const logoCodeArray = logocode.split("main");
-  logocode = logoCodeArray[0] + "main\n  cs" + logoCodeArray.slice(1).join("");
   const ast = parseCode(logocode.toLowerCase());
 
   //ast.accept(new DebugVisitor(), 0)
