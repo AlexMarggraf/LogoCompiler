@@ -50,16 +50,29 @@ const filename = document.getElementById('selectedfile') as HTMLParagraphElement
 const fileinput = document.getElementById('file_button') as HTMLInputElement;
 const runButton = document.getElementById('render_button') as HTMLButtonElement;
 const compileButton = document.getElementById('compile_button') as HTMLButtonElement;
+const world = document.createElement("canvas") as HTMLCanvasElement;
+const wctx: CanvasRenderingContext2D = world.getContext("2d");
+world.width = 8192;
+world.height = 8192;
+const canvasBoundary = canvas.getBoundingClientRect();
+let cameraX: number = world.width/2;
+let cameraY: number = world.height/2;
+let lastX: number = 0;
+let lastY: number = 0;
+let mouseDown = false;
 fileinput.addEventListener("input", filenameChanged);
 window.addEventListener('resize', size);
 size();
 const ctx = canvas.getContext("2d");
-const act = new CanvasActionSet(ctx);
+const act = new CanvasActionSet(wctx);
 let runningCode: Promise<void> | undefined = undefined;
 act.runid = 0;
 if (!ctx) throw new Error("No 2D context");
 runButton.addEventListener("click", runCode);
 compileButton.addEventListener("click", compileSource);
+window.addEventListener("mousemove", moveCanvas);
+canvas.addEventListener("mousedown", mouseClick);
+window.addEventListener("mouseup", () => {mouseDown = false});
 
 function filenameChanged(currentFilename: any) {
   console.log("from filenameChanged:", currentFilename.target.value);
@@ -89,12 +102,35 @@ function compileSource() {
   compiledContainer.value = compileCode(sourceContainer.value);
 }
 
-function size() {
-  const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-  const penColor = ctx.strokeStyle;
-  const screenColor = canvas.style.backgroundColor;
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const sourceX: number = cameraX - canvas.width/2;
+  const sourceY: number = cameraY - canvas.height/2;
+  ctx.drawImage(world, sourceX, sourceY, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
 
+  requestAnimationFrame(render);
+}
+
+function moveCanvas(e: MouseEvent) {
+  if(mouseDown) {
+    const currentX = e.clientX - canvasBoundary.left;
+    const currentY = e.clientY - canvasBoundary.top;
+
+    cameraX -= (currentX - lastX);
+    cameraY -= (currentY - lastY);
+
+    lastX = currentX;
+    lastY = currentY;
+  }
+}
+
+function mouseClick(e: MouseEvent) {
+  mouseDown = true;
+  lastX = e.clientX - canvasBoundary.left;
+  lastY = e.clientY - canvasBoundary.top;
+}
+
+function size() {
   canvas.width = window.innerWidth * 0.6;
   sourceContainer.style.width = window.innerWidth * 0.3 + "px";
   compiledContainer.style.width = window.innerWidth * 0.3 + "px";
@@ -103,11 +139,9 @@ function size() {
   canvas.height = canvasHeight;
   sourceContainer.style.height = (canvasHeight / 2 - 25) + "px";
   compiledContainer.style.height = (canvasHeight / 2 - 25) + "px";
-
-  ctx.putImageData(imageData, 0, 0);
-  ctx.strokeStyle = penColor;
-  canvas.style.backgroundColor = screenColor;
 }
+
+requestAnimationFrame(render);
 
 async function runCode() {
   let script = compiledContainer.value;
@@ -118,6 +152,6 @@ async function runCode() {
     await runningCode;
   }
   console.log("starting new promise with runid:", act.runid);
-  runningCode = (runnableFromCode(script)(act, act.runid));
+  runningCode = (runnableFromCode(script)(act, act.runid))
 }
 
