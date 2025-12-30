@@ -59,7 +59,7 @@ let cameraX: number = world.width/2;
 let cameraY: number = world.height/2;
 let lastX: number = 0;
 let lastY: number = 0;
-let mouseDown = false;
+let mouseDown: boolean = false;
 fileinput.addEventListener("input", filenameChanged);
 window.addEventListener('resize', size);
 size();
@@ -73,6 +73,7 @@ compileButton.addEventListener("click", compileSource);
 window.addEventListener("mousemove", moveCanvas);
 canvas.addEventListener("mousedown", mouseClick);
 window.addEventListener("mouseup", () => {mouseDown = false});
+canvas.addEventListener("wheel", scrollwheel, { passive: false });
 
 function filenameChanged(currentFilename: any) {
   console.log("from filenameChanged:", currentFilename.target.value);
@@ -128,6 +129,22 @@ function mouseClick(e: MouseEvent) {
   mouseDown = true;
   lastX = e.clientX - canvasBoundary.left;
   lastY = e.clientY - canvasBoundary.top;
+}
+
+function scrollwheel(e: WheelEvent) {
+  e.preventDefault();
+  let zoom: number = 0;
+
+  if(e.deltaY > 0) {
+    zoom = 5/6;
+  } else if (e.deltaY < 0) {
+    zoom = 6/5;
+  }
+
+  wctx.translate(world.width/2, world.height/2);
+  wctx.scale(zoom, zoom);
+  wctx.translate(-world.width/2, -world.height/2);
+  runCode();
 }
 
 function size() {

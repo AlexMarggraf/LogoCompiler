@@ -194,7 +194,6 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public sqrt(a: number): number {
-    console.log(Math.sqrt(a));
     return Math.sqrt(a);
   }
 
