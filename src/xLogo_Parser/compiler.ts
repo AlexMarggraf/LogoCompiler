@@ -49,6 +49,7 @@ import {
 
 import { Program, BaseNode } from "estree";
 import { ActionSet } from "../ActionSet.js";
+import { DefinedBuiltIns } from "./ir/builtInCommands.js";
 
 // some goofy shenanigans to make this work in the browser. 
 declare namespace escodegen {
@@ -63,7 +64,6 @@ if (typeof escodegen === "undefined") {
 
 export function compileCode(logocode: string): string {
   const ast = compileCodeToAST(logocode);
-  console.log(ast)
   const code = lib.generate(ast);
   return code;
 }
@@ -82,12 +82,34 @@ const prefix = `const _pi = Math.PI, _e = Math.E;
   const _arcsin = (a) => {return Math.asin(a)};
   const _arccos = (a) => {return Math.acos(a)};
   const _arctan = (a) => {return Math.atan(a)};
+  const _numOrCol2Col = (c) => {
+    if (Array.isArray(c)) return c;
+    switch (Math.floor(c)) {
+      case 0: return [0,0,0];
+      case 1: return [255,0,0];
+      case 2: return [0,255,0];
+      case 3: return [255,255,0];
+      case 4: return [0,0,255];
+      case 5: return [255,0,255];
+      case 6: return [0,255,255];
+      case 7: return [255,255,255];
+      case 8: return [128,128,128];
+      case 9: return [192,192,192];
+      case 10: return [128,0,0];
+      case 11: return [0,128,0];
+      case 12: return [0,0,128];
+      case 13: return [255,200,0];
+      case 14: return [255,175,175];
+      case 15: return [128,0,255];
+      case 16: return [153,102,0];
+      default: throw new Error("numberconst out of range: " + num.toString());
+    }
+  };
 `
 
-// TODO test this function
-export function runnableFromCode(script: string): (act: ActionSet, runid: number | undefined) => Promise<void> {
+export function runnableFromCode(script: string): (act: ActionSet, runid?: number) => Promise<void> {
   return new Function("act", "_runid", 
-    prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid: number | undefined) => Promise<void>;
+    prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid?: number) => Promise<void>;
 }
 
 export function compileCodeToAST(logocode: string): Program {
@@ -146,21 +168,33 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitBuiltInCommand(ast: BuiltInCommand, args: number) {
     //console.log("in visitBuiltinCommand\n", ast)
     const callArgs = this.visitChildren(ast, args + 1) as any[];
-    if (ast.commandName == "stop") {
-      console.log("args", args)
-      if (args == 3) { // in a program declaration (which is at level 3) a stop has the meaning of a return statement.
-        return new ReturnStatement(null);
-      }
-      return new BreakStatement(null);
+    const normalizedCommandName = builtinToActionSetName(ast.command, ast.commandName);
+    switch (normalizedCommandName) {
+      case "stop":
+        if (args == 3) { // in a program declaration (which is at level 3) a stop has the meaning of a return statement.
+          return new ReturnStatement(null);
+        }
+        return new BreakStatement(null);
+      case "wait":
+        return new BlockStatement(
+          // TODO experiment with this
+          [generateActionSetCall(normalizedCommandName, callArgs), 
+            new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("act"), new Identifier("runid"))), new ReturnStatement(null), null)]
+        )
+      case "setpc": case "setsc": // all the commands which take a color as input
+        assert(callArgs.length == 1);
+        const arg = callArgs[0];
+        console.log(arg);
+        if (arg.type != "ArrayExpression") {
+          const newExpr = new CallExpression(new Identifier("_numOrCol2Col"), callArgs);
+          return generateActionSetCall(normalizedCommandName, [newExpr]);
+        } else {
+          return generateActionSetCall(normalizedCommandName, callArgs);
+        }
+
+      default:
+        return generateActionSetCall(normalizedCommandName, callArgs);
     }
-    if (ast.commandName == "wait") {
-      return new BlockStatement(
-        // TODO experiment with this
-        [generateActionSetCall(ast.commandName, callArgs), 
-          new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("act"), new Identifier("runid"))), new ReturnStatement(null), null)]
-      )
-    }
-    return generateActionSetCall(ast.commandName, callArgs);
   }
 
   public visitProgDecl(ast: ProgDecl, args: number): BaseNode {
@@ -312,6 +346,38 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     return [];
   };
 }
+
+/**
+ * 
+ * @param num 
+ */
+function builtinToActionSetName(command: DefinedBuiltIns, commandname: string): string {
+  // commands that aren't implemented currently: STOPALL, SHOWTURTLE, HIDETURTLE, CIRCLE, DOT, GENERATESOLUTIONS, STARTPATH, SETFILLCOLOR, FILLPATH.
+  switch (command) {
+    case DefinedBuiltIns.FORWARD: return "fd";
+    case DefinedBuiltIns.BACKWARD: return "bk";
+    case DefinedBuiltIns.LEFT: return "lt";
+    case DefinedBuiltIns.RIGHT: return "rt";
+    case DefinedBuiltIns.SETPENCOLOR: return "setpc";
+    case DefinedBuiltIns.CLEARSCREEN: return "cs";
+    case DefinedBuiltIns.PENERASE: return "pe";
+    case DefinedBuiltIns.PENPAINT: return "ppt";
+    case DefinedBuiltIns.PENDOWN: return "pd";
+    case DefinedBuiltIns.PENUP: return "pu";
+    case DefinedBuiltIns.HOME: return "home";
+    case DefinedBuiltIns.CLEARHISTORY: return "ct";
+    case DefinedBuiltIns.SETPENWIDTH: return "setpw";
+    case DefinedBuiltIns.WASH: return "wash";
+    case DefinedBuiltIns.SETSCREENCOLOR: return "setsc";
+    case DefinedBuiltIns.SETXY: return "setxy";
+    case DefinedBuiltIns.SETX: return "setx";
+    case DefinedBuiltIns.SETY: return "sety";
+    case DefinedBuiltIns.SETHEADING: return "setheading";
+    case DefinedBuiltIns.WAIT: return "wait";
+  }
+  throw new Error("builtin command not implemented yet: " + commandname);
+}
+
 
 function isBody(body: any): body is Array<BaseNode> {
   if (!Array.isArray(body)) return false;
