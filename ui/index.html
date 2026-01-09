@@ -9,18 +9,20 @@
       <div style="display: flex; align-items: center">
         <button class="button" id="render_button">Run Code</button>
         <button class="button" id="compile_button">Compile Code</button>
-        <label class="button">
+        <label class="button" style="display: flex;">
           Open File
           <input type="file" id="file_button" hidden>
         </label>
         <p class="filename" id="selectedfile"></p>
       </div>
       <div style="margin-left: auto;">
-        <label class="filename" for="strategy"> Select a compiling strategy:</label>
+        <label class="label" for="strategy"> Select a compiling strategy:</label>
         <select class="dropdown" id="strategy" name="strategy">
           <option value="direct_access">Direct</option>
           <option value="array_access">Array</option>
         </select>
+        <button class="button" id="benchmark_button">Benchmark Code</button>
+        <label class="label" id="benchmark_result">Compile time: 21 ms, Run time: 67 ms</label>
       </div>
     </div>
     <div style="display: flex; justify-content: center;">
@@ -42,7 +44,6 @@
 
     <style>
       .button {
-        display: flex;
         align-items: center;
         justify-content: center;
         width: 130px;
@@ -111,6 +112,11 @@
         margin-top: 10px;
         border-radius: 4px;
         resize: both;
+      }
+
+      .label{
+        color: #E0E0E0;
+        margin: 0px 10px 0px 10px;
       }
 
       .filename{

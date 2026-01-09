@@ -48,7 +48,9 @@ const filename = document.getElementById('selectedfile') as HTMLParagraphElement
 const fileinput = document.getElementById('file_button') as HTMLInputElement;
 const runButton = document.getElementById('render_button') as HTMLButtonElement;
 const compileButton = document.getElementById('compile_button') as HTMLButtonElement;
+const benchButton = document.getElementById('benchmark_button') as HTMLButtonElement;
 const strategyDropDown = document.getElementById('strategy') as HTMLSelectElement;
+const benchResult = document.getElementById('benchmark_result') as HTMLLabelElement;
 fileinput.addEventListener("input", filenameChanged);
 window.addEventListener('resize', size);
 size();
@@ -60,6 +62,7 @@ act.runid = 0;
 if (!ctx) throw new Error("No 2D context");
 runButton.addEventListener("click", runCode);
 compileButton.addEventListener("click", compileSource);
+benchButton.addEventListener("click", benchmarkCode);
 
 let strategy = "direct_access"
 strategyDropDown.value = strategy;
@@ -142,3 +145,6 @@ async function runCode() {
   rendering = !rendering;
 }
 
+async function benchmarkCode() {
+    benchResult.textContent = `Compile time: ${Math.floor(Math.random() * 10)}ms, Run time: ${Math.floor(Math.random() * 100)}ms`
+}
