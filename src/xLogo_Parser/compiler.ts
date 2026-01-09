@@ -41,6 +41,7 @@ import {
   ReturnStatement,
   Script,
   StaticMemberExpression,
+  ComputedMemberExpression,
   UnaryExpression,
   VariableDeclaration,
   VariableDeclarator,
@@ -48,7 +49,7 @@ import {
 } from "./esnodes.js";
 
 import { Program, BaseNode } from "estree";
-import { ActionSet } from "../ActionSet.js";
+import { ActionSet, CanvasActionSet } from "../ActionSet.js";
 import { DefinedBuiltIns } from "./ir/builtInCommands.js";
 
 // some goofy shenanigans to make this work in the browser. 
@@ -62,69 +63,82 @@ if (typeof escodegen === "undefined") {
   lib = escodegen;
 }
 
-export function compileCode(logocode: string): string {
-  const ast = compileCodeToAST(logocode);
+type generateCallFunction = {
+    (callname: string, args: any[]): BaseNode;
+}
+
+export function compileCode(logocode: string, strategy: string): string {
+  const ast = compileCodeToAST(logocode, strategy);
   const code = lib.generate(ast);
   return code;
 }
 
-// TODO extend this with definitions of functions _random, _mod, etc.
 const prefix = `const _pi = Math.PI, _e = Math.E;
-  const _random = (max) => {return Math.random() * max};
-  const _mod = (a, b) => {return a % b};
-  const _power = (a, b) => {return Math.pow(a, b)};
-  const _sqrt = (a) => {return Math.sqrt(a)};
-  const _log = (a) => {return Math.log10(a)};
-  const _abs = (a) => {return Math.abs(a)};
-  const _sin = (a) => {return Math.sin(a)};
-  const _cos = (a) => {return Math.cos(a)};
-  const _tan = (a) => {return Math.tan(a)};
-  const _arcsin = (a) => {return Math.asin(a)};
-  const _arccos = (a) => {return Math.acos(a)};
-  const _arctan = (a) => {return Math.atan(a)};
-  const _numOrCol2Col = (c) => {
-    if (Array.isArray(c)) return c;
-    switch (Math.floor(c)) {
-      case 0: return [0,0,0];
-      case 1: return [255,0,0];
-      case 2: return [0,255,0];
-      case 3: return [255,255,0];
-      case 4: return [0,0,255];
-      case 5: return [255,0,255];
-      case 6: return [0,255,255];
-      case 7: return [255,255,255];
-      case 8: return [128,128,128];
-      case 9: return [192,192,192];
-      case 10: return [128,0,0];
-      case 11: return [0,128,0];
-      case 12: return [0,0,128];
-      case 13: return [255,200,0];
-      case 14: return [255,175,175];
-      case 15: return [128,0,255];
-      case 16: return [153,102,0];
-      default: throw new Error("numberconst out of range: " + num.toString());
-    }
-  };
-`
+    const _random = (max) => {return Math.random() * max};
+    const _mod = (a, b) => {return a % b};
+    const _power = (a, b) => {return Math.pow(a, b)};
+    const _sqrt = (a) => {return Math.sqrt(a)};
+    const _log = (a) => {return Math.log10(a)};
+    const _abs = (a) => {return Math.abs(a)};
+    const _sin = (a) => {return Math.sin(a)};
+    const _cos = (a) => {return Math.cos(a)};
+    const _tan = (a) => {return Math.tan(a)};
+    const _arcsin = (a) => {return Math.asin(a)};
+    const _arccos = (a) => {return Math.acos(a)};
+    const _arctan = (a) => {return Math.atan(a)};
+    const _numOrCol2Col = (c) => {
+      if (Array.isArray(c)) return c;
+      switch (Math.floor(c)) {
+        case 0: return [0,0,0];
+        case 1: return [255,0,0];
+        case 2: return [0,255,0];
+        case 3: return [255,255,0];
+        case 4: return [0,0,255];
+        case 5: return [255,0,255];
+        case 6: return [0,255,255];
+        case 7: return [255,255,255];
+        case 8: return [128,128,128];
+        case 9: return [192,192,192];
+        case 10: return [128,0,0];
+        case 11: return [0,128,0];
+        case 12: return [0,0,128];
+        case 13: return [255,200,0];
+        case 14: return [255,175,175];
+        case 15: return [128,0,255];
+        case 16: return [153,102,0];
+        default: throw new Error("numberconst out of range: " + num.toString());
+      }
+    };
+  `
 
 export function runnableFromCode(script: string): (act: ActionSet, runid?: number) => Promise<void> {
+  // TODO extend this with definitions of functions _random, _mod, etc.
+  
   return new Function("act", "_runid", 
     prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid?: number) => Promise<void>;
 }
 
-export function compileCodeToAST(logocode: string): Program {
+function compileCodeToAST(logocode: string, strategy: string): Program {
   const ast = parseCode(logocode.toLowerCase());
 
   //ast.accept(new DebugVisitor(), 0)
-  const esast = ast.accept(new CompilerVisitor(), 0);
+  const esast = ast.accept(new CompilerVisitor(strategy), 0);
   return esast;
 }
 
-function generateActionSetCall(callname: string, args: any[]): BaseNode {
-  // act.<callname>(<args>); <-- currently implemented
-  // vs.
-  // act["<callname>"](<args>);
-  const res = new CallExpression(new StaticMemberExpression(new Identifier("act"), new Identifier(callname)), args);
+function generateDirectActionSetCall(callname: string, args: any[]): BaseNode {
+    // act.<callname>(<args>); <-- currently implemented
+    // vs.
+    // act["<callname>"](<args>);
+    const res = new CallExpression(new StaticMemberExpression(new Identifier("act"), new Identifier(callname)), args);
+    if (callname === "wait") {
+      return new AwaitExpression(res);
+    }
+    return res;
+  }
+
+function generateArrayActionSetCall(callname: string, args: any[]): BaseNode {
+  const res = new CallExpression(new ComputedMemberExpression(new Identifier("act"), new Literal(callname, "\"" + callname + "\"")), args);
   if (callname === "wait") {
     return new AwaitExpression(res);
   }
@@ -132,6 +146,22 @@ function generateActionSetCall(callname: string, args: any[]): BaseNode {
 }
 
 export class CompilerVisitor extends ASTVisitor<number, any> {
+  generateCall: generateCallFunction;
+
+  constructor(strategy: string) {
+    super();
+    switch(strategy) {
+      case "direct_access":
+        this.generateCall = generateDirectActionSetCall;
+        break;
+      case "array_access":
+        this.generateCall = generateArrayActionSetCall;
+        break;
+      default:
+        this.generateCall = generateArrayActionSetCall;
+    }
+  }
+
   public defaultNode(ast: XLogoAST, args: number): BaseNode {
     console.log(ast)
     throw new Error("not implemented yet!")
@@ -178,7 +208,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       case "wait":
         return new BlockStatement(
           // TODO experiment with this
-          [generateActionSetCall(normalizedCommandName, callArgs), 
+          [this.generateCall(normalizedCommandName, callArgs), 
             new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("act"), new Identifier("runid"))), new ReturnStatement(null), null)]
         )
       case "setpc": case "setsc": // all the commands which take a color as input
@@ -187,13 +217,13 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
         console.log(arg);
         if (arg.type != "ArrayExpression") {
           const newExpr = new CallExpression(new Identifier("_numOrCol2Col"), callArgs);
-          return generateActionSetCall(normalizedCommandName, [newExpr]);
+          return this.generateCall(normalizedCommandName, [newExpr]);
         } else {
-          return generateActionSetCall(normalizedCommandName, callArgs);
+          return this.generateCall(normalizedCommandName, callArgs);
         }
 
       default:
-        return generateActionSetCall(normalizedCommandName, callArgs);
+        return this.generateCall(normalizedCommandName, callArgs);
     }
   }
 
@@ -283,7 +313,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       assert(input)
       argsOfCall = [new Literal(input, "\"" + input + "\"")]
     }
-    return generateActionSetCall("print", argsOfCall);
+    return this.generateCall("print", argsOfCall);
   }
 
   public visitVarExpr(ast: VarExpr, args: number): BaseNode {

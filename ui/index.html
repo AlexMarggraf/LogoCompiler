@@ -5,14 +5,23 @@
     <title>Logo Compiler</title>
   </head>
   <body>
-    <div style="display: flex; padding-left: 38px; align-items: center">
-      <button class="button" id="render_button">Run Code</button>
-      <button class="button" id="compile_button">Compile Code</button>
-      <label class="button">
-        Open File
-        <input type="file" id="file_button" hidden>
-      </label>
-      <p class="filename" id="selectedfile"></p>
+    <div style="display: flex; padding-left: 38px; padding-right: 38px; align-items: center">
+      <div style="display: flex; align-items: center">
+        <button class="button" id="render_button">Run Code</button>
+        <button class="button" id="compile_button">Compile Code</button>
+        <label class="button">
+          Open File
+          <input type="file" id="file_button" hidden>
+        </label>
+        <p class="filename" id="selectedfile"></p>
+      </div>
+      <div style="margin-left: auto;">
+        <label class="filename" for="strategy"> Select a compiling strategy:</label>
+        <select class="dropdown" id="strategy" name="strategy">
+          <option value="direct_access">Direct</option>
+          <option value="array_access">Array</option>
+        </select>
+      </div>
     </div>
     <div style="display: flex; justify-content: center;">
       <div>
@@ -53,6 +62,29 @@
       }
 
       .button:active {
+        transform: translateY(4px);
+      }
+
+      .dropdown {
+        align-items: center;
+        justify-content: center;
+        width: 130px;
+        background-color: #1E1E1E;
+        color: #E0E0E0;
+        padding: 12px 20px 12px 20px;
+        margin: 20px 10px 20px 10px;
+        border: 3px solid #2C2C2C;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-family: Poppins;
+      }
+
+      .dropdown:hover {
+        background-color: #343434;
+      }
+
+      .dropdown:active {
         transform: translateY(4px);
       }
 

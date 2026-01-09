@@ -48,6 +48,7 @@ const filename = document.getElementById('selectedfile') as HTMLParagraphElement
 const fileinput = document.getElementById('file_button') as HTMLInputElement;
 const runButton = document.getElementById('render_button') as HTMLButtonElement;
 const compileButton = document.getElementById('compile_button') as HTMLButtonElement;
+const strategyDropDown = document.getElementById('strategy') as HTMLSelectElement;
 fileinput.addEventListener("input", filenameChanged);
 window.addEventListener('resize', size);
 size();
@@ -59,6 +60,10 @@ act.runid = 0;
 if (!ctx) throw new Error("No 2D context");
 runButton.addEventListener("click", runCode);
 compileButton.addEventListener("click", compileSource);
+
+let strategy = "direct_access"
+strategyDropDown.value = strategy;
+strategyDropDown.addEventListener("change", () => {strategy = strategyDropDown.value;})
 
 function filenameChanged(currentFilename: any) {
   console.log("from filenameChanged:", currentFilename.target.value);
@@ -85,7 +90,7 @@ fileinput?.addEventListener('change', () => {
 });
 
 function compileSource() {
-  compiledContainer.value = compileCode(sourceContainer.value);
+  compiledContainer.value = compileCode(sourceContainer.value, strategy);
 }
 
 function size() {
