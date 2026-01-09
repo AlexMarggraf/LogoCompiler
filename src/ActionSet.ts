@@ -27,22 +27,6 @@ export interface ActionSet {
   home(): void;
   setheading(angle: number): void;
 
-  // TODO remove math functions (shall be hardcoded into compiled code)
-  /* random(max: number): number | void;
-  mod(a: number, b: number): number | void;
-  power(a: number, b: number): number | void;
-  sqrt(a: number): number | void;
-  log(a: number): number | void;
-  abs(a: number): number | void;
-
-  sin(a: number): number | void;
-  cos(a: number): number | void;
-  tan(a: number): number | void;
-
-  arcsin(a: number): number | void;
-  arccos(a: number): number | void;
-  arctan(a: number): number | void */
-
   print(content: number | string): void;
   ct(): void;
   wait(centiseconds: number): Promise<void> | void;

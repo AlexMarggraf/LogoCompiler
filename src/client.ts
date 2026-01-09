@@ -41,8 +41,6 @@ function nextSong() {
 document.addEventListener('click', playAudioOnce);
 audio.addEventListener('ended', nextSong);
 
-
-
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const compiledContainer = document.getElementById('compiled_field') as HTMLTextAreaElement;
 const sourceContainer = document.getElementById('source_field') as HTMLTextAreaElement;
@@ -117,6 +115,7 @@ function size() {
   canvas.style.backgroundColor = screenColor;
 }
 
+// This Method runs the actual code
 async function runCode() {
   if(rendering) {
     act.runid += 1;
@@ -129,7 +128,7 @@ async function runCode() {
     if (runningCode) {
       console.log("awaiting promise with runid:", act.runid - 1);
       console.log(runningCode);
-      await runningCode;
+      await runningCode; // This is the code running
     }
     console.log("starting new promise with runid:", act.runid);
     runningCode = (runnableFromCode(script)(act, act.runid));
