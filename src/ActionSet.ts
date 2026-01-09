@@ -30,17 +30,19 @@ export interface ActionSet {
   print(content: number | string): void;
   ct(): void;
   wait(centiseconds: number): Promise<void> | void;
+
+  toRadians(angle: number): number;
 }
 
 export class CanvasActionSet implements ActionSet{
   public runid: number;
-  private ctx: CanvasRenderingContext2D;
-  private turtleX: number;
-  private turtleY: number;
-  private turtleAngle: number;
-  private penColor: [number, number, number];
-  private screenColor: [number, number, number];
-  private penDown: boolean;
+  public ctx: CanvasRenderingContext2D;
+  public turtleX: number;
+  public turtleY: number;
+  public turtleAngle: number;
+  public penColor: [number, number, number];
+  public screenColor: [number, number, number];
+  public penDown: boolean;
 
   public constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx
@@ -56,8 +58,8 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public fd(steps: number) {
-    const newX: number = this.turtleX + steps*Math.cos(toRadians(this.turtleAngle));
-    const newY: number = this.turtleY + steps*Math.sin(toRadians(this.turtleAngle));
+    const newX: number = this.turtleX + steps*Math.cos(this.toRadians(this.turtleAngle));
+    const newY: number = this.turtleY + steps*Math.sin(this.toRadians(this.turtleAngle));
 
     if (this.penDown) {
         this.ctx.beginPath();
@@ -71,8 +73,8 @@ export class CanvasActionSet implements ActionSet{
   }
 
   public bk(steps: number) {
-    const newX: number = this.turtleX - steps*Math.cos(toRadians(this.turtleAngle));
-    const newY: number = this.turtleY - steps*Math.sin(toRadians(this.turtleAngle));
+    const newX: number = this.turtleX - steps*Math.cos(this.toRadians(this.turtleAngle));
+    const newY: number = this.turtleY - steps*Math.sin(this.toRadians(this.turtleAngle));
 
     if (this.penDown) {
         this.ctx.beginPath();
@@ -173,6 +175,136 @@ export class CanvasActionSet implements ActionSet{
   public wait(centiseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, centiseconds * 10));
   }
+
+  public toRadians(degrees: number) {
+      return degrees * Math.PI / 180
+  }
+
+  public getFunctionString(func: string): string {
+    switch(func) {
+      case "fd":
+        return `
+  const newX = act.turtleX + steps * Math.cos(act.toRadians(act.turtleAngle));
+  const newY = act.turtleY + steps * Math.sin(act.toRadians(act.turtleAngle));
+
+  if (act.penDown) {
+      act.ctx.beginPath();
+      act.ctx.moveTo(act.turtleX, act.turtleY);
+      act.ctx.lineTo(newX, newY);
+      act.ctx.stroke();
+  }
+
+  act.turtleX = newX;
+  act.turtleY = newY;
+        `;
+      case "bk":
+        return `
+  const newX = act.turtleX - steps * Math.cos(act.toRadians(act.turtleAngle));
+  const newY = act.turtleY - steps * Math.sin(act.toRadians(act.turtleAngle));
+
+  if (act.penDown) {
+      act.ctx.beginPath();
+      act.ctx.moveTo(act.turtleX, act.turtleY);
+      act.ctx.lineTo(newX, newY);
+      act.ctx.stroke();
+  }
+
+  act.turtleX = newX;
+  act.turtleY = newY;
+        `;
+      case "rt":
+        return `
+  act.turtleAngle = (act.turtleAngle + angle) % 360;
+        `;
+      case "lt":
+        return `
+  act.turtleAngle = (act.turtleAngle - angle) % 360;
+        `;
+      case "cs":
+        return `
+  act.ctx.clearRect(0, 0, act.ctx.canvas.width, act.ctx.canvas.height);
+  act.turtleX = act.ctx.canvas.width / 2;
+  act.turtleY = act.ctx.canvas.height / 2;
+  act.turtleAngle = 270;
+  act.setpc([224, 224, 224]);
+  act.setsc([30, 30, 30]);
+        `;
+      case "setpc":
+        return `
+  act.penColor = color;
+  act.ctx.strokeStyle = 'rgb(' + color.join(", ") + ')';
+        `;
+      case "setsc":
+        return `
+  act.screenColor = color;
+  act.ctx.canvas.style.backgroundColor = 'rgb(' + color.join(", ") + ')';
+        `;
+      case "setpw":
+        return `
+  act.ctx.lineWidth = width;
+        `;
+      case "pu":
+        return `
+  act.penDown = false;
+        `;
+      case "pd":
+        return `
+  act.penDown = true;
+        `;
+      case "pe":
+        return `
+  act.ctx.globalCompositeOperation = "destination-out";
+  act.ctx.lineWidth += 1;
+        `;
+      case "ppt":
+        return `
+  act.ctx.globalCompositeOperation = "source-over";
+  act.setpc(act.penColor);
+  act.ctx.lineWidth -= 1;
+        `;
+      case "wash":
+        return `
+  act.ctx.clearRect(0, 0, act.ctx.canvas.width, act.ctx.canvas.height);
+        `;
+      case "setx":
+        return `
+  act.turtleX = act.ctx.canvas.width / 2 + x;
+        `;
+      case "sety":
+        return `
+  act.turtleY = act.ctx.canvas.height / 2 - y;
+        `;
+      case "setxy":
+        return `
+  act.turtleX = act.ctx.canvas.width / 2 + x;
+  act.turtleY = act.ctx.canvas.height / 2 - y;
+        `;
+      case "home":
+        return `
+  act.turtleAngle = 270;
+  act.turtleX = act.ctx.canvas.width / 2;
+  act.turtleY = act.ctx.canvas.height / 2;
+        `;
+      case "setheading":
+        return `
+  act.turtleAngle = (270 + angle) % 360;
+        `;
+      case "print":
+        return `
+  console.log(content);
+        `;
+      case "ct":
+        return `
+  console.clear();
+        `;
+      case "wait":
+        return `
+  return new Promise(resolve => setTimeout(resolve, centiseconds * 10));
+        `;
+      default:
+        return "";
+    }
+  }
 };
 
 export class LogActionSet implements ActionSet{
@@ -202,8 +334,8 @@ export class LogActionSet implements ActionSet{
   }
 
   public fd(steps: number) {
-    const newX: number = this.turtleX + steps*Math.cos(toRadians(this.turtleAngle));
-    const newY: number = this.turtleY + steps*Math.sin(toRadians(this.turtleAngle));
+    const newX: number = this.turtleX + steps*Math.cos(this.toRadians(this.turtleAngle));
+    const newY: number = this.turtleY + steps*Math.sin(this.toRadians(this.turtleAngle));
 
     this.turtleX = newX;
     this.turtleY = newY;
@@ -212,8 +344,8 @@ export class LogActionSet implements ActionSet{
   }
 
   public bk(steps: number) {
-    const newX: number = this.turtleX - steps*Math.cos(toRadians(this.turtleAngle));
-    const newY: number = this.turtleY - steps*Math.sin(toRadians(this.turtleAngle));
+    const newX: number = this.turtleX - steps*Math.cos(this.toRadians(this.turtleAngle));
+    const newY: number = this.turtleY - steps*Math.sin(this.toRadians(this.turtleAngle));
 
     this.turtleX = newX;
     this.turtleY = newY;
@@ -322,8 +454,8 @@ export class LogActionSet implements ActionSet{
   public wait(centiseconds: number) {
     console.log(`wait(${centiseconds})`);
   }
-};
 
-function toRadians(degrees: number) {
-    return degrees * Math.PI / 180
-}
+  public toRadians(degrees: number) {
+      return degrees * Math.PI / 180
+  }
+};

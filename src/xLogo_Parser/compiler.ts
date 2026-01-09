@@ -51,6 +51,7 @@ import {
 import { Program, BaseNode } from "estree";
 import { ActionSet, CanvasActionSet } from "../ActionSet.js";
 import { DefinedBuiltIns } from "./ir/builtInCommands.js";
+import * as esprima from "esprima";
 
 // some goofy shenanigans to make this work in the browser. 
 declare namespace escodegen {
@@ -67,13 +68,22 @@ type generateCallFunction = {
     (callname: string, args: any[]): BaseNode;
 }
 
-export function compileCode(logocode: string, strategy: string): string {
-  const ast = compileCodeToAST(logocode, strategy);
-  const code = lib.generate(ast);
-  return code;
-}
+export class Compiler {
+  act: ActionSet
 
-const prefix = `const _pi = Math.PI, _e = Math.E;
+  constructor(act: ActionSet) {
+    this.act = act;
+  }
+
+  public compileCode(logocode: string, strategy: string): string {
+    const ast = this.compileCodeToAST(logocode, strategy);
+    const code = lib.generate(ast);
+    return code;
+  }
+
+  public runnableFromCode(script: string): (act: ActionSet, runid?: number) => Promise<void> {
+    // TODO extend this with definitions of functions _random, _mod, etc.
+    const prefix = `const _pi = Math.PI, _e = Math.E;
     const _random = (max) => {return Math.random() * max};
     const _mod = (a, b) => {return a % b};
     const _power = (a, b) => {return Math.pow(a, b)};
@@ -107,59 +117,62 @@ const prefix = `const _pi = Math.PI, _e = Math.E;
         case 15: return [128,0,255];
         case 16: return [153,102,0];
         default: throw new Error("numberconst out of range: " + num.toString());
+        }
+      };
+    `
+    
+    return new Function("act", "_runid", 
+      prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid?: number) => Promise<void>;
+  }
+
+  public compileCodeToAST(logocode: string, strategy: string): Program {
+    let generateCall;
+
+    switch(strategy) {
+      case "direct_access":
+        generateCall = this.generateDirectActionSetCall;
+        break;
+      case "array_access":
+        generateCall = this.generateArrayActionSetCall;
+        break;
+      case "hard_coded":
+        break;
+      default:
+        generateCall = this.generateArrayActionSetCall;
+    }
+    const ast = parseCode(logocode.toLowerCase());
+
+    //ast.accept(new DebugVisitor(), 0)
+    const esast = ast.accept(new CompilerVisitor(generateCall), 0);
+    return esast;
+  }
+
+  public generateDirectActionSetCall(callname: string, args: any[]): BaseNode {
+      // act.<callname>(<args>); <-- currently implemented
+      // vs.
+      // act["<callname>"](<args>);
+      const res = new CallExpression(new StaticMemberExpression(new Identifier("act"), new Identifier(callname)), args);
+      if (callname === "wait") {
+        return new AwaitExpression(res);
       }
-    };
-  `
+      return res;
+    }
 
-export function runnableFromCode(script: string): (act: ActionSet, runid?: number) => Promise<void> {
-  // TODO extend this with definitions of functions _random, _mod, etc.
-  
-  return new Function("act", "_runid", 
-    prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid?: number) => Promise<void>;
-}
-
-function compileCodeToAST(logocode: string, strategy: string): Program {
-  const ast = parseCode(logocode.toLowerCase());
-
-  //ast.accept(new DebugVisitor(), 0)
-  const esast = ast.accept(new CompilerVisitor(strategy), 0);
-  return esast;
-}
-
-function generateDirectActionSetCall(callname: string, args: any[]): BaseNode {
-    // act.<callname>(<args>); <-- currently implemented
-    // vs.
-    // act["<callname>"](<args>);
-    const res = new CallExpression(new StaticMemberExpression(new Identifier("act"), new Identifier(callname)), args);
+  public generateArrayActionSetCall(callname: string, args: any[]): BaseNode {
+    const res = new CallExpression(new ComputedMemberExpression(new Identifier("act"), new Literal(callname, "\"" + callname + "\"")), args);
     if (callname === "wait") {
       return new AwaitExpression(res);
     }
     return res;
   }
-
-function generateArrayActionSetCall(callname: string, args: any[]): BaseNode {
-  const res = new CallExpression(new ComputedMemberExpression(new Identifier("act"), new Literal(callname, "\"" + callname + "\"")), args);
-  if (callname === "wait") {
-    return new AwaitExpression(res);
-  }
-  return res;
 }
 
 export class CompilerVisitor extends ASTVisitor<number, any> {
   generateCall: generateCallFunction;
 
-  constructor(strategy: string) {
+  constructor(generateCall: generateCallFunction) {
     super();
-    switch(strategy) {
-      case "direct_access":
-        this.generateCall = generateDirectActionSetCall;
-        break;
-      case "array_access":
-        this.generateCall = generateArrayActionSetCall;
-        break;
-      default:
-        this.generateCall = generateArrayActionSetCall;
-    }
+    this.generateCall = generateCall;
   }
 
   public defaultNode(ast: XLogoAST, args: number): BaseNode {

@@ -1,5 +1,5 @@
 import {CanvasActionSet, LogActionSet} from "./ActionSet.js";
-import { compileCode, runnableFromCode } from "./xLogo_Parser/compiler.js";
+import { Compiler } from "./xLogo_Parser/compiler.js";
 const playlist = [
   "music/game4.mp3",
   "music/game5.mp3",
@@ -56,6 +56,7 @@ window.addEventListener('resize', size);
 size();
 const ctx = canvas.getContext("2d");
 const act = new CanvasActionSet(ctx);
+const compiler = new Compiler(act);
 let runningCode: Promise<void> | undefined = undefined;
 let rendering = false;
 act.runid = 0;
@@ -93,7 +94,7 @@ fileinput?.addEventListener('change', () => {
 });
 
 function compileSource() {
-  compiledContainer.value = compileCode(sourceContainer.value, strategy);
+  compiledContainer.value = compiler.compileCode(sourceContainer.value, strategy);
 }
 
 function size() {
@@ -139,12 +140,13 @@ async function runCode() {
       await runningCode; // This is the code running
     }
     console.log("starting new promise with runid:", act.runid);
-    runningCode = (runnableFromCode(script)(act, act.runid));
+    runningCode = (compiler.runnableFromCode(script)(act, act.runid));
   }
 
   rendering = !rendering;
 }
 
 async function benchmarkCode() {
-    benchResult.textContent = `Compile time: ${Math.floor(Math.random() * 10)}ms, Run time: ${Math.floor(Math.random() * 100)}ms`
+  // benchmark the code here using compileCode() and runCode()
+  benchResult.textContent = `Compile time: ${Math.floor(Math.random() * 10)}ms, Run time: ${Math.floor(Math.random() * 100)}ms` // Update result here
 }
