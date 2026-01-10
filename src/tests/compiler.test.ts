@@ -209,4 +209,46 @@ describe("Compiler", () => {
       assert.equal(results[2], 2, "strategy: " + strategy);
     }
   })
+  it("wait test", async (t) => {
+    let results: number[] = [];
+    const actionset = {wait: (res: number) => { results = results.concat(res); }};
+    const c = new Compiler(actionset as unknown as ActionSet)
+    for (let strategy of ["direct_access", "array_access"] as CompileStrategy[]) {
+      results = [];
+      const script = c.compileCode( 'to main\n' +
+                                  '  wait 1 * 2 + 3\n' +
+                                  'end', strategy);
+      console.log(script)
+      await c.runnableFromCode(script)(actionset as ActionSet);
+
+      assert.equal(results[0], 5, "strategy: " + strategy);
+    }
+  })
+  it("wait test", async (t) => {
+    let result: number = 0;
+    const actionset = {
+      wait: (res: number) => { 
+        result += 1
+        return new Promise(resolve => setTimeout(resolve, res * 10));
+      },
+      runid: 0
+    };
+    const c = new Compiler(actionset as unknown as ActionSet)
+    for (let strategy of ["direct_access", "array_access"] as CompileStrategy[]) {
+      result = 0;
+      const script = c.compileCode( 'to main\n' +
+                                  '  repeat 100[\n' +
+                                  '    wait 1\n' +
+                                  '  ]\n' +
+                                  'end', strategy);
+      console.log(script)
+      let p = c.runnableFromCode(script)(actionset as unknown as  ActionSet, 0);
+      await new Promise(resolve => setTimeout(resolve, 100));
+      actionset.runid = 1;
+      await p;
+      actionset.runid = 0;
+      assert.ok(result >= 4, "strategy: " + strategy + " having waited " + result.toString() + " times")
+      assert.ok(result < 30, "strategy: " + strategy + " having waited " + result.toString() + " times")
+    }
+  })
 })

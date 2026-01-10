@@ -229,7 +229,10 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
         return new BlockStatement(
           [this.generateCall(normalizedCommandName, callArgs), 
             // TODO change this once runid is in a different object
-            new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("_act"), new Identifier("runid"))), new ReturnStatement(null), null)]
+            new IfStatement(new BinaryExpression("&&", 
+              new BinaryExpression("!=", new Identifier("_runid"), new Identifier("undefined")), 
+              new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("_act"), new Identifier("runid"))), 
+            ), new ReturnStatement(null), null)]
         )
       case "setpc": case "setsc": // all the commands which take a color as input
         assert(callArgs.length == 1);
