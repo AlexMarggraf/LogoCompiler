@@ -158,17 +158,16 @@ export class Compiler {
   }
 
   public generateDirectActionSetCall(callname: string, args: any[]): BaseNode {
-      // act.<callname>(<args>); <-- currently implemented
-      // vs.
-      // act["<callname>"](<args>);
-      const res = new CallExpression(new StaticMemberExpression(new Identifier("_act"), new Identifier(callname)), args);
-      if (callname === "wait") {
-        return new AwaitExpression(res);
-      }
-      return res;
+    // act.<callname>(<args>);
+    const res = new CallExpression(new StaticMemberExpression(new Identifier("_act"), new Identifier(callname)), args);
+    if (callname === "wait") {
+      return new AwaitExpression(res);
     }
+    return res;
+  }
 
   public generateArrayActionSetCall(callname: string, args: any[]): BaseNode {
+    // act["<callname>"](<args>);
     const res = new CallExpression(new ComputedMemberExpression(new Identifier("_act"), new Literal(callname, "\"" + callname + "\"")), args);
     if (callname === "wait") {
       return new AwaitExpression(res);
@@ -186,12 +185,10 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
 
   public defaultNode(ast: XLogoAST, args: number): BaseNode {
-    console.log(ast)
     throw new Error("not implemented yet!")
   }
 
   public aggregateResult(_aggregate: any, nextResult: any) {
-    //console.log("in aggregateResult", _aggregate)
     if (!Array.isArray(_aggregate)) throw new Error("Aggregate must be of type array");
     _aggregate.push(nextResult);
     return _aggregate;
@@ -203,11 +200,9 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     if (!isBody(body)) throw new Error("type error");
 
     if (args == 0) {
-      console.log("visiting top level seq");
       return new Script(body) as Program;
     } else {
       // assumption: we are in progdeclaration
-      console.log("visiting seq, not at top level");
       // we have to convert expressions to statements
       return body.map((exp) => {
         if (exp.type == "VariableDeclaration" || exp.type == "ExpressionStatement" || exp.type == "BlockStatement") {
@@ -219,7 +214,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
 
   public visitBuiltInCommand(ast: BuiltInCommand, args: number) {
-    //console.log("in visitBuiltinCommand\n", ast)
     const callArgs = this.visitChildren(ast, args + 1) as any[];
     const normalizedCommandName = builtinToActionSetName(ast.command, ast.commandName);
     switch (normalizedCommandName) {
@@ -231,7 +225,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       case "wait":
         return new BlockStatement(
           [this.generateCall(normalizedCommandName, callArgs), 
-            // TODO change this once runid is in a different object
             new IfStatement(new BinaryExpression("&&", 
               new BinaryExpression("&&", 
                 new BinaryExpression("!=", new Identifier("_runid"), new Identifier("undefined")), 
@@ -243,7 +236,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       case "setpc": case "setsc": // all the commands which take a color as input
         assert(callArgs.length == 1);
         const arg = callArgs[0];
-        console.log(arg);
         if (arg.type != "ArrayExpression") {
           const newExpr = new CallExpression(new Identifier("_numOrCol2Col"), callArgs);
           return this.generateCall(normalizedCommandName, [newExpr]);
@@ -268,7 +260,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
 
   public visitMakeStmt(ast: MakeStmt, args: number): BaseNode {
     // TODO how do we handle assignments before declaration? the implementation of xlogoonline doesn't care. 
-    //console.log(ast);
     assert(ast.declName instanceof VarDecl);
 
     const varname = ast.declName.name.slice(1)
@@ -286,7 +277,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   }
 
   public visitFuncExpr(ast: FuncExpr, args: number): BaseNode {
-    // TODO change this to use functions _random, _mod, etc.
     const actionsetfuncs = ["random", "mod", "power", "sqrt", "log", "abs", "sin", "cos", "tan", "arcsin", "arccos", "arctan"]
     const consts = ["pi", "e"];
     if (actionsetfuncs.includes(ast.name)) {
@@ -310,7 +300,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     if (["-", "+"].includes(ast.operator)) {
       return new UnaryExpression(ast.operator, arg[0]);
     } else {
-      //console.log(ast.operator);
       throw new Error("not implemented yet!");
     }
   }
@@ -336,9 +325,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitPrintStmt(ast: PrintStmt, args: number): BaseNode {
     let argsOfCall = this.visitChildren(ast, args + 1);
     if (Array.isArray(argsOfCall) && argsOfCall.length == 0) {
-      //console.log(ast)
       const input = ast.argString();
-      console.log(input);
       assert(input)
       argsOfCall = [new Literal(input, "\"" + input + "\"")]
     }
@@ -361,7 +348,6 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
   public visitColorExpr(ast: ColorExpr, args: number) {
     // TODO this at the moment only handles constants. Should be extended to handle expressions as well
     // Ts is probably not what twin wanted fr ong ☠️. Mostly i dont know what expressions can show up here but if you do setpc [...] its literal nodes so ts works fine for now.
-    console.log(ast.rwChildren);
     const colorArray = this.visitChildren(ast, args + 1);
     return new ArrayExpression(colorArray);
   }
