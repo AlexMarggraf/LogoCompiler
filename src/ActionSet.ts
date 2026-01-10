@@ -35,7 +35,6 @@ export interface ActionSet {
 }
 
 export class CanvasActionSet implements ActionSet{
-  public runid: number;
   public ctx: CanvasRenderingContext2D;
   public turtleX: number;
   public turtleY: number;
@@ -176,6 +175,7 @@ export class CanvasActionSet implements ActionSet{
     return new Promise(resolve => setTimeout(resolve, centiseconds * 10));
   }
 
+  // TODO maybe remove this, and add it to the prefix of the code
   public toRadians(degrees: number) {
       return degrees * Math.PI / 180
   }

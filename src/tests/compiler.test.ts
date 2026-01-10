@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { Compiler, CompileStrategy } from "../xLogo_Parser/compiler.js";
+import { Compiler, CompileStrategy, Stopper } from "../xLogo_Parser/compiler.js";
 import { ActionSet } from "../ActionSet.js";
 
 describe("Compiler", () => {
@@ -15,7 +15,7 @@ describe("Compiler", () => {
                                   "    print 100\n" +
                                   "  ]\n" +
                                   "end", strategy);
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
       assert.strictEqual(fdcounter, 4, "strategy: " + strategy);
     }
 
@@ -31,7 +31,7 @@ describe("Compiler", () => {
                                   "    print 100\n" +
                                   "  ]\n" +
                                   "end", strategy);
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
 
       assert.strictEqual(fdcounter, 4, "strategy: " + strategy);
     }
@@ -47,7 +47,7 @@ describe("Compiler", () => {
                                   '  make "b 6\n' +
                                   '  setpc [:a :b :a * :b]\n' +
                                   'end', strategy);
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
 
       assert.equal(color[0], 5, "strategy: " + strategy);
       assert.equal(color[1], 6, "strategy: " + strategy);
@@ -63,7 +63,7 @@ describe("Compiler", () => {
       const script = c.compileCode( 'to main\n' +
                                   '  setpc red\n' +
                                   'end', strategy);
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
 
       assert.equal(color[1], 0, "strategy: " + strategy);
       assert.equal(color[1], 0, "strategy: " + strategy);
@@ -79,7 +79,7 @@ describe("Compiler", () => {
       const script = c.compileCode( 'to main\n' +
                                   '  setpc 1\n' +
                                   'end', strategy);
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
 
       assert.equal(color[0], 255, "strategy: " + strategy);
       assert.equal(color[1], 0, "strategy: " + strategy);
@@ -95,7 +95,7 @@ describe("Compiler", () => {
       const script = c.compileCode( 'to main\n' +
                                   '  setpc mod 18 17\n' +
                                   'end', strategy);
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
 
       assert.equal(color[0], 255);
       assert.equal(color[1], 0);
@@ -128,6 +128,7 @@ describe("Compiler", () => {
       print: (_l: any) => { print++; },
     };
     const c = new Compiler(actionset as unknown as ActionSet)
+    const stopper: Stopper = {runid: 0};
     for (let strategy of ["direct_access", "array_access"] as CompileStrategy[]) {
       fd = 0; bk = 0; lt = 0; rt = 0; setpc = 0; cs = 0; pe = 0; ppt = 0; pd = 0; pu = 0; home = 0; ct = 0; setpw = 0; wash = 0; setsc = 0; setxy = 0; setx = 0; sety = 0; setheading = 0; wait = 0; print = 0;
       const script = c.compileCode( 'to main\n' +
@@ -167,7 +168,7 @@ describe("Compiler", () => {
                                   '  wait 1\n' +
                                   '  print 1\n' +
                                   'end', strategy);
-      await c.runnableFromCode(script)(actionset as unknown as ActionSet);
+      await c.runnableFromCode(script)();
       assert.equal(fd, 2, "strategy: " + strategy);
       assert.equal(bk, 3, "strategy: " + strategy);
       assert.equal(lt, 2, "strategy: " + strategy);
@@ -202,7 +203,7 @@ describe("Compiler", () => {
                                   '  print 1 + 2 * 3\n' +
                                   '  print 1 * 6 / 3\n' +
                                   'end', strategy);
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
 
       assert.equal(results[0], 5, "strategy: " + strategy);
       assert.equal(results[1], 7, "strategy: " + strategy);
@@ -219,12 +220,12 @@ describe("Compiler", () => {
                                   '  wait 1 * 2 + 3\n' +
                                   'end', strategy);
       console.log(script)
-      await c.runnableFromCode(script)(actionset as ActionSet);
+      await c.runnableFromCode(script)();
 
       assert.equal(results[0], 5, "strategy: " + strategy);
     }
   })
-  it("wait test", async (t) => {
+  it("wait test with interruption", async (t) => {
     let result: number = 0;
     const actionset = {
       wait: (res: number) => { 
@@ -236,17 +237,17 @@ describe("Compiler", () => {
     const c = new Compiler(actionset as unknown as ActionSet)
     for (let strategy of ["direct_access", "array_access"] as CompileStrategy[]) {
       result = 0;
+      let stopper: Stopper = {runid: 0};
       const script = c.compileCode( 'to main\n' +
                                   '  repeat 100[\n' +
                                   '    wait 1\n' +
                                   '  ]\n' +
                                   'end', strategy);
       console.log(script)
-      let p = c.runnableFromCode(script)(actionset as unknown as  ActionSet, 0);
+      let p = c.runnableFromCode(script)(stopper, stopper.runid);
       await new Promise(resolve => setTimeout(resolve, 100));
-      actionset.runid = 1;
+      stopper.runid = 1;
       await p;
-      actionset.runid = 0;
       assert.ok(result >= 4, "strategy: " + strategy + " having waited " + result.toString() + " times")
       assert.ok(result < 30, "strategy: " + strategy + " having waited " + result.toString() + " times")
     }

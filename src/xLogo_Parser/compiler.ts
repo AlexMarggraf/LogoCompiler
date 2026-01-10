@@ -68,7 +68,7 @@ type generateCallFunction = {
     (callname: string, args: any[]): BaseNode;
 }
 
-type Stopper = {
+export type Stopper = {
   runid: number;
 }
 
@@ -87,7 +87,7 @@ export class Compiler {
     return code;
   }
 
-  public runnableFromCode(script: string): (s: ActionSet, runid?: number) => Promise<void> {
+  public runnableFromCode(script: string): (stopper?: Stopper, runid?: number) => Promise<void> {
     // TODO            make the return type here ^^^^^^^^^ a new type of object which only has a runid. this object would serve as a stopper. 
     const prefix = `const _pi = Math.PI, _e = Math.E;
     const _random = (max) => {return Math.random() * max};
@@ -127,8 +127,11 @@ export class Compiler {
       };
     `
     
-    return new Function("_act", "_runid", 
-      prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid?: number) => Promise<void>;
+    // Curryfication! yay!
+    return (stopper?: Stopper, runid?: number) => {
+      return new Function("_act", "_stopper", "_runid", 
+        prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`)(this.act, stopper, runid) ;
+    }
   }
 
   public compileCodeToAST(logocode: string, strategy: CompileStrategy): Program {
@@ -230,8 +233,11 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
           [this.generateCall(normalizedCommandName, callArgs), 
             // TODO change this once runid is in a different object
             new IfStatement(new BinaryExpression("&&", 
-              new BinaryExpression("!=", new Identifier("_runid"), new Identifier("undefined")), 
-              new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("_act"), new Identifier("runid"))), 
+              new BinaryExpression("&&", 
+                new BinaryExpression("!=", new Identifier("_runid"), new Identifier("undefined")), 
+                new BinaryExpression("!=", new Identifier("_stopper.runid"), new Identifier("undefined")), 
+              ),
+              new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("_stopper"), new Identifier("runid"))), 
             ), new ReturnStatement(null), null)]
         )
       case "setpc": case "setsc": // all the commands which take a color as input
