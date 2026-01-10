@@ -1,5 +1,5 @@
-import {CanvasActionSet, LogActionSet} from "./ActionSet.js";
-import { Compiler } from "./xLogo_Parser/compiler.js";
+import {CanvasActionSet } from "./ActionSet.js";
+import { Compiler, CompileStrategy } from "./xLogo_Parser/compiler.js";
 const playlist = [
   "music/game4.mp3",
   "music/game5.mp3",
@@ -94,7 +94,7 @@ fileinput?.addEventListener('change', () => {
 });
 
 function compileSource() {
-  compiledContainer.value = compiler.compileCode(sourceContainer.value, strategy);
+  compiledContainer.value = compiler.compileCode(sourceContainer.value, strategy as CompileStrategy);
 }
 
 function size() {

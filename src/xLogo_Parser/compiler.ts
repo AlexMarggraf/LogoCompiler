@@ -68,6 +68,12 @@ type generateCallFunction = {
     (callname: string, args: any[]): BaseNode;
 }
 
+type Stopper = {
+  runid: number;
+}
+
+export type CompileStrategy =  "array_access" | "direct_access" | "hard_coded";
+
 export class Compiler {
   act: ActionSet
 
@@ -75,14 +81,14 @@ export class Compiler {
     this.act = act;
   }
 
-  public compileCode(logocode: string, strategy: string): string {
+  public compileCode(logocode: string, strategy: CompileStrategy): string {
     const ast = this.compileCodeToAST(logocode, strategy);
     const code = lib.generate(ast);
     return code;
   }
 
-  public runnableFromCode(script: string): (act: ActionSet, runid?: number) => Promise<void> {
-    // TODO extend this with definitions of functions _random, _mod, etc.
+  public runnableFromCode(script: string): (s: ActionSet, runid?: number) => Promise<void> {
+    // TODO            make the return type here ^^^^^^^^^ a new type of object which only has a runid. this object would serve as a stopper. 
     const prefix = `const _pi = Math.PI, _e = Math.E;
     const _random = (max) => {return Math.random() * max};
     const _mod = (a, b) => {return a % b};
@@ -121,11 +127,11 @@ export class Compiler {
       };
     `
     
-    return new Function("act", "_runid", 
+    return new Function("_act", "_runid", 
       prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`) as (act: ActionSet, runid?: number) => Promise<void>;
   }
 
-  public compileCodeToAST(logocode: string, strategy: string): Program {
+  public compileCodeToAST(logocode: string, strategy: CompileStrategy): Program {
     let generateCall;
 
     switch(strategy) {
@@ -136,9 +142,10 @@ export class Compiler {
         generateCall = this.generateArrayActionSetCall;
         break;
       case "hard_coded":
+        // TODO
         break;
       default:
-        generateCall = this.generateArrayActionSetCall;
+        throw new Error("invalid compile strategy: " + strategy)
     }
     const ast = parseCode(logocode.toLowerCase());
 
@@ -151,7 +158,7 @@ export class Compiler {
       // act.<callname>(<args>); <-- currently implemented
       // vs.
       // act["<callname>"](<args>);
-      const res = new CallExpression(new StaticMemberExpression(new Identifier("act"), new Identifier(callname)), args);
+      const res = new CallExpression(new StaticMemberExpression(new Identifier("_act"), new Identifier(callname)), args);
       if (callname === "wait") {
         return new AwaitExpression(res);
       }
@@ -159,7 +166,7 @@ export class Compiler {
     }
 
   public generateArrayActionSetCall(callname: string, args: any[]): BaseNode {
-    const res = new CallExpression(new ComputedMemberExpression(new Identifier("act"), new Literal(callname, "\"" + callname + "\"")), args);
+    const res = new CallExpression(new ComputedMemberExpression(new Identifier("_act"), new Literal(callname, "\"" + callname + "\"")), args);
     if (callname === "wait") {
       return new AwaitExpression(res);
     }
@@ -220,9 +227,9 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
         return new BreakStatement(null);
       case "wait":
         return new BlockStatement(
-          // TODO experiment with this
           [this.generateCall(normalizedCommandName, callArgs), 
-            new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("act"), new Identifier("runid"))), new ReturnStatement(null), null)]
+            // TODO change this once runid is in a different object
+            new IfStatement(new BinaryExpression("!=", new Identifier("_runid"), new StaticMemberExpression(new Identifier("_act"), new Identifier("runid"))), new ReturnStatement(null), null)]
         )
       case "setpc": case "setsc": // all the commands which take a color as input
         assert(callArgs.length == 1);
