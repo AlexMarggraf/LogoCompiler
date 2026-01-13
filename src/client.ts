@@ -70,7 +70,7 @@ strategyDropDown.value = strategy;
 strategyDropDown.addEventListener("change", () => {strategy = strategyDropDown.value;})
 
 function filenameChanged(currentFilename: any) {
-  console.log("from filenameChanged:", currentFilename.target.value);
+  //console.log("from filenameChanged:", currentFilename.target.value);
   filename.textContent = currentFilename;
 }
 
@@ -83,7 +83,7 @@ fileinput?.addEventListener('change', () => {
   reader.readAsText(file, 'UTF-8');
   reader.onload = function({ target }) {
 
-    console.log(target.result);
+    //console.log(target.result);
     if (typeof target.result !== "string") throw new Error("target.result is not string")
     sourceContainer.value = target.result;
     compileSource();
@@ -113,8 +113,6 @@ function size() {
   sourceContainer.style.margin = `10px ${wWidth * 0.025}px 10px ${wWidth * 0.005}px`;
   compiledContainer.style.margin = `10px ${wWidth * 0.025}px 10px ${wWidth * 0.005}px`;
 
-  console.log(wWidth * 0.025);
-
   canvas.height = wHeight * 0.8;
   sourceContainer.style.height = (wHeight * 0.8 / 2 - 20) + "px";
   compiledContainer.style.height = (wHeight * 0.8 / 2 - 20) + "px";
@@ -127,19 +125,19 @@ function size() {
 // This Method runs the actual code
 async function runCode() {
   if(rendering) {
-    stopper.runid += 1;
+    stopper.runid++;
     act.cs();
     runButton.textContent = "Run Code"
   } else {
     runButton.textContent = "Stop";
     let script = compiledContainer.value;
-    stopper.runid++
+    stopper.runid++;
     if (runningCode) {
-      console.log("awaiting promise with runid:", stopper.runid - 1);
-      console.log(runningCode);
+      // console.log("awaiting promise with runid:", stopper.runid - 1);
+      // console.log(runningCode);
       await runningCode; // This is the code running
     }
-    console.log("starting new promise with runid:", stopper.runid);
+    // console.log("starting new promise with runid:", stopper.runid);
     runningCode = (compiler.runnableFromCode(script)(stopper, stopper.runid));
   }
 

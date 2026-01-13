@@ -1,9 +1,8 @@
 to main
-  cube
+cube
 end
 
 to cube
-  cs
   setsc black
   setpw 2
   
@@ -43,7 +42,7 @@ to cube
   make "theta2 0.01 * random 600
   make "theta3 0.01 * random 600
 
-  make "iter 0
+ make "iter 0
   
   while[:iter<1000][
   
@@ -99,71 +98,44 @@ make "th3 + :co2*:s1*:h2 + :co2*:co1*:h3 -(:s2*:h1)
   make "showe (:ta3 + :td3 + :th3 + :te3)/4
   make "showf (:te3 + :tf3 + :tg3 + :th3)/4
   
-  make "cdist 600
+  make "focal 600
+  make "offset -700
   
-  #find relation between sides
-  make "ra1 :ta1/(:cdist-:ta3)
-  make "ra2 :ta2/:ta1
+  make "pa1 (:ta1 * :focal) / (:ta3 + :offset)
+  make "pa2 (:ta2 * :focal) / (:ta3 + :offset)
   
-  make "rb1 :tb1/(:cdist-:tb3)
-  make "rb2 :tb2/:tb1
+  make "pb1 (:tb1 * :focal) / (:tb3 + :offset)
+  make "pb2 (:tb2 * :focal) / (:tb3 + :offset)
   
-  make "rc1 :tc1/(:cdist-:tc3)
-  make "rc2 :tc2/:tc1
+  make "pc1 (:tc1 * :focal) / (:tc3 + :offset)
+  make "pc2 (:tc2 * :focal) / (:tc3 + :offset)
   
-  make "rd1 :td1/(:cdist-:td3)
-  make "rd2 :td2/:td1
+  make "pd1 (:td1 * :focal) / (:td3 + :offset)
+  make "pd2 (:td2 * :focal) / (:td3 + :offset)
   
-  make "re1 :te1/(:cdist-:te3)
-  make "re2 :te2/:te1
+  make "pe1 (:te1 * :focal) / (:te3 + :offset)
+  make "pe2 (:te2 * :focal) / (:te3 + :offset)
   
-  make "rf1 :tf1/(:cdist-:tf3)
-  make "rf2 :tf2/:tf1
+  make "pf1 (:tf1 * :focal) / (:tf3 + :offset)
+  make "pf2 (:tf2 * :focal) / (:tf3 + :offset)
   
-  make "rg1 :tg1/(:cdist-:tg3)
-  make "rg2 :tg2/:tg1
+  make "pg1 (:tg1 * :focal) / (:tg3 + :offset)
+  make "pg2 (:tg2 * :focal) / (:tg3 + :offset)
   
-  make "rh1 :th1/(:cdist-:th3)
-  make "rh2 :th2/:th1
-  
-  make "side 600
-  
-  #project points to 2d
-  make "pa1 :side*:ra1
-  make "pa2 :ra2*:pa1
-  
-  make "pb1 :side*:rb1
-  make "pb2 :rb2*:pb1
-  
-  make "pc1 :side*:rc1
-  make "pc2 :rc2*:pc1
-  
-  make "pd1 :side*:rd1
-  make "pd2 :rd2*:pd1
-  
-  make "pe1 :side*:re1
-  make "pe2 :re2*:pe1
-  
-  make "pf1 :side*:rf1
-  make "pf2 :rf2*:pf1
-  
-  make "pg1 :side*:rg1
-  make "pg2 :rg2*:pg1
-  
-  make "ph1 :side*:rh1
-  make "ph2 :rh2*:ph1
-  
-  make "filter 16
+  make "ph1 (:th1 * :focal) / (:th3 + :offset)
+  make "ph2 (:th2 * :focal) / (:th3 + :offset)
+
+  make "filter 15
   
   #draw sides
-  if(:showa > :filter)[setpc red surface :pa1 :pa2 :pb1 :pb2 :pc1 :pc2 :pd1 :pd2]
-  if(:showb > :filter)[setpc yellow surface :pa1 :pa2 :pb1 :pb2 :pf1 :pf2 :pe1 :pe2]
-  if(:showc > :filter)[setpc blue surface :pb1 :pb2 :pc1 :pc2 :pg1 :pg2 :pf1 :pf2]
-  if(:showd > :filter)[setpc green surface :pc1 :pc2 :pd1 :pd2 :ph1 :ph2 :pg1 :pg2]
-  if(:showe > :filter)[setpc orange surface :pd1 :pd2 :pa1 :pa2 :pe1 :pe2 :ph1 :ph2]
-  if(:showf > :filter)[setpc pink surface :pe1 :pe2 :pf1 :pf2 :pg1 :pg2 :ph1 :ph2]
-
-  make :iter :iter + 1 
+  if(:showa > :filter)[setpc 1 surface :pa1 :pa2 :pb1 :pb2 :pc1 :pc2 :pd1 :pd2]
+  if(:showb > :filter)[setpc 2 surface :pa1 :pa2 :pb1 :pb2 :pf1 :pf2 :pe1 :pe2]
+  if(:showc > :filter)[setpc 3 surface :pb1 :pb2 :pc1 :pc2 :pg1 :pg2 :pf1 :pf2]
+  if(:showd > :filter)[setpc 4 surface :pc1 :pc2 :pd1 :pd2 :ph1 :ph2 :pg1 :pg2]
+  if(:showe > :filter)[setpc 5 surface :pd1 :pd2 :pa1 :pa2 :pe1 :pe2 :ph1 :ph2]
+  if(:showf > :filter)[setpc 6 surface :pe1 :pe2 :pf1 :pf2 :pg1 :pg2 :ph1 :ph2]
+  
+  make :iter :iter + 1
   wait 1
   wash
   ]
