@@ -41,7 +41,6 @@
     "esbuild": "^0.27.2",
     "escodegen": "^2.1.0",
     "esprima": "^4.0.1",
-    "esprima-next": "^6.0.3",
     "json-diff-ts": "^4.8.2"
   }
 }

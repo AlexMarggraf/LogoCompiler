@@ -45,13 +45,14 @@ import {
   UnaryExpression,
   VariableDeclaration,
   VariableDeclarator,
-  WhileStatement
+  WhileStatement,
+  StatementListItem
 } from "./esnodes.js";
 
-import { Program, BaseNode, Statement, Class, ClassDeclaration } from "estree";
+import { Program, BaseNode, Statement, Class, ClassDeclaration, MethodDefinition, Expression, MemberExpression, PrivateIdentifier, Identifier as TIdentifier } from "estree";
 import { ActionSet, CanvasActionSet } from "../ActionSet.js";
 import { DefinedBuiltIns } from "./ir/builtInCommands.js";
-import * as esprima from "esprima-next";
+import * as esprima from "esprima";
 import { CustomESTreeWalker, mapThisToDoubleUnderscore, mapThisToStr } from "./CustomESTreeWalker.js";
 import { getAllFuncs } from "./compilerUtils.js";
 
@@ -76,36 +77,103 @@ export type Stopper = {
 
 export type CompileStrategy =  "array_access" | "direct_access" | "hard_coded";
 
+const ACT_PREFIX = "__act_"
+
+function mapThis(n: MemberExpression) {
+  if (n.object.type != "ThisExpression") {
+    throw new Error("not a this expression!");
+  }
+  let t = n.property;
+  if (t.type == "Identifier") {
+    return new Identifier(ACT_PREFIX + t.name) as Expression;
+  }
+  throw Error("currently only identifiers are supported for members of a this-expression");
+}
+function mapId(s: string) {
+  return "_" + s;
+}
+
+
 export class Compiler {
   act: CanvasActionSet
+  appliedStrategy: CompileStrategy
 
   constructor(act: CanvasActionSet) {
     this.act = act;
   }
 
   public compileCode(logocode: string, strategy: CompileStrategy): string {
+    this.appliedStrategy = strategy;
     const ast = this.compileCodeToAST(logocode, strategy);
-    const code = lib.generate(ast);
+    let code = lib.generate(ast);
+    if (strategy == "hard_coded") {
+      code = this.compileActionSet() + "\n" + code;
+    }
     return code;
   }
   
-  private compileActionSet() {
+  private compileActionSet(): string {
     const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(this.act));
-    const classStr = this.act.constructor.toString();
+    let classStr = this.act.constructor.toString();
+    classStr = classStr.slice(0, 6) + "_bruh " + classStr.slice(6);
+    console.log(classStr);
     const classAst = esprima.parseScript(classStr).body[0] as ClassDeclaration;
     if (classAst.superClass) {
       throw new Error("subclasses not supported!");
     }
+
+
+    let scriptBody = [] as StatementListItem[];
+
     const body = classAst.body.body
+    const constructors = body.filter((m ) => {
+      if (m.type == "MethodDefinition") {
+        return m.kind == "constructor"
+      }
+      return false;
+    });
+    assert(constructors.length == 1, "more than one constructor found!");
+    let con = constructors[0] as MethodDefinition;
+
+    let globals: Identifier[] = [];
+    for (let stmt of con.value.body.body) {
+      if (stmt.type == "ExpressionStatement") {
+        let expr = stmt.expression;
+        if (expr.type == "AssignmentExpression") {
+          globals.push(mapThis(expr.left as MemberExpression) as Identifier);
+        }
+      }
+    }
+    scriptBody.push(new VariableDeclaration(globals.map((id) => new VariableDeclarator(id, null)), "let"))
+    let c = new CustomESTreeWalker(mapId, mapThis);
+    const confun = c.walk(con.value);
+    scriptBody.push(confun.body);
+    
     for (const m of body) {
-      // TODO
+      assert(m.type == "MethodDefinition", "something other than a method definition in ActionSet class");
+      let method = m as MethodDefinition;
+      if (method.kind != "method") continue;
+      console.log("======= body of actionset ========");
+      console.log(m);
+      assert(method.key.type == "Identifier");
+      let methodid = method.key as Identifier;
+      let fun = c.walk(method.value);
+      fun.id = new Identifier((ACT_PREFIX + methodid.name)) as TIdentifier;
+      scriptBody.push(fun);
     }
     
+    let script = new Script(scriptBody);
+    console.log("====== generated ======");
+    let res = escodegen.generate(script);
+    console.log(res);
+    return res;
   }
 
   public runnableFromCode(script: string): (stopper?: Stopper, runid?: number) => Promise<void> {
-    const prefix = `const _pi = Math.PI, _e = Math.E;
+    const prefix = `
+    const __console = console;
     const _Math = Math;
+    const _pi = Math.PI, _e = Math.E;
     const _random = (max) => {return Math.random() * max};
     const _mod = (a, b) => {return a % b};
     const _power = (a, b) => {return Math.pow(a, b)};
@@ -141,12 +209,13 @@ export class Compiler {
         default: throw new Error("numberconst out of range: " + num.toString());
         }
       };
-    `
-    this.compileActionSet();
+    `;
+    console.log("==== prefix ====");
+    console.log(prefix);
     
     // Curryfication! yay!
     return (stopper?: Stopper, runid?: number) => {
-      return new Function("_act", "__act_ctx", "_stopper", "_runid", 
+      return new Function("_act", "_ctx2", "_stopper", "_runid", 
         prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`)(this.act, this.act.ctx, stopper, runid) ;
     }
   }
@@ -194,7 +263,8 @@ export class Compiler {
 
   public generateHardCodedActionSetCall(actionset: ActionSet, callname: string, args: any[]): BaseNode {
     const methodCode: string = actionset[callname].toString();
-    const c = new CustomESTreeWalker((s) => "_" + s, mapThisToStr("__act_"));
+    let localIdMap = (s: string) => "_" + s; // TODO make the customESTreeWalker accept another mapping for local variables.
+    const c = new CustomESTreeWalker(localIdMap, mapThisToStr("__act_"));
     const slicedCode = methodCode.slice(methodCode.indexOf("{") + 1, methodCode.lastIndexOf("}"));
     let bodyAst;
     try {
@@ -210,7 +280,7 @@ export class Compiler {
     const argIds = argStr.split(/,\s+/);
     const newBodyAst = c.walk(bodyAst);
     let body = newBodyAst.body;
-    let variableDeclarators = argIds.map((id, index) => new VariableDeclarator(new Identifier(id), args[index]))
+    let variableDeclarators = argIds.map((id, index) => new VariableDeclarator(new Identifier(localIdMap(id)), args[index]))
 
     body.unshift(new VariableDeclaration(variableDeclarators, "let") as Statement);
 

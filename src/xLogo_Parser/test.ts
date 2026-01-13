@@ -1,5 +1,5 @@
 import { generate } from "escodegen";
-import { parseScript } from "esprima-next";
+import { parseScript } from "esprima";
 import { diff } from 'json-diff-ts';
 import { DebugVisitor } from "./debug/debugVisitor.js";
 import { Program, BaseNode, Expression, Statement, BaseStatement, Node, MemberExpression, SpreadElement} from "estree";
@@ -57,20 +57,17 @@ end
   `)*/
 
 const reference = parseScript(`
-class Rectangle {
-  bruh = 0;
-  bruh = 0;
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
-}
 `)
 // let c = new CustomESTreeWalker(
 //   (s) => "_" + s,
 //   mapThisToDoubleUnderscore);
 
 // console.log(generate(c.walk(reference)));
+let j = 0;
+{
+  j = 1
+}
+console.log(j);
 
 console.log(reference);
 
