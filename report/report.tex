@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+ \geometry{
+     a4paper,
+     left=25mm,
+     top=25mm,
+     right=25mm,
+     bottom=30mm
+ }
+
+%% for colors
+\usepackage{xcolor} % must be loaded erly
+%% Define vour custom colors
+\definecolor{myblue}{HTML}{648FFF}
+\definecolor{mypurple}{HTML}{775EF0}
+\definecolor{myred}{HTML}{DD2680}
+\definecolor{myorange}{HTML}{FE6100}
+\definecolor{myyellow}{HTML}{FFB001}
+% Create a new command for the colors
+\newcommand{\blue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\purple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\red}[1]{\textcolor{myred}{#1}}
+\newcommand{\orange}[1]{\textcolor{myorange}{#1}}
+\newcommand{\yellow}[1]{\textcolor{myyellow}{#1}}
+ 
+%% for tables
+% for dashed and dotted lines
+\usepackage{tabularray}
+\usepackage{booktabs} % For better hlines in tables
+% used to add notes to figures and table with fnote command
+\newcommand\fnote[1]{\captionsetup{font=small}\caption*{#1}}
+% for tables with cells spanning several rows
+\usepackage{multirow}
+\usepackage{makecell}
+
+%% for grafics and figures
+\usepackage{graphicx}
+\usepackage{svg}  % to use .svg
+\usepackage{tikz}
+
+%% for flexible list items
+\usepackage{enumitem}
+
+%% math 
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools} 
+\usepackage{verbatim} 
+\usepackage{todonotes}
+
+%% format of captions and footnotes
+\usepackage[font=small,labelfont=bf]{caption}
+% flushing left of footnotes
+\usepackage[hang,flushmargin]{footmisc}
+
+%% links and urls
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor=blue,
+}
+\urlstyle{same}
+
+%% clever referencing and citing rule
+\usepackage{cleveref}
+\usepackage[sort, numbers]{natbib}
+\usepackage{appendix}
+
+%% new setting for \paragraph
+\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
+
+%% format of inline code
+\definecolor{codeColor}{gray}{0.85}
+\usepackage{tcolorbox}
+\newtcbox{\ilc}{on line, boxrule=0pt, boxsep=0pt, bottom = 0pt, left=0pt, right =0pt, top = 0pt, arc = 0pt, colback=white, colframe = white, fontupper={\small \ttfamily}}
+
+%% for code snippets
+\usepackage{listings}
+
+\title{Logo Compiler}
+
+\author{\\ \\
+Project Report\\
+ICPL Seminar Spring Semester 2025 \\ \\ \\ \\
+University of Basel \\
+Faculty of Science \\
+Department of Mathematics and Computer Science \\ \\ \\ \\
+Alexander Marggraf\\ 
+Max Reinert\\
+Pascal von Fellenberg\\\\}
+\date{June 11, 2025 \vfill \includegraphics{UniBas_Logo_EN_Schwarz_RGB_65.pdf}}
+
+\begin{document}
+    \maketitle
+    \thispagestyle{empty}
+
+    \clearpage
+    \pagestyle{empty}
+    \tableofcontents
+    
+    \clearpage    
+    \pagestyle{plain}
+    \setcounter{page}{1} % Start from page 1
+    \input{sections/abstract.tex}
+    \input{sections/methodology.tex}
+    \input{sections/polymorphic_inline_caches.tex}
+    \input{sections/implementation.tex}
+    \input{sections/performance_of_different_approaches.tex}
+    \input{sections/comparison_with_xlogoonline.tex}
+    \input{sections/conclusion.tex}
+\end{document}
