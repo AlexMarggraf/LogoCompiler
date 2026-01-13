@@ -173,6 +173,7 @@ export class Compiler {
     const prefix = `
     const _console = console;
     const _Promise = Promise;
+    const _setTimeout = setTimeout;
     const _Math = Math;
     const _pi = Math.PI, _e = Math.E;
     const _random = (max) => {return Math.random() * max};
