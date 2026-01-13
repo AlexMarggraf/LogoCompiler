@@ -152,7 +152,7 @@ export class Compiler {
     for (const m of body) {
       assert(m.type == "MethodDefinition", "something other than a method definition in ActionSet class");
       let method = m as MethodDefinition;
-      if (method.kind != "method") continue;
+      if (method.kind != "method") {console.log("skipped method of kind: " + method.kind); continue;}
       console.log("======= body of actionset ========");
       console.log(m);
       assert(method.key.type == "Identifier");
@@ -171,7 +171,8 @@ export class Compiler {
 
   public runnableFromCode(script: string): (stopper?: Stopper, runid?: number) => Promise<void> {
     const prefix = `
-    const __console = console;
+    const _console = console;
+    const _Promise = Promise;
     const _Math = Math;
     const _pi = Math.PI, _e = Math.E;
     const _random = (max) => {return Math.random() * max};
@@ -262,18 +263,21 @@ export class Compiler {
   }
 
   public generateHardCodedActionSetCall(actionset: ActionSet, callname: string, args: any[]): BaseNode {
+    if (callname == "wait") {
+      return new ExpressionStatement(new AwaitExpression(new CallExpression(new Identifier(ACT_PREFIX + "wait"), args)));
+    }
     const methodCode: string = actionset[callname].toString();
     let localIdMap = (s: string) => "_" + s; // TODO make the customESTreeWalker accept another mapping for local variables.
-    const c = new CustomESTreeWalker(localIdMap, mapThisToStr("__act_"));
+    const c = new CustomESTreeWalker(localIdMap, mapThis);
     const slicedCode = methodCode.slice(methodCode.indexOf("{") + 1, methodCode.lastIndexOf("}"));
     let bodyAst;
     try {
       bodyAst = esprima.parseScript(slicedCode);
-    } catch {
+    } catch (error) {
       console.log(methodCode);
       console.log("============")
       console.log(slicedCode);
-      throw Error("esprima failed");
+      throw Error("esprima failed: ", error);
     }
     const argregex = /\(([^\)]*)\)/; // first capture group contains list of arguments
     const argStr = methodCode.match(argregex)[1]; 
