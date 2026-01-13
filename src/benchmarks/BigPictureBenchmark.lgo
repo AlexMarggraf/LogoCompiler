@@ -1,0 +1,1251 @@
+to start
+  cs ht
+  chessboard
+
+  # White pieces
+
+  kW 10 10 5 1
+  qW 10 10 4 1
+
+  rW 10 10 1 1
+  rW 10 10 8 1
+
+  nW 10 10 2 1
+  nW 10 10 7 1
+
+  bW 10 10 3 1
+  bW 10 10 6 1
+
+  pW 10 10 1 2
+  pW 10 10 2 2
+  pW 10 10 3 2
+  pW 10 10 4 2
+  pW 10 10 5 2
+  pW 10 10 6 2
+  pW 10 10 7 2
+  pW 10 10 8 2
+
+  # Black pieces
+
+  kB 10 10 5 8
+  qB 10 10 4 8
+
+  rB 10 10 1 8
+  rB 10 10 8 8
+
+  nB 10 10 2 8
+  nB 10 10 7 8
+
+  bB 10 10 3 8
+  bB 10 10 6 8
+
+  pB 10 10 1 7
+  pB 10 10 2 7
+  pB 10 10 3 7
+  pB 10 10 4 7
+  pB 10 10 5 7
+  pB 10 10 6 7
+  pB 10 10 7 7
+  pB 10 10 8 7
+
+  place -1 -1 50 50 # Electro
+  electro
+
+  # Clean up
+
+  ct
+end
+
+# White pieces
+
+to kW :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+
+  repeat 10 [w7] w6 w6 w6 w7 w6 w6 nlpiece 17 # Linie 1
+  w7 w5 w5 w5 w4 w4 repeat 8 [w3] w2 w2 w2 w6 nlpiece 18 # Linie 2
+  w7 repeat 4 [w5] w4 w4 repeat 7 [w3] w1 w2 w2 w6 nlpiece 17 # Linie 3
+  repeat 11 [w7] w6 w6 w7 w6 w6 nlpiece 17 # Linie 4
+  w7 repeat 4 [w5] w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 18 # Linie 5
+  w7 w5 w5 w5 w4 w4 repeat 8 [w3] w1 w2 w2 w6 nlpiece 17 # Linie 6
+  w7 repeat 4 [w5] w4 w4 repeat 5 [w3] w1 w2 w2 w6 nlpiece 15 # Linie 7
+  repeat 8 [w7] w6 w6 w7 w6 w6 w6 nlpiece 15 # Linie 8
+  w7 repeat 4 [w5] w4 w4 w4 w2 w3 w3 w3 w2 w2 w2 w6 nlpiece 16 # Linie 9
+  w7 w5 w5 w5 w4 w4 w5 w7 w6 w2 w3 w3 w1 w2 w2 w6 nlpiece 17 # Linie 10
+  w7 w5 w5 w5 w4 w4 w5 w7 r5 r4 w6 w1 w3 w3 w1 w2 w2 w6 nlpiece 18 # Linie 11
+  w7 w5 w5 w5 w4 w4 w7 r5 r4 r3 r2 w6 w3 w3 w2 w2 w2 w6 nlpiece 19 # Linie 12
+  w7 w5 w5 w5 w4 w4 w5 w7 r4 r3 r3 r2 w6 w2 w3 w3 w2 w2 w2 w6 nlpiece 20 # Linie 13
+  w7 w5 w5 w5 w4 w4 w7 r4 r3 r3 r1 r2 r1 w6 w2 w3 w2 w2 w2 w6 nlpiece 21 # Linie 14
+  w7 w5 w5 w5 w4 w4 w4 w5 w7 w7 r2 r2 w6 w6 w2 w3 w3 w3 w1 w2 w2 w6 nlpiece 22 # Linie 15
+  w7 w5 w5 w5 w4 w4 w3 w4 w4 w5 w7 w6 w1 w2 repeat 4 [w3] w1 w1 w2 w6 nlpiece 23 # Linie 16
+  w7 w5 w5 w5 w4 w4 repeat 14 [w3] w1 w2 w2 w6 nlpiece 24 # Linie 17
+  w7 w5 w5 w5 w4 w4 repeat 4 [w3] repeat 6 [w4] repeat 4 [w3] w1 w2 w2 w6 nlpiece 23 # Linie 18
+  w7 w5 w5 w5 w4 w4 w3 w3 w2 w6 w6 w7 w7 w4 w4 w4 w3 w3 w3 w2 w2 w6 nlpiece 22 # Linie 19
+  w7 w5 w5 w5 w4 w4 w4 w1 w6 pu repeat 4 [w7] pd w7 w4 w4 w4 w3 w3 w2 w2 w6 nlpiece 21 # Linie 20
+  w7 w7 w5 w5 w4 w6 w6 pu w7 w7 pd r6 r6 pu w7 w7 pd w7 w7 w4 w4 w1 w6 w6 nlpiece 18 # Linie 21
+  w7 w7 w7 pu w7 w7 w7 pd r6 r5 r4 r6 pu w7 w7 w7 pd w7 w7 w6 nlpiece 10 # Linie 22
+  r6 r5 r3 r6 nlpiece 12 # Linie 23
+  r6 r6 pu repeat 4 [w7] pd r6 r6 r5 r4 r3 r3 r4 r6 pu repeat 4 [w7] pd r6 r6 nlpiece 21 # Linie 24
+  r6 r4 r3 r4 pu w7 w7 pd r6 r5 r5 r4 r4 repeat 4 [r3] r4 pu w7 w7 pd r6 r4 r3 r4 nlpiece 22 # Linie 25
+  r6  r3 r1 r4 pu w7 w7 pd r6 r5 r4 r4 r3 r3 r3 r2 r1 r6 pu w7 w7 pd r6 r3 r1 r4 nlpiece 21 # Linie 26
+  r6 r4 pu repeat 4 [w7] pd r6 r6 r4 r3 r3 r1 r4 r4 pu repeat 4 [w7] pd r4 r6 nlpiece 12 # Linie 27
+  r6 r3 r2 r4 nlpiece 4 # Linie 28
+  r6 r3 r1 r6 nlpiece 3 # Linie 29
+  r4 r4 # Linie 30
+end
+
+to qW :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+
+  repeat 9 [w7] w6 w6 w7 w6 w7 w6 w6 nlpiece 17 # Linie 1
+  w7 w5 w5 w5 w4 w4 repeat 8 [w3] w2 w2 w2 w6 nlpiece 18 # Linie 2
+  w7 repeat 4 [w5] w4 w4 repeat 7 [w3] w1 w2 w2 w6 nlpiece 17 # Linie 3
+  repeat 10 [w7] w6 w6 w7 w6 w6 w6 nlpiece 17 # Linie 4
+  w7 repeat 4 [w5] w4 w4 repeat 6 [w3] repeat 4 [w2] w6 nlpiece 18 # Linie 5
+  w7 w5 w5 w4 w4 repeat 9 [w3] w1 w2 w2 w6 nlpiece 17 # Linie 6
+  w7 w5 w5 w4 w4 repeat 7 [w3] w2 w1 w2 w6 nlpiece 15 # Linie 7
+  repeat 8 [w7] w6 w6 w6 w7 w6 w6 nlpiece 14 # Linie 8
+  w7 w5 w5 repeat 4 [w4] w3 w3 w3 w2 w2 w2 w6 nlpiece 13 # Linie 9
+  w7 w5 w4 w4 w5 w7 w6 w2 w3 w2 w2 w6 nlpiece 12 # Linie 10
+  w7 w5 w4 w4 w7 r6 r6 w6 w3 w1 w1 w6 nlpiece 12 # Linie 11
+  w7 w5 w4 w4 w7 r4 r3 w6 w2 w1 w1 w6 nlpiece 13 # Linie 12
+  w7 w5 w4 w4 w7 r6 r4 r3 r2 w6 w3 w1 w2 w6 nlpiece 14 # Linie 13
+  w7 w5 w4 w4 w7 r4 r3 r2 r1 w6 w3 w3 w2 w6 nlpiece 15 # Linie 14
+  w7 w5 w4 w4 w4 w7 r3 w7 w6 r1 w6 w3 w3 w2 w2 w6 nlpiece 16 # Linie 15
+  w7 w4 w4 w4 w3 w3 w7 w3 w3 w6 w2 w3 w3 w2 w2 w6 nlpiece 17 # Linie 16
+  w7 w5 w4 w7 w4 w4 repeat 8 [w3] w6 w6 w3 w6 nlpiece 19 # Linie 17
+  w7 w5 w4 w7 r5 w7 w4 w4 w3 w4 w4 w3 w3 w3 w6 r3 w6 w4 w1 w7 nlpiece 20 # Linie 18
+  w7 w7 w7 r6 r4 w7 w4 w4 w2 w7 w7 w4 w3 w2 w6 r2 r6 w6 w6 w6 nlpiece 23 # Linie 19
+  r6 r6 pu repeat 4 [w7] pd r6 r3 w7 w4 w2 w6 r5 r4 w7 w4 w2 w6 r1 r4 pu repeat 4 [w7] pd r6 r6 nlpiece 27 # Linie 20
+  r6 r5 r4 r6 pu repeat 4 [w7] pd r6 w7 w5 w2 w6 r3 r3 w7 w4 w1 w6 r4 pu repeat 4 [w7] pd r6 r5 r4 r6 nlpiece 29 # Linie 21
+  r6 r5 r3 r3 r2 r4 pu w7 w7 w7 pd w7 w4 w2 w6 r6 r2 r1 r4 w7 w4 w1 w6 pu w7 w7 w7 pd r6 r5 r3 r3 r2 r4 nlpiece 30 # Linie 22
+  r6 r4 r3 r1 r2 r4 pu w7 w7 w7 pd w7 w7 w6 pu w7 w7 pd r4 r4 pu w7 w7 pd w6 w6 w6 pu w7 w7 w7 pd r6 r4 r3 r1 r2 r4 nlpiece 29 #Linie 23
+  r6 r2 r2 r6 pu repeat 20 [w7] pd r6 r2 r2 r6 nlpiece 27 # Linie 24
+  r4 r4 pu repeat 5 [w7] pd r6 r6 pu repeat 8 [w7] pd r6 r6 pu repeat 5 [w7] pd r4 r6 nlpiece 20 # Linie 25
+  r6 r5 r4 r6 pu repeat 6 [w7] pd r6 r5 r4 r6 nlpiece 15 # Linie 26
+  r6 r5 r3 r3 r2 r4 pu repeat 4 [w7] pd r6 r5 r3 r3 r2 r4 nlpiece 16 # Linie 27
+  r6 r4 r3 r1 r2 r4 pu repeat 4 [w7] pd r6 r4 r3 r1 r2 r4 nlpiece 15 # Linie 28
+  r6 r2 r2 r4 pu repeat 6 [w7] pd r6 r2 r2 r4 nlpiece 13 # Linie 29
+  r6 r4 pu repeat 8 [w7] pd r4 r4 # Linie 30
+end
+
+to rW :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 62 20
+
+  pu w7 pd repeat 9 [w7] w6 w6 w6 w7 w6 w6 w6 nlpiece 17 # Linie 1
+  w7 w5 w5 w5 w4 w4 repeat 7 [w3] repeat 4 [w2] w6 nlpiece 18 # Linie 2
+  w7 repeat 4 [w5] w4 w4 repeat 6 [w3] w1 w2 w2 w2 w6 nlpiece 17 # Linie 3
+  repeat 8 [w7] w6 w7 w6 w6 w7 w6 w6 w6 nlpiece 17 # Linie 4
+  w7 repeat  4 [w5] w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 18 # Linie 5
+  w7 w5 w5 w5 w4 w4 repeat 7 [w3] w1 w1 w2 w2 w6 nlpiece 17 # Linie 6
+  w7 w5 w5 w5 w4 w4 repeat 5 [w3] w1 w1 w2 w2 w6 nlpiece 15 # Linie 7
+  w7 w5 w5 w5 w4 w4 w3 w3 w3 w1 w2 w2 w2 w6 nlpiece 13 # Linie 8
+  w7 w5 w5 w4 w4 w3 w3 w3 w1 w2 w2 w6 nlpiece 12 # Linie 9
+  w7 w5 w5 w5 w4 w4 w3 w3 w2 w2 w2 w6 nlpiece 11 # Linie 10
+  w7 w5 w5 w5 w4 w3 w3 w4 w2 w2 w6 nlpiece 10 # Linie 11
+  w7 w7 w7 w5 w7 w5 w4 w2 w2 w6 nlpiece 10 # Linie 12
+  r6 r5 r5 w7 r3 w7 w7 w4 w1 w6 nlpiece 11 # Linie 13
+  w7 r6 r5 r4 r3 r3 r3 r2 w6 w1 w6 nlpiece 12 # Linie 14
+  w7 w5 w7 w7 r4 r3 w7 r2 r1 r4 w6 w6 nlpiece 12 # Linie 15
+  w7 w5 w4 w4 w7 w7 w3 w7 w7 r4 nlpiece 10 # Linie 16
+  w7 w5 w5 w4 w4 w3 w3 w2 w1 w7 w7 nlpiece 11 # Linie 17
+  w7 repeat 10 [w5] w7 nlpiece 12 # Linie 18
+  repeat 9 [w7] w6 w6 w6 nlpiece 13 # Linie 19
+  w7 w5 w5 w5 w4 w4 repeat 4 [w3] w2 w2 w2 w6 nlpiece 15 # Linie 20
+  w7 w5 w5 w4 w4 w4 repeat 6 [w3] w1 w2 w2 w6 nlpiece 16 # Linie 21
+  w7 w5 w4 w4 repeat 9 [w3] w1 w2 w6 nlpiece 17 # Linie 22
+  w7 w5 w4 w3 w3 w4 w4 repeat 5 [w3] w4 w4 w3 w2 w2 w6 nlpiece 18 # Linie 23
+  w7 w5 w4 w3 w7 w7 w5 w4 w4 w3 w3 w3 w7 w7 w5 w2 w2 w6 nlpiece 18 # Linie 24
+  w7 w4 w3 w7 r5 r4 w7 w5 w4 w3 w3 w7 r2 r2 w7 w3 w1 w6 nlpiece 18 # Linie 25
+  w7 w4 w1 w6 r5 r4 w7 w5 w4 w3 w2 w6 r2 r2 w6 w3 w1 w6 nlpiece 18 # Linie 26
+  w7 w4 w1 w6 r5 r4 w7 w5 w4 w2 w2 w6 r2 r2 w7 w3 w2 w6 nlpiece 18 # Linie 27
+  w7 w7 w6 r6 r5 r5 r4 w7 w7 w6 w6 r2 r2 r1 r6 w7 w6 w6 nlpiece 14 # Linie 28
+  r6 r5 r5 r4 r4 r3 r2 r1 r1 r6 nlpiece 9 # Linie 29
+  repeat 8 [r6] # Linie 30
+end
+
+to bW :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+
+  repeat 8 [w7] w6 w6 w6 w7 w6 w6 nlpiece 15 # Linie 1
+  w7 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 16 # Linie 2
+  w7 w5 w5 w5 w4 w4 repeat 6 [w3] w1 w2 w2 w6 nlpiece 15 # Linie 3
+  repeat 8 [w7] w6 w6 w7 w6 w6 w6 nlpiece 15 # Linie 4
+  w7 w5 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w6 nlpiece 16 # Linie 5
+  w7 w5 w5 w4 w4 repeat 6 [w3] w1 w1 w2 w2 w6 nlpiece 15 # Linie 6
+  w7 w5 w5 w4 w4 repeat 5 [w3] w1 w2 w2 w6 nlpiece 13 # Linie 7
+  w7 w5 w5 w4 w4 w3 w3 w3 w2 w2 w2 w6 nlpiece 11 # Linie 8
+  repeat 6 [w7] w6 w7 w6 w6 nlpiece 11 # Linie 9
+  w7 w5 w4 w4 w4 w3 w3 w3 w2 w2 w2 w6 nlpiece 12 # Linie 10
+  w7 w5 w4 w4 repeat 5 [w3] w2 w2 w6 nlpiece 13 # Linie 11
+  w7 w5 w4 w4 repeat 6 [w3] w1 w2 w2 w6 nlpiece 14 # Linie 12
+  w7 w5 w4 w4 repeat 6 [w3] w1 w2 w2 w6 nlpiece 14 # Linie 13
+  w7 w5 w5 w4 w3 w4 w4 w4 w3 w3 w3 w2 w2 w6 nlpiece 14 # Linie 14
+  w7 w5 w5 w4 w1 w6 w7 w4 w4 w3 w3 w3 w2 w2 w6 nlpiece 14 # Linie 15
+  w7 w7 w6 w6 pu w7 w7 pd w7 w4 w4 w3 w1 w2 w2 w6 nlpiece 7 # Linie 16
+  w7 w7 w3 w1 w2 w2 w6 nlpiece 6 # Linie 17
+  w7 w4 w3 w1 w2 w6 nlpiece 13 # Linie 18
+  r6 r6 pu repeat 5 [w7] pd w7 w4 w3 w2 w2 w6 nlpiece 14 # Linie 19
+  r6 r3 r4 r6 pu repeat 4 [w7] pd w7 w4 w3 w2 w2 w6 nlpiece 15 # Linie 20
+  r6 r5 r5 r4 r3 r6 pu w7 w7 w7 pd w7 w4 w3 w2 w6 nlpiece 14 # Linie 21
+  r6 r5 r4 r3 r3 r6 pu w7 w7 w7 pd w7 w4 w3 w2 w6 nlpiece 14 # Linie 22
+  r6 r5 r3 r3 r3 r6 pu w7 w7 w7 pd w7 w4 w2 w6 nlpiece 13 # Linie 23
+  r6 r4 r3 r3 r3 r4 pu w7 w7 pd w7 w4 w3 w2 w6 nlpiece 13 # Linie 24
+  r6 r4 r3 r3 r2 r4 pu w7 w7 pd w7 w4 w3 w6 nlpiece 12 # Linie 25
+  r6 r4 r3 r2 r1 r6 pu w7 pd w7 w4 w4 w2 w6 nlpiece 11 # Linie 26
+  r6 r3 r2 r4 pu w7 w7 pd w7 w4 w1 w6 nlpiece 9 # Linie 27
+  r4 r4 pu w7 w7 w7 pd w7 w4 w1 w6 w6 nlpiece 5 # Linie 28
+  w7 w4 w3 w1 w6 nlpiece 4 # Linie 29
+  w7 w6 w6 # Linie 30
+end
+
+to nW :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 76 20
+
+  repeat 8 [w7] w6 w7 w6 w6 w7 w6 nlpiece 15 # Linie 1
+  w7 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 16 # Linie 2
+  w7 w5 w5 w5 w4 w4 repeat 7 [w3] w1 w2 w6 nlpiece 15 # Linie 3
+  repeat 8 [w7] w6 w6 w7 w6 w6 w6 nlpiece 15 # Linie 4
+  w7 repeat 4 [w5] w4 w4 repeat 6 [w3] w2 w2 w6 nlpiece 17 # Linie 5
+  w7 w5 w5 w5 w4 w4 w4 repeat 7 [w3] w2 w2 w6 nlpiece 17 # Linie 6
+  w7 w5 w5 w5 w4 w4 repeat 7 [w3] w1 w2 w6 nlpiece 16 # Linie 7
+  w7 w5 w5 w5 w4 w4 repeat 6 [w3] w1 w1 w2 w6 nlpiece 15 # Linie 8
+  w7 w5 w5 w4 w4 w4 repeat 5 [w3] w1 w2 w2 w6 nlpiece 15 # Linie 9
+  w7 w5 w5 w5 w4 w4 repeat 6 [w3] w2 w2 w6 nlpiece 14 # Linie 10
+  w7 w5 w5 w4 w4 repeat 6 [w3] w2 w2 w6 nlpiece 13 # Linie 11
+  w7 w5 w5 w4 w4 repeat 4 [w3] w2 w2 w6 r3 r6 nlpiece 13 # Linie 12
+  w7 w5 w4 w4 repeat 4 [w3] w2 w2 w6 r3 r6 nlpiece 12 # Linie 13
+  w7 w5 w4 w4 w3 w3 w3 w2 w2 w6 r4 r6 nlpiece 12 # Linie 14
+  w7 w5 w4 w4 w3 w3 w3 w2 w2 w6 r4 r6 nlpiece 11 # Linie 15
+  w7 w5 w4 repeat 4 [w3] w2 w6 r5 r6 nlpiece 11 # Linie 16
+  w7 w5 w4 w4 w3 w3 w3 w2 w2 w6 r3 r6 nlpiece 20 # Linie 17
+  repeat 4 [w7] pu repeat 4 [w7] pd repeat 4 [w7] w4 w3 w3 w1 w2 w6 r4 r6 nlpiece 20 # Linie 18
+  w7 w5 w5 w5 repeat 4 [w7] w4 w3 w3 w3 w7 w3 w3 w1 w2 w6 r5 r6 nlpiece 19 # Linie 19
+  w7 w7 repeat 5 [w4] repeat 8 [w3] w2 w2 w6 r3 r6 nlpiece 21 # Linie 20
+  w7 w5 w4 w3 w3 w3 w4 repeat 9 [w3] w2 w2 w6 r3 r6 nlpiece 21 # Linie 21
+  w7 w5 w4 repeat 13 [w3] w2 w2 w6 r3 r4 nlpiece 20 # Linie 22
+  w7 w5 w4 w4 w3 w3 w3 w4 w4 repeat 6 [w3] w2 w2 w6 r3 r4 nlpiece 20 # Linie 23
+  repeat 4 [w7] w4 w4 w3 r4 r4 r3 w4 w3 w3 w1 w3 w2 w6 r2 r4 nlpiece 15 # Linie 24
+  w7 w7 w4 w4 r3 r1 r2 w3 w3 w1 w2 w2 w6 r3 r4 nlpiece 13 # Linie 25
+  w7 w5 repeat 4 [w3] w1 w2 w2 w6 r2 r4 nlpiece 11 # Linie 26
+  w7 w4 repeat 4 [w3] w2 w6 r1 r4 nlpiece 9 # Linie 27
+  w7 w3 w2 w3 w6 w6 r2 r6 nlpiece 8 # Linie 28
+  w7 w1 w6 w6 r3 r2 r4 nlpiece 7 # Linie 29
+  w7 w6 pu w7 w7 pd r6 r6 # Linie 30
+end
+
+to pW :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+  pu w7 pd repeat 7 [w7] w6 w6 w7 w7 w6 w6 w6 pu w7 nlpiece 16 # Linie 1
+  w7 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 16 # Linie 2
+  w7 w5 w5 w5 w4 w4 repeat 6 [w3] w1 w2 w2 w6 nlpiece 16 # Linie 3
+  pu w7 pd repeat 9 [w7] w6 w7 w6 w6 w6 pu w7 pd nlpiece 16 # Linie 4
+  w7 w5 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w6 nlpiece 16 # Linie 5
+  w7 w5 w5 w4 w4 repeat 6 [w3] w1 w1 w2 w2 w6 nlpiece 15 # Linie 6
+  w7 w5 w5 w4 w4 repeat 4 [w3] w1 w1 w2 w2 w6 nlpiece 13 # Linie 6
+  w7 w5 w5 w4 repeat 4 [w3] w1 w2 w2 w6 nlpiece 11 # Linie 7
+  w7 w5 w4 w4 w3 w3 w3 w2 w2 w6 nlpiece 10 # Linie 8
+  w7 w5 w5 w4 w3 w3 w3 w2 w2 w6 nlpiece 9 # Linie 9
+  w7 w5 w4 w4 w3 w3 w2 w6 nlpiece 8 # Linie 10
+  w7 repeat 6 [w5] w6 nlpiece 12 # Linie 11
+  repeat 11 [w7] repeat 5 [w6] nlpiece 16 # Linie 12
+  w7 w5 w5 w4 w4 w4 repeat 7 [w3] w2 w2 w6 nlpiece 15 # Linie 13
+  w7 w5 w5 w4 w3 w3 w4 w4 w4 w3 w3 w2 w1 w6 nlpiece 13 # Linie 14
+  w7 w5 w3 w3 w6 w7 w7 w7 w4 w3 w1 w6 nlpiece 12 #Linie 15
+  w7 w5 w2 w6 pu repeat 4 [w7] pd w7 w4 w2 w6 nlpiece 12 # Linie 16
+  w7 w5 w6 pu repeat 6 [w7] pd w7 w2 w6 nlpiece 12 # Linie 17
+  w7 w7 pu w7 w7 pd repeat 4 [r6] pu w7 w7 pd w6 w6 nlpiece 9 # Linie 18
+  r6 r4 r5 r5 r4 r6 nlpiece 7 # Linie 19
+  r6 r4 r5 repeat 4 [r4] r5 nlpiece 9 # Linie 20
+  r6 r5 r5 r4 r4 repeat 4 [r3] r6 nlpiece 10 # Linie 21
+  r6 r5 r4 r4 repeat 4 [r3] r2 r5 nlpiece 10 # Linie 22
+  r6 r5 r4 repeat 5 [r3] r2 r4 nlpiece 10 # Linie 23
+  r6 r4 r4 r3 r3 r3 r2 r2 r2 r5 nlpiece 9 # Linie 24
+  r5 r4 r3 r3 r3 r2 r1 r3 nlpiece 7 # Linie 25
+  r6 r3 r2 r2 r2 r5 nlpiece 5 # Linie 26
+  r5 r5 r3 r3
+end
+
+# Black pieces
+
+to kB :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+
+  repeat 16 [b5] nlpiece 17 # Linie 1
+  repeat 4 [b5] b4 b4 repeat 8 [b3] b2 b2 b2 b5 nlpiece 18 # Linie 2
+  repeat 5 [b5] b4 b4 repeat 7 [b3] b1 b2 b2 b5 nlpiece 17 # Linie 3
+  repeat 16 [b5] nlpiece 17 # Linie 4
+  repeat 5 [b5] b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 18 # Linie 5
+  repeat 4 [b5] b4 b4 repeat 8 [b3] b1 b2 b2 b5 nlpiece 17 # Linie 6
+  repeat 5 [b5] b4 b4 repeat 5 [b3] b1 b2 b2 b5 nlpiece 15 # Linie 7
+  repeat 14 [b5] nlpiece 15 # Linie 8
+  repeat 4 [b5] b4 b4 b4 b2 b3 b3 b3 b2 b2 b2 b5 nlpiece 16 # Linie 9
+  repeat 5 [b5] b4 b4 b5 b5 b5 b2 b3 b3 b1 b2 b2 b5 nlpiece 17 # Linie 10
+  repeat 4 [b5] b4 b4 b5 b5 bl5 bl4 b5 b1 b3 b3 b1 b2 b2 b5 nlpiece 18 # Linie 11
+  repeat 4 [b5] b4 b4 b5 bl5 bl4 bl3 bl2 b5 b3 b3 b2 b2 b2 b5 nlpiece 19 # Linie 12
+  repeat 4 [b5] b4 b4 b5 b5 bl4 bl3 bl3 bl2 b5 b2 b3 b3 b2 b2 b2 b5 nlpiece 20 # Linie 13
+  repeat 4 [b5] b4 b4 b5 bl4 bl3 bl3 bl1 bl2 bl1 b5 b2 b3 b2 b2 b2 b5 nlpiece 21 # Linie 14
+  repeat 4 [b5] b4 b4 b4 b5 b5 b5 bl2 bl2 b5 b5 b2 b3 b3 b3 b1 b2 b2 b5 nlpiece 22 # Linie 15
+  repeat 4 [b5] b4 b4 b3 b4 b4 b5 b5 b5 b1 b2 repeat 4 [b3] b1 b1 b2 b5 nlpiece 23 # Linie 16
+  repeat 4 [b5] b4 b4 repeat 14 [b3] b1 b2 b2 b5 nlpiece 24 # Linie 17
+  repeat 4 [b5] b4 b4 repeat 4 [b3] repeat 6 [b4] repeat 4 [b3] b1 b2 b2 b5 nlpiece 23 # Linie 18
+  repeat 4 [b5] b4 b4 b3 b3 b2 repeat 4 [b5] b4 b4 b4 b3 b3 b3 b2 b2 b5 nlpiece 22 # Linie 19
+  repeat 4 [b5] b4 b4 b4 b1 b5 pu repeat 4 [b5] pd b5 b4 b4 b4 b3 b3 b2 b2 b5 nlpiece 21 # Linie 20
+  repeat 4 [b5] b4 b5 b5 pu b5 b5 pd bl6 bl6 pu b5 b5 pd b5 b5 b4 b4 b1 b5 b5 nlpiece 18 # Linie 21
+  b5 b5 b5 pu b5 b5 b5 pd bl6 bl5 bl4 bl6 pu b5 b5 b5 pd b5 b5 b5 nlpiece 10 # Linie 22
+  bl6 bl5 bl3 bl6 nlpiece 12 # Linie 23
+  bl6 bl6 pu repeat 4 [b5] pd bl6 bl6 bl5 bl4 bl3 bl3 bl4 bl6 pu repeat 4 [b5] pd bl6 bl6 nlpiece 21 # Linie 24
+  bl6 bl4 bl3 bl4 pu b5 b5 pd bl6 bl5 bl5 bl4 bl4 repeat 4 [bl3] bl4 pu b5 b5 pd bl6 bl4 bl3 bl4 nlpiece 22 # Linie 25
+  bl6 bl3 bl1 bl4 pu b5 b5 pd bl6 bl5 bl4 bl4 bl3 bl3 bl3 bl2 bl1 bl6 pu b5 b5 pd bl6 bl3 bl1 bl4 nlpiece 21 # Linie 26
+  bl6 bl4 pu repeat 4 [b5] pd bl6 bl6 bl4 bl3 bl3 bl1 bl4 bl4 pu repeat 4 [b5] pd bl4 bl6 nlpiece 12 # Linie 27
+  bl6 bl3 bl2 bl4 nlpiece 4 # Linie 28
+  bl6 bl3 bl1 bl6 nlpiece 3 # Linie 29
+  bl4 bl4 # Linie 30
+end
+
+to qB :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+
+    repeat 16 [b5] nlpiece 17 # Linie 1
+  repeat 4 [b5] b4 b4 repeat 8 [b3] b2 b2 b2 b5 nlpiece 18 # Linie 2
+  repeat 5 [b5] b4 b4 repeat 7 [b3] b1 b2 b2 b5 nlpiece 17 # Linie 3
+  repeat 16 [b5] nlpiece 17 # Linie 4
+  repeat 5 [b5] b4 b4 repeat 6 [b3] repeat 4 [b2] b5 nlpiece 18 # Linie 5
+  b5 b5 b5 b4 b4 repeat 9 [b3] b1 b2 b2 b5 nlpiece 17 # Linie 6
+  b5 b5 b5 b4 b4 repeat 7 [b3] b2 b1 b2 b5 nlpiece 15 # Linie 7
+  repeat 14 [b5] nlpiece 14 # Linie 8
+  b5 b5 b5 repeat 4 [b4] b3 b3 b3 b2 b2 b2 b5 nlpiece 13 # Linie 9
+  b5 b5 b4 b4 b5 b5 b5 b2 b3 b2 b2 b5 nlpiece 12 # Linie 10
+  b5 b5 b4 b4 b5 bl6 bl6 b5 b3 b1 b1 b5 nlpiece 12 # Linie 11
+  b5 b5 b4 b4 b5 bl4 bl3 b5 b2 b1 b1 b5 nlpiece 13 # Linie 12
+  b5 b5 b4 b4 b5 bl6 bl4 bl3 bl2 b5 b3 b1 b2 b5 nlpiece 14 # Linie 13
+  b5 b5 b4 b4 b5 bl4 bl3 bl2 bl1 b5 b3 b3 b2 b5 nlpiece 15 # Linie 14
+  b5 b5 b4 b4 b4 b5 bl3 b5 b5 bl1 b5 b3 b3 b2 b2 b5 nlpiece 16 # Linie 15
+  b5 b4 b4 b4 b3 b3 b5 b3 b3 b5 b2 b3 b3 b2 b2 b5 nlpiece 17 # Linie 16
+  b5 b5 b4 b5 b4 b4 repeat 8 [b3] b5 b5 b3 b5 nlpiece 19 # Linie 17
+  b5 b5 b4 b5 bl5 b5 b4 b4 b3 b4 b4 b3 b3 b3 b5 bl3 b5 b4 b1 b5 nlpiece 20 # Linie 18
+  b5 b5 b5 bl6 bl4 b5 b4 b4 b2 b5 b5 b4 b3 b2 b5 bl2 bl6 b5 b5 b5 nlpiece 23 # Linie 19
+  bl6 bl6 pu repeat 4 [b5] pd bl6 bl3 b5 b4 b2 b5 bl5 bl4 b5 b4 b2 b5 bl1 bl4 pu repeat 4 [b5] pd bl6 bl6 nlpiece 27 # Linie 20
+  bl6 bl5 bl4 bl6 pu repeat 4 [b5] pd bl6 b5 b5 b2 b5 bl3 bl3 b5 b4 b1 b5 bl4 pu repeat 4 [b5] pd bl6 bl5 bl4 bl6 nlpiece 29 # Linie 21
+  bl6 bl5 bl3 bl3 bl2 bl4 pu b5 b5 b5 pd b5 b4 b2 b5 bl6 bl2 bl1 bl4 b5 b4 b1 b5 pu b5 b5 b5 pd bl6 bl5 bl3 bl3 bl2 bl4 nlpiece 30 # Linie 22
+  bl6 bl4 bl3 bl1 bl2 bl4 pu b5 b5 b5 pd b5 b5 b5 pu b5 b5 pd bl4 bl4 pu b5 b5 pd b5 b5 b5 pu b5 b5 b5 pd bl6 bl4 bl3 bl1 bl2 bl4 nlpiece 29 #Linie 23
+  bl6 bl2 bl2 bl6 pu repeat 20 [b5] pd bl6 bl2 bl2 bl6 nlpiece 27 # Linie 24
+  bl4 bl4 pu repeat 5 [b5] pd bl6 bl6 pu repeat 8 [b5] pd bl6 bl6 pu repeat 5 [b5] pd bl4 bl6 nlpiece 20 # Linie 25
+  bl6 bl5 bl4 bl6 pu repeat 6 [b5] pd bl6 bl5 bl4 bl6 nlpiece 15 # Linie 26
+  bl6 bl5 bl3 bl3 bl2 bl4 pu repeat 4 [b5] pd bl6 bl5 bl3 bl3 bl2 bl4 nlpiece 16 # Linie 27
+  bl6 bl4 bl3 bl1 bl2 bl4 pu repeat 4 [b5] pd bl6 bl4 bl3 bl1 bl2 bl4 nlpiece 15 # Linie 28
+  bl6 bl2 bl2 bl4 pu repeat 6 [b5] pd bl6 bl2 bl2 bl4 nlpiece 13 # Linie 29
+  bl6 bl4 pu repeat 8 [b5] pd bl4 bl4 # Linie 30
+
+end
+
+to rB :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 62 20
+
+  pu b5 pd  repeat 16 [b5] nlpiece 17 # Linie 1
+  repeat 4 [b5] b4 b4 repeat 7 [b3] repeat 4 [b2] b5 nlpiece 18 # Linie 2
+ repeat 5 [b5] b4 b4 repeat 6 [b3] b1 b2 b2 b2 b5 nlpiece 17 # Linie 3
+  repeat 16 [b5] nlpiece 17 # Linie 4
+  repeat  5 [b5] b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 18 # Linie 5
+  repeat 4 [b5] b4 b4 repeat 7 [b3] b1 b1 b2 b2 b5 nlpiece 17 # Linie 6
+  repeat 5 [b5] b4 b4 repeat 5 [b3] b1 b1 b2 b2  nlpiece 15 # Linie 7
+  repeat 4 [b5] b4 b4 b3 b3 b3 b1 b2 b2 b2 b5 nlpiece 13 # Linie 8
+  b5 b5 b5 b4 b4 b3 b3 b3 b1 b2 b2 b5 nlpiece 12 # Linie 9
+  repeat 4 [b5] b4 b4 b3 b3 b2 b2 b2 b5 nlpiece 11 # Linie 10
+  repeat 4 [b5] b4 b3 b3 b4 b2 b2 b5 nlpiece 10 # Linie 11
+  repeat 6 [b5] b4 b2 b2 b5 nlpiece 10 # Linie 12
+  bl6 bl5 bl5 b5 bl3 b5 b5 b4 b1 b5 nlpiece 11 # Linie 13
+  b5 bl6 bl5 bl4 bl3 bl3 bl3 bl2 b5 b1 b5 nlpiece 12 # Linie 14
+  repeat 4 [b5] bl4 bl3 b5 bl2 bl1 bl4 b5 b5 nlpiece 12 # Linie 15
+  b5 b5 b4 b4 b5 b5 b3 b5 b5 bl4 nlpiece 10 # Linie 16
+  b5 b5 b5 b4 b4 b3 b3 b2 b1 b5 b5 nlpiece 11 # Linie 17
+  repeat 12 [b5] nlpiece 12 # Linie 18
+  repeat 12 [b5] nlpiece 13 # Linie 19
+  repeat 4 [b5] b4 b4 repeat 4 [b3] b2 b2 b2 b5 nlpiece 15 # Linie 20
+  b5 b5 b5 b4 b4 b4 repeat 6 [b3] b1 b2 b2 b5 nlpiece 16 # Linie 21
+  b5 b5 b4 b4 repeat 9 [b3] b1 b2 b5 nlpiece 17 # Linie 22
+  b5 b5 b4 b3 b3 b4 b4 repeat 5 [b3] b4 b4 b3 b2 b2 b5 nlpiece 18 # Linie 23
+  b5 b5 b4 b3 b5 b5 b5 b4 b4 b3 b3 b3 b5 b5 b5 b2 b2 b5 nlpiece 18 # Linie 24
+  b5 b4 b3 b5 bl5 bl4 b5 b5 b4 b3 b3 b5 bl2 bl2 b5 b3 b1 b5 nlpiece 18 # Linie 25
+  b5 b4 b1 b5 bl5 bl4 b5 b5 b4 b3 b2 b5 bl2 bl2 b5 b3 b1 b5 nlpiece 18 # Linie 26
+  b5 b4 b1 b5 bl5 bl4 b5 b5 b4 b2 b2 b5 bl2 bl2 b5 b3 b2 b5 nlpiece 18 # Linie 27
+  b5 b5 b5 bl6 bl5 bl5 bl4 repeat 4 [b5] bl2 bl2 bl1 bl6 b5 b5 b5 nlpiece 14 # Linie 28
+  bl6 bl5 bl5 bl4 bl4 bl3 bl2 bl1 bl1 bl6 nlpiece 9 # Linie 29
+  repeat 8 [bl6] # Linie 30
+
+end
+
+to bB :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+
+repeat 14 [b5] nlpiece 15 # Linie 1
+  b5 b5 b5 b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 16 # Linie 2
+  repeat 4 [b5] b4 b4 repeat 6 [b3] b1 b2 b2 b5 nlpiece 15 # Linie 3
+  repeat 14 [b5] nlpiece 15 # Linie 4
+  repeat 4 [b5] b4 b4 repeat 7 [b3] b2 b2 b5 nlpiece 16 # Linie 5
+  b5 b5 b5 b4 b4 repeat 6 [b3] b1 b1 b2 b2 b5 nlpiece 15 # Linie 6
+  b5 b5 b5 b4 b4 repeat 5 [b3] b1 b2 b2 b5 nlpiece 13 # Linie 7
+  b5 b5 b5 b4 b4 b3 b3 b3 b2 b2 b2 b5 nlpiece 11 # Linie 8
+  repeat 10 [b5] nlpiece 11 # Linie 9
+  b5 b5 b4 b4 b4 b3 b3 b3 b2 b2 b2 b5 nlpiece 12 # Linie 10
+  b5 b5 b4 b4 repeat 5 [b3] b2 b2 b5 nlpiece 13 # Linie 11
+  b5 b5 b4 b4 repeat 6 [b3] b1 b2 b2 b5 nlpiece 14 # Linie 12
+  b5 b5 b4 b4 repeat 6 [b3] b1 b2 b2 b5 nlpiece 14 # Linie 13
+  b5 b5 b5 b4 b3 b4 b4 b4 b3 b3 b3 b2 b2 b5 nlpiece 14 # Linie 14
+  b5 b5 b5 b4 b1 b5 b5 b4 b4 b3 b3 b3 b2 b2 b5 nlpiece 14 # Linie 15
+  repeat 4 [b5] pu b5 b5 pd b5 b4 b4 b3 b1 b2 b2 b5 nlpiece 7 # Linie 16
+  b5 b5 b3 b1 b2 b2 b5 nlpiece 6 # Linie 17
+  b5 b4 b3 b1 b2 b5 nlpiece 13 # Linie 18
+  bl6 bl6 pu repeat 5 [b5] pd b5 b4 b3 b2 b2 b5 nlpiece 14 # Linie 19
+  bl6 bl3 bl4 bl6 pu repeat 4 [b5] pd b5 b4 b3 b2 b2 b5 nlpiece 15 # Linie 20
+  bl6 bl5 bl5 bl4 bl3 bl6 pu b5 b5 b5 pd b5 b4 b3 b2 b5 nlpiece 14 # Linie 21
+  bl6 bl5 bl4 bl3 bl3 bl6 pu b5 b5 b5 pd b5 b4 b3 b2 b5 nlpiece 14 # Linie 22
+  bl6 bl5 bl3 bl3 bl3 bl6 pu b5 b5 b5 pd b5 b4 b2 b5 nlpiece 13 # Linie 23
+  bl6 bl4 bl3 bl3 bl3 bl4 pu b5 b5 pd b5 b4 b3 b2 b5 nlpiece 13 # Linie 24
+  bl6 bl4 bl3 bl3 bl2 bl4 pu b5 b5 pd b5 b4 b3 b5 nlpiece 12 # Linie 25
+  bl6 bl4 bl3 bl2 bl1 bl6 pu b5 pd b5 b4 b4 b2 b5 nlpiece 11 # Linie 26
+  bl6 bl3 bl2 bl4 pu b5 b5 pd b5 b4 b1 b5 nlpiece 9 # Linie 27
+  bl4 bl4 pu b5 b5 b5 pd b5 b4 b1 b5 b5 nlpiece 5 # Linie 28
+  b5 b4 b3 b1 b5 nlpiece 4 # Linie 29
+  b5 b5 b5 # Linie 30
+end
+
+to nB :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 76 20
+
+  repeat 14 [b5] nlpiece 15 # Linie 1
+  b5 b5 b5 b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 16 # Linie 2
+  repeat 4 [b5] b4 b4 repeat 7 [b3] b1 b2 b5 nlpiece 15 # Linie 3
+  repeat 14 [b5] nlpiece 15 # Linie 4
+  repeat 5 [b5] b4 b4 repeat 6 [b3] b2 b2 b5 nlpiece 17 # Linie 5
+  repeat 4 [b5] b4 b4 b4 repeat 7 [b3] b2 b2 b5 nlpiece 17 # Linie 6
+  repeat 4 [b5] b4 b4 repeat 7 [b3] b1 b2 b5 nlpiece 16 # Linie 7
+  repeat 4 [b5] b4 b4 repeat 6 [b3] b1 b1 b2 b5 nlpiece 15 # Linie 8
+  b5 b5 b5 b4 b4 b4 repeat 5 [b3] b1 b2 b2 b5 nlpiece 15 # Linie 9
+  repeat 4 [b5] b4 b4 repeat 6 [b3] b2 b2 b5 nlpiece 14 # Linie 10
+  b5 b5 b5 b4 b4 repeat 6 [b3] b2 b2 b5 nlpiece 13 # Linie 11
+  b5 b5 b5 b4 b4 repeat 4 [b3] b2 b2 b5 bl3 bl6 nlpiece 13 # Linie 12
+  b5 b5 b4 b4 repeat 4 [b3] b2 b2 b5 bl3 bl6 nlpiece 12 # Linie 13
+  b5 b5 b4 b4 b3 b3 b3 b2 b2 b5 bl4 bl6 nlpiece 12 # Linie 14
+  b5 b5 b4 b4 b3 b3 b3 b2 b2 b5 bl4 bl6 nlpiece 11 # Linie 15
+  b5 b5 b4 repeat 4 [b3] b2 b5 bl5 bl6 nlpiece 11 # Linie 16
+  b5 b5 b4 b4 b3 b3 b3 b2 b2 b5 bl3 bl6 nlpiece 20 # Linie 17
+  repeat 4 [b5] pu repeat 4 [b5] pd repeat 4 [b5] b4 b3 b3 b1 b2 b5 bl4 bl6 nlpiece 20 # Linie 18
+  repeat 8 [b5] b4 b3 b3 b3 b5 b3 b3 b1 b2 b5 bl5 bl6 nlpiece 19 # Linie 19
+  b5 b5 repeat 5 [b4] repeat 8 [b3] b2 b2 b5 bl3 bl6 nlpiece 21 # Linie 20
+  b5 b5 b4 b3 b3 b3 b4 repeat 9 [b3] b2 b2 b5 bl3 bl6 nlpiece 21 # Linie 21
+  b5 b5 b4 repeat 13 [b3] b2 b2 b5 bl3 bl4 nlpiece 20 # Linie 22
+  b5 b5 b4 b4 b3 b3 b3 b4 b4 repeat 6 [b3] b2 b2 b5 bl3 bl4 nlpiece 20 # Linie 23
+  repeat 4 [b5] b4 b4 b3 bl4 bl4 bl3 b4 b3 b3 b1 b3 b2 b5 bl2 bl4 nlpiece 15 # Linie 24
+  b5 b5 b4 b4 bl3 bl1 bl2 b3 b3 b1 b2 b2 b5 bl3 bl4 nlpiece 13 # Linie 25
+  b5 b5 repeat 4 [b3] b1 b2 b2 b5 bl2 bl4 nlpiece 11 # Linie 26
+  b5 b4 repeat 4 [b3] b2 b5 bl1 bl4 nlpiece 9 # Linie 27
+  b5 b3 b2 b3 b5 b5 bl2 bl6 nlpiece 8 # Linie 28
+  b5 b1 b5 b5 bl3 bl2 bl4 nlpiece 7 # Linie 29
+  b5 b5 pu b5 b5 pd bl6 bl6 # Linie 30
+
+end
+
+to pB :xold :yold :x :y
+  redrawSquare :xold :yold
+  redrawSquare :x :y
+  place :x :y 69 20
+    pu b5 pd repeat 14 [b5] pu w7 nlpiece 16 # Linie 1
+  b5 b5 b5 b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 16 # Linie 2
+  repeat 4 [b5] b4 b4 repeat 6 [b3] b1 b2 b2 b5 nlpiece 16 # Linie 3
+  pu b5 pd repeat 14 [b5] pu b5 pd nlpiece 16 # Linie 4
+  repeat 4 [b5] b4 b4 repeat 7 [b3] b2 b2 b5 nlpiece 16 # Linie 5
+  repeat 3 [b5] b4 b4 repeat 6 [b3] b1 b1 b2 b2 b5 nlpiece 15 # Linie 6
+ b5 b5 b5 b4 b4 repeat 4 [b3] b1 b1 b2 b2 b5 nlpiece 13 # Linie 6
+  b5 b5 b5 b4 repeat 4 [b3] b1 b2 b2 b5 nlpiece 11 # Linie 7
+  b5 b5 b4 b4 b3 b3 b3 b2 b2 b5 nlpiece 10 # Linie 8
+  b5 b5 b5 b4 b3 b3 b3 b2 b2 b5 nlpiece 9 # Linie 9
+  b5 b5 b4 b4 b3 b3 b2 b5 nlpiece 8 # Linie 10
+  repeat 8 [b5] nlpiece 12 # Linie 11
+  repeat 16 [b5] nlpiece 16 # Linie 12
+  b5 b5 b5 b4 b4 b4 repeat 7 [b3] b2 b2 b5 nlpiece 15 # Linie 13
+  b5 b5 b5 b4 b3 b3 b4 b4 b4 b3 b3 b2 b1 b5 nlpiece 13 # Linie 14
+  b5 b5 b3 b3 repeat 4 [b5] b4 b3 b1 b5 nlpiece 12 #Linie 15
+  b5 b5 b2 b5 pu repeat 4 [b5] pd b5 b4 b2 b5 nlpiece 12 # Linie 16
+  b5 b5 b5 pu repeat 6 [b5] pd b5 b2 b5 nlpiece 12 # Linie 17
+  b5 b5 pu b5 b5 pd repeat 4 [bl6] pu b5 b5 pd b5 b5 nlpiece 9 # Linie 18
+  bl6 bl4 bl5 bl5 bl4 bl6 nlpiece 7 # Linie 19
+  bl6 bl4 bl5 repeat 4 [bl4] bl5 nlpiece 9 # Linie 20
+  bl6 bl5 bl5 bl4 bl4 repeat 4 [bl3] bl6 nlpiece 10 # Linie 21
+  bl6 bl5 bl4 bl4 repeat 4 [bl3] bl2 bl5 nlpiece 10 # Linie 22
+  bl6 bl5 bl4 repeat 5 [bl3] bl2 bl4 nlpiece 10 # Linie 23
+  bl6 bl4 bl4 bl3 bl3 bl3 bl2 bl2 bl2 bl5 nlpiece 9 # Linie 24
+  bl5 bl4 bl3 bl3 bl3 bl2 bl1 bl3 nlpiece 7 # Linie 25
+  bl6 bl3 bl2 bl2 bl2 bl5 nlpiece 5 # Linie 26
+  bl5 bl5 bl3 bl3
+
+
+end
+
+# Chessboard
+
+to chessboard
+  repeat 4 [repeat 4 [blackSquare whiteSquare] nlBoard repeat 4 [whiteSquare blackSquare] nlboard]
+
+  setpc [50 50 50]
+  setxy -500 -500
+  repeat 250*12 [fd 500 bk 500 rt 90 fd 1 lt 90]
+  setxy -500 2000
+  repeat 250*12 [fd 500 bk 500 rt 90 fd 1 lt 90]
+  setxy -500 0
+  repeat 500 [fd 2000 bk 2000 rt 90 fd 1 lt 90]
+  setxy 2000 0
+  repeat 500 [fd 2000 bk 2000 rt 90 fd 1 lt 90]
+
+  setxy 0 -250 # Horizontal
+  square1 [100 230 255] [49 108 189] 0
+  square2 [100 230 255] [49 108 189] 0
+  square3 [100 230 255] [49 108 189] 0
+  square4 [100 230 255] [49 108 189] 0
+  square5 [100 230 255] [49 108 189] 0
+  square6 [100 230 255] [49 108 189] 0
+  square7 [100 230 255] [49 108 189] 0
+  square8 [100 230 255] [49 108 189] 0
+
+  setxy 0 2000 # Horizontal
+  square1 [100 230 255] [49 108 189] 0
+  square2 [100 230 255] [49 108 189] 0
+  square3 [100 230 255] [49 108 189] 0
+  square4 [100 230 255] [49 108 189] 0
+  square5 [100 230 255] [49 108 189] 0
+  square6 [100 230 255] [49 108 189] 0
+  square7 [100 230 255] [49 108 189] 0
+  square8 [100 230 255] [49 108 189] 0
+
+  setxy -250 0 # Vertical
+  square1 [235 112 106] [158 67 113] 1
+  square2 [235 112 106] [158 67 113] 1
+  square3 [235 112 106] [158 67 113] 1
+  square4 [235 112 106] [158 67 113] 1
+  square5 [235 112 106] [158 67 113] 1
+  square6 [235 112 106] [158 67 113] 1
+  square7 [235 112 106] [158 67 113] 1
+  square8 [235 112 106] [158 67 113] 1
+
+  setxy 2000 0 # Vertical
+  square1 [235 112 106] [158 67 113] 1
+  square2 [235 112 106] [158 67 113] 1
+  square3 [235 112 106] [158 67 113] 1
+  square4 [235 112 106] [158 67 113] 1
+  square5 [235 112 106] [158 67 113] 1
+  square6 [235 112 106] [158 67 113] 1
+  square7 [235 112 106] [158 67 113] 1
+  square8 [235 112 106] [158 67 113] 1
+
+end
+
+to redrawSquare :x :y
+
+  if :x - 1 > 7 [
+    STOP
+    ]
+
+  if :y - 1 > 7 [
+    STOP
+    ]
+
+  if :x - 1 < 0 [
+    STOP
+    ]
+
+  if :y - 1< 0 [
+    STOP
+    ]
+
+  if (:x - 1) % 2 = 0 [
+    if (:y - 1) % 2 = 0 [
+      place :x :y 0 0
+      blackSquare
+      ]
+    if (:y - 1) % 2 = 1 [
+      place :x :y 0 0
+      whiteSquare
+      ]
+  ]
+
+  if (:x - 1) % 2 = 1 [
+    if (:y - 1) % 2 = 0 [
+      place :x :y 0 0
+      whiteSquare
+      ]
+    if (:y - 1) % 2 = 1 [
+      place :x :y 0 0
+      blackSquare
+      ]
+  ]
+end
+
+# Colored Pixel
+
+to w1
+  setpc [255 200 120]
+  pixel
+end
+
+to w2
+  setpc [238 183 104]
+  pixel
+end
+
+to w3
+  setpc [232 175 90]
+  pixel
+end
+
+to w4
+  setpc [225 132 59]
+  pixel
+end
+
+to w5
+  setpc [207 102 20]
+  pixel
+end
+
+to w6
+  setpc [158 99 53]
+  pixel
+end
+
+to w7
+  setpc [142 77 44]
+  pixel
+end
+
+to r1
+  setpc [247 140 135]
+  pixel
+end
+
+to r2
+  setpc [235 112 106]
+  pixel
+end
+
+to r3
+  setpc [250 70 62]
+  pixel
+end
+
+to r4
+  setpc [206 62 55]
+  pixel
+end
+
+to r5
+  setpc [240 89 121]
+  pixel
+end
+
+to r6
+  setpc [158 67 113]
+  pixel
+end
+
+to b1
+  setpc [135 135 135]
+  pixel
+end
+
+to b2
+  setpc [97 97 97]
+  pixel
+end
+
+to b3
+  setpc [74 74 74]
+  pixel
+end
+
+to b4
+  setpc [56 56 56]
+  pixel
+end
+
+to b5
+  setpc [30 30 30]
+  pixel
+end
+
+to bl1
+  setpc [148 243 255]
+  pixel
+end
+
+to bl2
+  setpc [100 230 255]
+  pixel
+end
+
+to bl3
+  setpc [66 173 204]
+  pixel
+end
+
+to bl4
+  setpc [57 142 197]
+  pixel
+end
+
+to bl5
+  setpc [49 108 189]
+  pixel
+end
+
+to bl6
+  setpc [34 71 189]
+  pixel
+end
+
+to pixel
+  repeat 7 [fd 7 bk 7 rt 90 fd 1 lt 90]
+  #repeat 100 [fd 100 bk 100 rt 90 fd 1 lt 90]
+end
+
+# Squares
+
+to whiteSquare
+    setpc [215 235 255]
+    #setpc [233 203 161]
+    repeat 250 [fd 250 bk 250 rt 90 fd 1 lt 90]
+end
+
+to blackSquare
+    setpc [95 25 85]
+    #setpc [160 109 37]
+    repeat 250 [fd 250 bk 250 rt 90 fd 1 lt 90]
+end
+
+to p
+  repeat 10 [fd 10 bk 10 rt 90 fd 1 lt 90]
+end
+
+to nlp
+  pu fd 10 lt 90 fd 25*10 rt 90 pd
+end
+
+to p1 :n # Electro pixel
+  repeat :n [
+    repeat 400 [fd 400/33 bk 400/33 rt 90 fd 1/32 lt 90]
+    #repeat 50 [fd 50 bk 50 rt 90 fd 1 lt 90]
+  ]
+end
+
+to nlp1 :n # Electro newline
+  pu fd 400/33 lt 90 fd :n*400/32 rt 90 pd
+  #pu fd 50 lt 90 fd :n*50 rt 90 pd
+end
+
+to p2 :n # Ice pixel
+  repeat :n [
+    #repeat 400 [fd 400/33 bk 400/33 rt 90 fd 1/32 lt 90]
+    repeat 50 [fd 50 bk 50 rt 90 fd 1 lt 90]
+  ]
+end
+
+to nlp2 :n # Ice newline
+  #pu fd 400/33 lt 90 fd :n*400/32 rt 90 pd
+  pu fd 50 lt 90 fd :n*50 rt 90 pd
+end
+
+to p3 :n # Water pixel
+  repeat :n [
+    #repeat 400 [fd 400/33 bk 400/33 rt 90 fd 1/32 lt 90]
+    repeat 50 [fd 50 bk 50 rt 90 fd 1 lt 90]
+  ]
+end
+
+to nlp3 :n # Water newline
+  #pu fd 400/33 lt 90 fd :n*400/32 rt 90 pd
+  pu fd 50 lt 90 fd :n*50 rt 90 pd
+end
+
+to p4 :n # Fire pixel
+  repeat :n [
+    #repeat 400 [fd 400/33 bk 400/33 rt 90 fd 1/32 lt 90]
+    repeat 50 [fd 50 bk 50 rt 90 fd 1 lt 90]
+  ]
+end
+
+to nlp4 :n # Fire newline
+  #pu fd 400/33 lt 90 fd :n*400/32 rt 90 pd
+  pu fd 50 lt 90 fd :n*50 rt 90 pd
+end
+
+# Pixel logo electro
+
+to el1 :n
+  setpc [83 61 94]
+  p1 :n
+end
+
+to el2 :n
+  setpc [106 79 122]
+  p1 :n
+end
+
+to el3 :n
+  setpc [132 83 160]
+  p1 :n
+end
+
+to el4 :n
+  setpc [159 106 190]
+  p1 :n
+end
+
+to el5 :n
+  setpc [178 112 215]
+  p1 :n
+end
+
+to el6 :n
+  setpc [103 10 156]
+  p1 :n
+end
+
+to el7 :n
+  setpc [129 44 177]
+  p1 :n
+end
+
+to el8 :n
+  setpc [159 72 209]
+  p1 :n
+end
+
+to el9 :n
+  setpc [183 93 234]
+  p1 :n
+end
+
+to el10 :n
+  setpc [204 144 243]
+  p1 :n
+end
+
+to el11 :n
+  setpc [226 196 244]
+  p1 :n
+end
+
+to el12 :n
+  setpc [235 70 235]
+  p1 :n
+end
+
+# Pixel logo ice
+
+to ic1 :n
+  setpc
+  p2 :n
+end
+
+to ic2 :n
+  setpc
+  p2 :n
+end
+
+to ic3 :n
+  setpc
+  p2 :n
+end
+
+to ic4 :n
+  setpc
+  p2 :n
+end
+
+to ic5 :n
+  setpc
+  p2 :n
+end
+
+to ic6 :n
+  setpc
+  p2 :n
+end
+
+to ic7 :n
+  setpc
+  p2 :n
+end
+
+to ic8 :n
+  setpc
+  p2 :n
+end
+
+to ic9 :n
+  setpc
+  p2 :n
+end
+
+# Pixel logo water
+
+to wa1 :n
+  setpc
+  p3 :n
+end
+
+to wa2 :n
+  setpc
+  p3 :n
+end
+
+to wa3 :n
+  setpc
+  p3 :n
+end
+
+to wa4 :n
+  setpc
+  p3 :n
+end
+
+to wa5 :n
+  setpc
+  p3 :n
+end
+
+to wa6 :n
+  setpc
+  p3 :n
+end
+
+to wa7 :n
+  setpc
+  p3 :n
+end
+
+to wa8 :n
+  setpc
+  p3 :n
+end
+
+to wa9 :n
+  setpc
+  p3 :n
+end
+
+to wa11 :n
+  setpc
+  p3 :n
+end
+
+to wa12 :n
+  setpc
+  p3 :n
+end
+
+to wa13 :n
+  setpc
+  p3 :n
+end
+
+# Pixel logo fire
+
+to fi1 :n
+  setpc
+  p4 :n
+end
+
+to fi2 :n
+  setpc
+  p4 :n
+end
+
+to fi3 :n
+  setpc
+  p4 :n
+end
+
+to fi4 :n
+  setpc
+  p4 :n
+end
+
+to fi5 :n
+  setpc
+  p4 :n
+end
+
+to fi6 :n
+  setpc
+  p4 :n
+end
+
+to fi7 :n
+  setpc
+  p4 :n
+end
+
+to fi8 :n
+  setpc
+  p4 :n
+end
+
+to fi9 :n
+  setpc
+  p4 :n
+end
+
+# Numbered tiles
+
+to square1 :c :s :n # :c = color :s = shadow :n = next number horizontal/vertical
+  #setpc [50 50 50] # Border color
+  # setpc [215 235 255] # background new
+  # setpc [150 100 60] # background old
+  # setpc [49 108 189] darkblue
+  # setpc [100 230 255] lightblue
+  repeat 4 [pu repeat 25 [p] pd nlp]  # Linie 1-4
+  pu repeat 7 [p] pd setpc :s repeat 12 [p] pu repeat 6 [p] pd nlp # Linie 5
+  repeat 2 [pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp] # Linie 6-7
+  pu repeat 10 [p] pd setpc :c repeat  5 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 8
+  repeat 8 [pu repeat 11 [p] pd setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp] # Linie 9-16
+  pu repeat 8 [p] pd setpc :s p p p setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp # Linie 17
+  pu repeat 8 [p] pd setpc :c repeat 6 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 18
+  pu repeat 9 [p] pd setpc :c repeat 5 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 19
+  pu repeat 10 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 20
+  pu repeat 11 [p] pd setpc :c repeat 3 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 21-25
+  newNumber :n
+end
+
+to square2 :c :s :n
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
+  pu repeat 5 [p] pd setpc :s repeat 15 [p] pu repeat 5 [p] pd nlp # Linie 5
+  repeat 2 [pu repeat 5 [p] pd setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp] # Linie 6-7
+  pu repeat 8 [p] pd setpc :c repeat 5 [p] setpc :s p  pu repeat 11 [p] pd nlp # Linie 8
+  pu repeat 10 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 9
+  pu repeat 11 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 10
+  pu repeat 12 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 8 [p] pd nlp # Linie 11
+  pu repeat 13 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 12
+  pu repeat 14 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 13
+  pu repeat 15 [p] pd setpc :c repeat 3 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 14
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 15
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 15
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 17
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 18
+  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p  pu repeat 6 [p] pd nlp # Linie 19
+  pu repeat 8 [p] pd setpc :c repeat 9 [p] setpc :s p  pu repeat 7 [p] pd nlp # Linie 20
+  pu repeat 9 [p] pd setpc :c repeat 7 [p] setpc :s p  pu repeat 8 [p] pd nlp # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  newNumber :n
+end
+
+to square3 :c :s :n
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
+  pu repeat 8 [p] pd setpc :s repeat 7 [p] pu repeat 10 [p] pd nlp # Linie 5
+  pu repeat 6 [p] pd setpc :s p p setpc :c repeat 7 [p] setpc :s p p pu repeat 8 [p] pd nlp # Linie 6
+  pu repeat 6 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 7
+  pu repeat 6 [p] pd setpc :c p p p pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 8
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 9
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 10
+  pu repeat 14 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 11
+  pu repeat 8 [p] pd setpc :s repeat 6 [p] setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp # Linie 12
+  repeat 2 [pu repeat 8 [p] pd setpc :c repeat 9 [p] setpc :s p pu repeat 7 [p] pd nlp] # Linie 13-14
+  pu repeat 14 [p] pd setpc :c repeat 4 [p] setpc :s p  pu repeat 6 [p] pd nlp # Linie 15
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 16
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 17
+  pu repeat 6 [p] pd setpc :s p p p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 18
+  pu repeat 6 [p] pd setpc :c p p p setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp # Linie 19
+  pu repeat 6 [p] pd setpc :c repeat 10 [p] setpc :s  p pu repeat 8 [p] pd nlp # Linie 20
+  pu repeat 8 [p] pd setpc :c repeat 7 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  newNumber :n
+end
+
+to square4 :c :s :n
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
+  pu repeat 11 [p] pd setpc :s repeat 9 [p] pu repeat 5 [p] pd nlp # Linie 5
+  repeat 2 [pu repeat 11 [p] pd setpc :c repeat 8 [p] setpc :s p pu repeat 5 [p] pd nlp] # Linie 6-7
+  repeat 3 [pu repeat 14 [p] pd setpc :c p p setpc :s p  pu repeat 8 [p] pd nlp] # Linie 8-10
+  pu repeat 6 [p] pd setpc :s repeat 8 [p] setpc :c p p setpc :s repeat 4 [p] pu repeat 5 [p] pd nlp # Linie 11
+  pu repeat 5 [p] pd setpc :s p setpc :c repeat 13 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 12
+  pu repeat 5 [p] pd setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 13
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c p p setpc :s p pu repeat 8 [p] pd nlp # Linie 14
+  repeat 7[pu repeat 5 [p] pd setpc :c p p setpc :s p pu repeat 6 [p] pd setpc :c p p setpc :s p pu repeat 8 [p] pd nlp] # Linie 15-21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  newNumber :n
+end
+
+to square5 :c :s :n
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
+  pu repeat 7 [p] pd setpc :s repeat 10 [p] pu repeat 8 [p] pd nlp # Linie 5
+  pu repeat 5 [p] pd setpc :s p p setpc :c repeat 10 [p] setpc :s p p pu repeat 6 [p] pd nlp # Linie 6
+  pu repeat 4 [p] pd setpc :s p setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 7
+  pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 8
+  pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 8 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 4 [p] pd nlp # Linie 9
+  repeat 2 [pu repeat 17 [p] pd setpc :c p p p setpc :s p pu repeat 4 [p] pd nlp] # Linie 10-11
+  pu repeat 15 [p] pd setpc :s p p setpc :c p p p setpc :s p  pu repeat 4 [p] pd nlp # Linie 12
+  pu repeat 5 [p] pd setpc :s repeat 10 [p] setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 13
+  pu repeat 4 [p] pd setpc :s p setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 14
+  pu repeat 4 [p] pd setpc :c repeat 13 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 15
+  pu repeat 4 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 16 [p] pd nlp # Linie 16
+  repeat 2 [pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 17 [p] pd nlp] # Linie 17-18
+  pu repeat 4 [p] pd setpc :c repeat 4 [p] setpc :s repeat 13 [p] pu repeat 4 [p] pd nlp # Linie 19
+  repeat 2 [pu repeat 4 [p] pd setpc :c repeat 16 [p] setpc :s p pu repeat 4 [p] pd nlp] # Linie 20-21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  newNumber :n
+end
+
+to square6 :c :s :n
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
+  pu repeat 8 [p] pd setpc :s repeat 8 [p] pu repeat 9 [p] pd nlp # Linie 5
+  pu repeat 6 [p] pd setpc :s p p setpc :c repeat 8 [p] setpc :s p p pu repeat 7 [p] pd nlp # Linie 6
+  pu repeat 5 [p] pd setpc :s p setpc :c repeat 12 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 7
+  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 8
+  repeat 3 [pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp] # Linie 9-11
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 12
+  pu repeat 5 [p] pd setpc :c repeat 5 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 13
+  pu repeat 5 [p] pd setpc :c repeat 13 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 14
+  pu repeat 5 [p] pd setpc :c repeat 12 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 15
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 16 [p] pd nlp # Linie 16
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 9 [p] pd setpc :s p p pu repeat 5 [p] pd nlp # Linie 17
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd setpc :s p p setpc :c p setpc :s p pu repeat 5 [p] pd nlp # Linie 18
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 6 [p] setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 19
+  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 20
+  pu repeat 9 [p] pd setpc :c repeat 7 [p] setpc :s p pu repeat 8 [p] pd nlp # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  newNumber :n
+end
+
+to square7 :c :s :n
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
+  pu repeat 9 [p] pd setpc :s p p p pu repeat 13 [p] pd nlp # Linie 5
+  repeat 2 [pu repeat 9 [p] pd setpc :c p p setpc :s p pu repeat 13 [p] pd nlp] # Linie 6-7
+  pu repeat 9 [p] pd setpc :c p p p setpc :s p pu repeat 12 [p] pd nlp # Linie 8
+  pu repeat 9 [p] pd setpc :c p p p setpc :s p pu repeat 12 [p] pd nlp # Linie 9
+  pu repeat 10 [p] pd setpc :c p p setpc :s p pu repeat 12 [p] pd nlp # Linie 10
+  pu repeat 10 [p] pd setpc :c p p p setpc :s p pu repeat 11 [p] pd nlp # Linie 11
+  pu repeat 11 [p] pd setpc :c p p setpc :s p pu repeat 11 [p] pd nlp # Linie 12
+  pu repeat 11 [p] pd setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp # Linie 13
+  pu repeat 12 [p] pd setpc :c p p p setpc :s p pu repeat 9 [p] pd nlp # Linie 14
+  pu repeat 13 [p] pd setpc :c p p p setpc :s p pu repeat 8 [p] pd nlp # Linie 15
+  pu repeat 14 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp # Linie 16
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 17
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 18
+  pu repeat 6 [p] pd setpc :s repeat 9 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 19
+  repeat 2 [pu repeat 6 [p] pd setpc :c repeat 12 [p] setpc :s p pu repeat 6 [p] pd nlp] # Linie 20-21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  newNumber :n
+end
+
+to square8 :c :s :n
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
+  pu repeat 9 [p] pd setpc :s repeat 7 [p] pu repeat 9 [p] pd nlp # Linie 5
+  pu repeat 7 [p] pd setpc :s p p setpc :c repeat 7 [p] setpc :s p p pu repeat 7 [p] pd nlp # Linie 6
+  pu repeat 6 [p] pd setpc :s p setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 7
+  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p  pu repeat 5 [p] pd nlp # Linie 8
+  repeat 2 [pu repeat 5 [p] pd setpc :c p p p setpc :s p  pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp] # Linie 9-10
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 11
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 12
+  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 13
+  pu repeat 6 [p] pd setpc :s p setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 14
+  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 15
+  repeat 2 [pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp] # Linie 16-17
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c repeat 3 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 18
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 19
+  pu repeat 7 [p] pd setpc :c repeat 10 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 20
+  pu repeat 9 [p] pd setpc :c repeat 6 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  newNumber :n
+end
+
+to electro #32x33
+  pu el1 13 pd el6 6 nlp1 7 # Linie 1
+  el7 1 el12 3 el9 1 el8 2 el6 3 nlp1 10 # Linie 2
+  el7 4 el12 1 el9 3 el8 1 el10 1 el6 2 nlp1 8 # Linie 3
+  el7 1 el6 1 el9 2 el10 1 el11 2 el8 1 el6 2 nlp1 13 # Linie 4
+  el1 1 el7 2 el9 4 el10 1 el11 1 el9 3 el8 1 el6 1 nlp1 16 # Linie 5
+  el1 2 el7 1 el9 7 el10 1 el11 1 el9 3 el8 1 el6 1 nlp1 19 # Linie 6
+  el1 3 el7 1 el9 7 el10 1 el11 1 el12 3 el9 1 el10 1 el11 1 el6 1 nlp1 25 # Linie 7
+  el6 2 pu el6 2 pd el1 3 el7 1 el12 1 el9 5 el12 2 el7 5 el10 1 el11 1 el12 1 el9 1 el6 1 nlp1 27 # Linie 8
+ el7 1 el11 1 el6 1 pu el6 1 pd el1 3 el7 1 el12 1 el9 1 el11 1 el9 3 el12 1 el7 2 el2 3 el1 2 el7 3 el12 1 el6 1 nlp1 28 # Linie 9
+ el7 1 el11 1 el10 1 el6 1 el1 3 el2 1 el7 1 el12 1 el11 1 el10 1 el11 1 el9 1 el11 1 el7 1 el3 3 el2 3 el1 3 pu el6 1 pd el7 2 nlp1 28 # Linie 10
+ el7 1 el10 1 el9 1 el6 1 el1 2 el2 1 el7 1 el12 2 el11 1 el10 2 el11 1 el6 1 el4 2 el3 4 el2 2 el1 2 nlp1 26 # Linie 11
+ el7 1 el12 1 el9 1 el8 1 el6 1 el1 1 el2 1 el7 1 el12 1 el7 3 el12 1 el9 1 el10 1 el6 1 el4 3 el7 2 el3 1 el2 3 el1 2 nlp1 27 # Linie 12
+ el7 1 el12 1 el9 1 el8 1 el6 1 el1 1 el2 1 el7 2 el3 1 el4 2 el7 1 el12 1 el8 1 el6 1 el5 2 el4 1 el7 1 el12 1 el7 1 el6 1 el2 2 el1 2 nlp1 27 # Linie 13
+ el7 1 el12 1 el9 1 el8 1 el6 1 el2 3 el3 2 el4 2 el5 1 el7 1 el12 1 el6 1 el5 3 el4 1 el7 1 el12 1 el8 1 el6 2 el2 1 el1 2 nlp1 29 # Linie 14
+ el7 1 el12 1 el9 2 el8 1 el6 1 el2 2 el3 2 el4 2 el5 2 el7 1 el11 1 el6 1 el5 4 el6 1 el12 1 el9 1 el8 2 el6 1 el2 1 el1 1 nlp1 29 # Linie 15
+ el7 1 el12 1 el9 2 el8 1 el6 1 el2 2 el3 2 el4 2 el5 2 el6 1 el10 1 el8 1 el6 4 el9 5 el8 1 el6 1 el1 1 nlp1 29 # Linie 16
+ el7 1 el12 1 el11 1 el9 1 el12 1 el8 1 el6 1 el2 1 el3 2 el4 2 el5 2 el7 1 el12 1 el8 1 el10 1 el11 1 el12 2 el9 5 el8 1 el6 1 el1 1 nlp1 29 # Linie 17
+ el7 1 el11 1 el10 1 el11 1 el10 1 el11 1 el6 1 el2 1 el3 2 el4 2 el5 2 el7 1 el10 1 el12 1 el7 4 el12 1 el10 1 el9 4 el8 1 el6 1 nlp1 29 # Linie 18
+ el7 1 el11 1 el10 2 el9 1 el10 1 el8 1 el6 2 el3 1 el4 2 el6 2 el11 1 el7 2 el5 4 el7 1 el11 1 el10 2 el9 1 el10 1 el8 1 el6 1 nlp1 29 # Linie 19
+ el7 1 el11 1 el10 1 el9 4 el8 2 el6 3 el10 1 el9 1 el6 1 el5 5 el4 1 el7 1 el11 1 el10 1 el11 1 el10 1 el11 1 el10 1 el6 1 nlp1 28 # Linie 20
+ el7 1 el12 1 el9 6 el8 3 el11 1 el10 1 el6 1 el5 4 el4 3 el7 1 el11 1 el9 1 el11 1 el9 1 el11 1 el6 1 pu el6 1 pd el7 1 el6 1 nlp1 31 # Linie 21
+ el7 1 el12 2 el9 7 el11 1 el10 1 el9 1 el8 1 el6 3 el4 3 el3 1 el7 1 el12 1 el9 3 el8 1 el6 1 el7 1 el12 1 el6 1 nlp1 31 # Linie 22
+ el6 1 el11 1 el6 1 el12 1 el9 7 el11 1 el10 1 el9 1 el8 2 el6 1 el4 1 el3 3 el7 1 el12 1 el9 3 el8 1 el6 1 el7 1 el12 1 el6 1 nlp1 30 # Linie 23
+ el6 1 el12 1 el7 1 el12 2 el9 4 el11 1 el10 2 el9 2 el7 1 el3 4 el2 1 el7 1 el12 1 el9 3 el6 1 el7 1 el12 1 el9 1 el6 1 nlp1 30 # Linie 24
+ el7 1 el11 1 el6 1 el7 2 el12 5 el11 2 el7 2 el3 3 el2 2 el7 1 el12 1 el9 3 el8 1 el7 1 el11 1 el10 1 el6 1 nlp1 28 # Linie 25
+ el7 1 el11 1 el6 1 pu el6 1 pd el7 7 el2 7 el7 1 el12 1 el9 3 el8 1 el12 1 el9 1 el11 1 el6 1 nlp1 27 # Linie 26
+ el7 2 pu el6 3 pd el1 4 el2 7 el7 1 el10 1 el9 6 el8 1 el6 1 nlp1 19 # Linie 27
+ el1 9 el7 1 el11 1 el10 2 el9 3 el8 1 el6 1 nlp1 16 # Linie 28
+ el1 6 el7 1 el12 1 el11 1 el10 1 el11 1 el10 2 el8 1 el6 1 nlp1 10 # Linie 29
+ el7 1 el12 1 el9 2 el11 1 el9 1 el11 1 el6 2 nlp1 11 # Linie 30
+ el7 2 el12 1 el9 4 el6 2 nlp1 10 # Linie 31
+ el7 1 el12 2 el9 2 el6 3 nlp1 8 # Linie 32
+ el7 5 # Linie 33
+end
+
+to fire #27x33
+
+end
+
+to water #33x33
+
+end
+
+to ice #33x35
+
+end
+
+# Others
+
+to nlBoard
+  pu fd 250 lt 90 fd 8*250 rt 90 pd
+end
+
+to nlPiece :n
+  pu fd 7 lt 90 fd :n*7 rt 90 pd
+  #pu fd 100 lt 90 fd :n*100 rt 90 pd
+end
+
+to place :x :y :dx :dy
+  setxy (:x - 1)*250 + :dx (:y - 1)*250 + :dy
+end
+
+to newNumber :n
+  if :n = 0 [ # Horizontal
+    pu bk 250 rt 90 fd 250 lt 90 pd
+    ]
+end
+
+start
