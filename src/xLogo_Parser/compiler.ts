@@ -48,10 +48,12 @@ import {
   WhileStatement
 } from "./esnodes.js";
 
-import { Program, BaseNode } from "estree";
+import { Program, BaseNode, Statement, Class, ClassDeclaration } from "estree";
 import { ActionSet, CanvasActionSet } from "../ActionSet.js";
 import { DefinedBuiltIns } from "./ir/builtInCommands.js";
-import * as esprima from "esprima";
+import * as esprima from "esprima-next";
+import { CustomESTreeWalker, mapThisToDoubleUnderscore, mapThisToStr } from "./CustomESTreeWalker.js";
+import { getAllFuncs } from "./compilerUtils.js";
 
 // some goofy shenanigans to make this work in the browser. 
 declare namespace escodegen {
@@ -75,9 +77,9 @@ export type Stopper = {
 export type CompileStrategy =  "array_access" | "direct_access" | "hard_coded";
 
 export class Compiler {
-  act: ActionSet
+  act: CanvasActionSet
 
-  constructor(act: ActionSet) {
+  constructor(act: CanvasActionSet) {
     this.act = act;
   }
 
@@ -86,10 +88,24 @@ export class Compiler {
     const code = lib.generate(ast);
     return code;
   }
+  
+  private compileActionSet() {
+    const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(this.act));
+    const classStr = this.act.constructor.toString();
+    const classAst = esprima.parseScript(classStr).body[0] as ClassDeclaration;
+    if (classAst.superClass) {
+      throw new Error("subclasses not supported!");
+    }
+    const body = classAst.body.body
+    for (const m of body) {
+      // TODO
+    }
+    
+  }
 
   public runnableFromCode(script: string): (stopper?: Stopper, runid?: number) => Promise<void> {
-    // TODO            make the return type here ^^^^^^^^^ a new type of object which only has a runid. this object would serve as a stopper. 
     const prefix = `const _pi = Math.PI, _e = Math.E;
+    const _Math = Math;
     const _random = (max) => {return Math.random() * max};
     const _mod = (a, b) => {return a % b};
     const _power = (a, b) => {return Math.pow(a, b)};
@@ -126,16 +142,17 @@ export class Compiler {
         }
       };
     `
+    this.compileActionSet();
     
     // Curryfication! yay!
     return (stopper?: Stopper, runid?: number) => {
-      return new Function("_act", "_stopper", "_runid", 
-        prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`)(this.act, stopper, runid) ;
+      return new Function("_act", "__act_ctx", "_stopper", "_runid", 
+        prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`)(this.act, this.act.ctx, stopper, runid) ;
     }
   }
 
   public compileCodeToAST(logocode: string, strategy: CompileStrategy): Program {
-    let generateCall;
+    let generateCall: generateCallFunction;
 
     switch(strategy) {
       case "direct_access":
@@ -145,7 +162,7 @@ export class Compiler {
         generateCall = this.generateArrayActionSetCall;
         break;
       case "hard_coded":
-        // TODO
+        generateCall = (a, b) => this.generateHardCodedActionSetCall(this.act, a, b);
         break;
       default:
         throw new Error("invalid compile strategy: " + strategy)
@@ -173,6 +190,31 @@ export class Compiler {
       return new AwaitExpression(res);
     }
     return res;
+  }
+
+  public generateHardCodedActionSetCall(actionset: ActionSet, callname: string, args: any[]): BaseNode {
+    const methodCode: string = actionset[callname].toString();
+    const c = new CustomESTreeWalker((s) => "_" + s, mapThisToStr("__act_"));
+    const slicedCode = methodCode.slice(methodCode.indexOf("{") + 1, methodCode.lastIndexOf("}"));
+    let bodyAst;
+    try {
+      bodyAst = esprima.parseScript(slicedCode);
+    } catch {
+      console.log(methodCode);
+      console.log("============")
+      console.log(slicedCode);
+      throw Error("esprima failed");
+    }
+    const argregex = /\(([^\)]*)\)/; // first capture group contains list of arguments
+    const argStr = methodCode.match(argregex)[1]; 
+    const argIds = argStr.split(/,\s+/);
+    const newBodyAst = c.walk(bodyAst);
+    let body = newBodyAst.body;
+    let variableDeclarators = argIds.map((id, index) => new VariableDeclarator(new Identifier(id), args[index]))
+
+    body.unshift(new VariableDeclaration(variableDeclarators, "let") as Statement);
+
+    return new BlockStatement(body) as Statement;
   }
 }
 

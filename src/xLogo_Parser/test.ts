@@ -1,5 +1,10 @@
 import { generate } from "escodegen";
-import { parseModule } from "esprima";
+import { parseScript } from "esprima-next";
+import { diff } from 'json-diff-ts';
+import { DebugVisitor } from "./debug/debugVisitor.js";
+import { Program, BaseNode, Expression, Statement, BaseStatement, Node, MemberExpression, SpreadElement} from "estree";
+import { Identifier } from "./esnodes.js";
+import { CustomESTreeWalker, mapThisToDoubleUnderscore } from "./CustomESTreeWalker.js";
 
 /*compileCode(`
 to main
@@ -51,15 +56,21 @@ to main
 end
   `)*/
 
-import { diff } from 'json-diff-ts';
-import { DebugVisitor } from "./debug/debugVisitor.js";
-import { compileCodeToAST } from "./compiler.js";
-import { compileCode } from "./compiler.js";
-const reference = parseModule(`
-  {
-    let a = 10;
+const reference = parseScript(`
+class Rectangle {
+  bruh = 0;
+  bruh = 0;
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
   }
+}
 `)
-console.log(JSON.stringify(reference, null, 2));
-console.log(generate(reference));
+// let c = new CustomESTreeWalker(
+//   (s) => "_" + s,
+//   mapThisToDoubleUnderscore);
+
+// console.log(generate(c.walk(reference)));
+
+console.log(reference);
 

@@ -1,4 +1,6 @@
-export interface ActionSet {
+export type CommandName = "fd" | "bk" | "rt" | "lt" | "cs" | "setpc" | "setpw" | "pu" | "pd" | "pe" | "ppt" | "wash" | "setx" | "sety" | "setxy" | "home" | "setheading" | "print" | "ct" | "wait" | "toRadians";
+
+export type ActionSet = {
   fd(steps: number): void;
   bk(steps: number): void;
 
@@ -32,16 +34,19 @@ export interface ActionSet {
   wait(centiseconds: number): Promise<void> | void;
 
   toRadians(angle: number): number;
-}
+
+  // Make the compiler remain silent
+  [s: string]: (a: any, b: any) => void;
+};
 
 export class CanvasActionSet implements ActionSet{
   public ctx: CanvasRenderingContext2D;
-  public turtleX: number;
-  public turtleY: number;
-  public turtleAngle: number;
-  public penColor: [number, number, number];
-  public screenColor: [number, number, number];
-  public penDown: boolean;
+  private turtleX: number;
+  private turtleY: number;
+  private turtleAngle: number;
+  private penColor: [number, number, number];
+  private screenColor: [number, number, number];
+  private penDown: boolean;
 
   public constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx
@@ -55,6 +60,7 @@ export class CanvasActionSet implements ActionSet{
     this.setpc([224, 224, 224]);
     this.setsc([30, 30, 30]);
   }
+  [s: string]: any;
 
   public fd(steps: number) {
     const newX: number = this.turtleX + steps*Math.cos(this.toRadians(this.turtleAngle));
@@ -177,7 +183,7 @@ export class CanvasActionSet implements ActionSet{
 
   // TODO maybe remove this, and add it to the prefix of the code
   public toRadians(degrees: number) {
-      return degrees * Math.PI / 180
+    return degrees * Math.PI / 180
   }
 };
 
@@ -206,6 +212,7 @@ export class LogActionSet implements ActionSet{
     this.setpc([224, 224, 224]);
     this.setsc([30, 30, 30]);
   }
+  [s: string]: any;
 
   public fd(steps: number) {
     const newX: number = this.turtleX + steps*Math.cos(this.toRadians(this.turtleAngle));
