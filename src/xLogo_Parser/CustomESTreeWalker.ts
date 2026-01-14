@@ -45,30 +45,6 @@ export class CustomESTreeWalker {
     }
   }
   
-  // TODO maybe remove this
-  compileMethodBody(methodCode: string, args: any[]): Statement {
-    const slicedCode = methodCode.slice(methodCode.indexOf("{") + 1, methodCode.lastIndexOf("}"));
-    let bodyAst;
-    try {
-      bodyAst = esprima.parseScript(slicedCode);
-    } catch {
-      console.log(methodCode);
-      console.log("============")
-      console.log(slicedCode);
-      throw Error("esprima failed");
-    }
-    const argregex = /\(([^\)]*)\)/; // first capture group contains list of arguments
-    const argStr: string = methodCode.match(argregex)[1]; 
-    const argIds = argStr.split(/,\s+/);
-    const newBodyAst = this.walk(bodyAst);
-    let body = newBodyAst.body;
-    let variableDeclarators = argIds.map((id, index) => new VariableDeclarator(new Identifier(id), args[index]))
-
-    body.unshift(new VariableDeclaration(variableDeclarators, "let") as Statement);
-
-    return new BlockStatement(body) as Statement;
-  }
-
   walk<T extends Node>(ast: T): T {
     //console.log(ast);
     switch (ast.type) {
