@@ -1,0 +1,22 @@
+to main
+penManipulationBenchmark
+end
+
+to penManipulationBenchmark
+  setpc blue
+  fd 100
+  setpc red
+  bk 100
+  setpc blue
+  fd 100
+  setpc red
+  bk 100
+  setpc blue
+  fd 100
+  setpc red
+  bk 100
+  setpc blue
+  fd 100
+  setpc red
+  bk 100
+end

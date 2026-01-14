@@ -1,40 +1,49 @@
-make "a 100
-if a < 500 [
-fd 100
-bk 100
-] [
-fd 100
-bk 100
-]
-if a < 500 [
-fd 100
-bk 100
-] [
- fd 100
- bk 100
- ]
-if a < 500 [
-fd 100
-bk 100
-] [
- fd 100
- bk 100
- ]
-if a < 500 [
-fd 100
-bk 100
-] [
- fd 100
- bk 100
- ]
-if a < 500 [
-fd 100
-bk 100
-] [
- fd 100
- bk 100
- ]
-if a < 500 [
-fd 100
-bk 100
-]
+to main
+conditionBenchmark
+end
+
+to conditionBenchmark
+  make "a 100
+  if :a < 500 [
+  fd 100
+  bk 100
+  ] [
+  fd 100
+  bk 100
+  ]
+  if :a < 500 [
+  fd 100
+  bk 100
+  ] [
+   fd 100
+   bk 100
+   ]
+  if :a < 500 [
+  fd 100
+  bk 100
+  ] [
+   fd 100
+   bk 100
+   ]
+  if :a < 500 [
+  fd 100
+  bk 100
+  ] [
+   fd 100
+   bk 100
+   ]
+  if :a < 500 [
+  fd 100
+  bk 100
+  ] [
+   fd 100
+   bk 100
+   ]
+  if :a < 500 [
+  fd 100
+  bk 100
+  ] [
+  fd 100
+  bk 100
+  ]
+end

@@ -1,16 +1,22 @@
-fd 100
-rt 90
-bk 100
-lt 90
-fd 100
-rt 90
-bk 100
-lt 90
-fd 100
-rt 90
-bk 100
-lt 90
-fd 100
-rt 90
-bk 100
-lt 90
+to main
+movementBenchmark
+end
+
+to movementBenchmark
+  fd 100
+  rt 90
+  bk 100
+  lt 90
+  fd 100
+  rt 90
+  bk 100
+  lt 90
+  fd 100
+  rt 90
+  bk 100
+  lt 90
+  fd 100
+  rt 90
+  bk 100
+  lt 90
+end

@@ -1,0 +1,10 @@
+to main
+repeatbenchmark
+end
+
+to repeatbenchmark
+repeat 4 [fd 100 rt 90]
+repeat 4 [fd 100 rt 90]
+repeat 4 [fd 100 rt 90]
+repeat 4 [fd 100 rt 90]
+end

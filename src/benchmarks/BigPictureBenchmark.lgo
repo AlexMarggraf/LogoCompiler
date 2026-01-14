@@ -1,3 +1,7 @@
+to main
+start
+end
+
 to start
   cs ht
   chessboard
@@ -1247,5 +1251,3 @@ to newNumber :n
     pu bk 250 rt 90 fd 250 lt 90 pd
     ]
 end
-
-start

@@ -1,0 +1,36 @@
+to main
+whileBenchmark
+end
+
+to whileBenchmark
+  make "a 100
+  while :a > 0 [
+  fd 100
+  bk 100
+  :a = :a - 1
+  ]
+  :a = 100
+  while :a > 0 [
+  fd 100
+  bk 100
+  :a = :a - 1
+  ]
+  :a = 100
+  while :a > 0 [
+  fd 100
+  bk 100
+  :a = :a - 1
+  ]
+  :a =100
+  while :a > 0 [
+  fd 100
+  bk 100
+  :a = :a - 1
+  ]
+  :a = 100
+  while :a > 0 [
+  fd 100
+  bk 100
+  :a = :a - 1
+  ]
+end
