@@ -3,7 +3,7 @@ start
 end
 
 to start
-  cs ht
+  cs
   chessboard
 
   # White pieces
@@ -65,7 +65,7 @@ end
 to kW :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
+  place :x :y 0 0
 
   repeat 10 [w7] w6 w6 w6 w7 w6 w6 nlpiece 17 # Linie 1
   w7 w5 w5 w5 w4 w4 repeat 8 [w3] w2 w2 w2 w6 nlpiece 18 # Linie 2
@@ -102,7 +102,7 @@ end
 to qW :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
+  place :x :y 0 0
 
   repeat 9 [w7] w6 w6 w7 w6 w7 w6 w6 nlpiece 17 # Linie 1
   w7 w5 w5 w5 w4 w4 repeat 8 [w3] w2 w2 w2 w6 nlpiece 18 # Linie 2
@@ -139,7 +139,7 @@ end
 to rW :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 62 20
+  place :x :y 0 0
 
   pu w7 pd repeat 9 [w7] w6 w6 w6 w7 w6 w6 w6 nlpiece 17 # Linie 1
   w7 w5 w5 w5 w4 w4 repeat 7 [w3] repeat 4 [w2] w6 nlpiece 18 # Linie 2
@@ -176,7 +176,7 @@ end
 to bW :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
+  place :x :y 0 0
 
   repeat 8 [w7] w6 w6 w6 w7 w6 w6 nlpiece 15 # Linie 1
   w7 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 16 # Linie 2
@@ -213,7 +213,7 @@ end
 to nW :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 76 20
+  place :x :y 0 0
 
   repeat 8 [w7] w6 w7 w6 w6 w7 w6 nlpiece 15 # Linie 1
   w7 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 16 # Linie 2
@@ -250,7 +250,8 @@ end
 to pW :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
+  place :x :y 0 0
+
   pu w7 pd repeat 7 [w7] w6 w6 w7 w7 w6 w6 w6 pu w7 nlpiece 16 # Linie 1
   w7 w5 w5 w4 w4 repeat 7 [w3] w2 w2 w2 w6 nlpiece 16 # Linie 2
   w7 w5 w5 w5 w4 w4 repeat 6 [w3] w1 w2 w2 w6 nlpiece 16 # Linie 3
@@ -286,7 +287,7 @@ end
 to kB :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
+  place :x :y 0 0
 
   repeat 16 [b5] nlpiece 17 # Linie 1
   repeat 4 [b5] b4 b4 repeat 8 [b3] b2 b2 b2 b5 nlpiece 18 # Linie 2
@@ -323,7 +324,7 @@ end
 to qB :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
+  place :x :y 0 0
 
     repeat 16 [b5] nlpiece 17 # Linie 1
   repeat 4 [b5] b4 b4 repeat 8 [b3] b2 b2 b2 b5 nlpiece 18 # Linie 2
@@ -361,7 +362,7 @@ end
 to rB :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 62 20
+  place :x :y 0 0
 
   pu b5 pd  repeat 16 [b5] nlpiece 17 # Linie 1
   repeat 4 [b5] b4 b4 repeat 7 [b3] repeat 4 [b2] b5 nlpiece 18 # Linie 2
@@ -399,7 +400,7 @@ end
 to bB :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
+  place :x :y 0 0
 
 repeat 14 [b5] nlpiece 15 # Linie 1
   b5 b5 b5 b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 16 # Linie 2
@@ -436,7 +437,7 @@ end
 to nB :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 76 20
+  place :x :y 0 0
 
   repeat 14 [b5] nlpiece 15 # Linie 1
   b5 b5 b5 b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 16 # Linie 2
@@ -474,8 +475,9 @@ end
 to pB :xold :yold :x :y
   redrawSquare :xold :yold
   redrawSquare :x :y
-  place :x :y 69 20
-    pu b5 pd repeat 14 [b5] pu w7 nlpiece 16 # Linie 1
+  place :x :y 0 0
+
+  pu b5 pd repeat 14 [b5] pu w7 nlpiece 16 # Linie 1
   b5 b5 b5 b4 b4 repeat 7 [b3] b2 b2 b2 b5 nlpiece 16 # Linie 2
   repeat 4 [b5] b4 b4 repeat 6 [b3] b1 b2 b2 b5 nlpiece 16 # Linie 3
   pu b5 pd repeat 14 [b5] pu b5 pd nlpiece 16 # Linie 4
@@ -510,19 +512,20 @@ end
 # Chessboard
 
 to chessboard
+  place 1 1 0 0
   repeat 4 [repeat 4 [blackSquare whiteSquare] nlBoard repeat 4 [whiteSquare blackSquare] nlboard]
 
-  setpc [50 50 50]
-  setxy -500 -500
-  repeat 250*12 [fd 500 bk 500 rt 90 fd 1 lt 90]
-  setxy -500 2000
-  repeat 250*12 [fd 500 bk 500 rt 90 fd 1 lt 90]
-  setxy -500 0
-  repeat 500 [fd 2000 bk 2000 rt 90 fd 1 lt 90]
-  setxy 2000 0
-  repeat 500 [fd 2000 bk 2000 rt 90 fd 1 lt 90]
+  # setpc [50 50 50]
+  # place 0 0 0 0
+  # repeat 250*12 [fd 500 bk 500 rt 90 fd 1 lt 90]
+  # place 0 9 0 0
+  # repeat 250*12 [fd 500 bk 500 rt 90 fd 1 lt 90]
+  # place 0 0 0 0
+  # repeat 500 [fd 2000 bk 2000 rt 90 fd 1 lt 90]
+  # place 0 0 0
+  # repeat 500 [fd 2000 bk 2000 rt 90 fd 1 lt 90]
 
-  setxy 0 -250 # Horizontal
+  place 1 0 0 0 # Horizontal
   square1 [100 230 255] [49 108 189] 0
   square2 [100 230 255] [49 108 189] 0
   square3 [100 230 255] [49 108 189] 0
@@ -532,7 +535,7 @@ to chessboard
   square7 [100 230 255] [49 108 189] 0
   square8 [100 230 255] [49 108 189] 0
 
-  setxy 0 2000 # Horizontal
+  place 1 9 0 0 # Horizontal
   square1 [100 230 255] [49 108 189] 0
   square2 [100 230 255] [49 108 189] 0
   square3 [100 230 255] [49 108 189] 0
@@ -542,7 +545,7 @@ to chessboard
   square7 [100 230 255] [49 108 189] 0
   square8 [100 230 255] [49 108 189] 0
 
-  setxy -250 0 # Vertical
+  place 0 1 0 0 # Vertical
   square1 [235 112 106] [158 67 113] 1
   square2 [235 112 106] [158 67 113] 1
   square3 [235 112 106] [158 67 113] 1
@@ -552,7 +555,7 @@ to chessboard
   square7 [235 112 106] [158 67 113] 1
   square8 [235 112 106] [158 67 113] 1
 
-  setxy 2000 0 # Vertical
+  place 9 1 0 0 # Vertical
   square1 [235 112 106] [158 67 113] 1
   square2 [235 112 106] [158 67 113] 1
   square3 [235 112 106] [158 67 113] 1
@@ -728,7 +731,7 @@ to bl6
 end
 
 to pixel
-  repeat 7 [fd 7 bk 7 rt 90 fd 1 lt 90]
+  repeat 2 [fd 2 bk 2 rt 90 fd 1 lt 90]
   #repeat 100 [fd 100 bk 100 rt 90 fd 1 lt 90]
 end
 
@@ -737,21 +740,21 @@ end
 to whiteSquare
     setpc [215 235 255]
     #setpc [233 203 161]
-    repeat 250 [fd 250 bk 250 rt 90 fd 1 lt 90]
+    repeat 50 [fd 50 bk 50 rt 90 fd 1 lt 90]
 end
 
 to blackSquare
     setpc [95 25 85]
     #setpc [160 109 37]
-    repeat 250 [fd 250 bk 250 rt 90 fd 1 lt 90]
+    repeat 50 [fd 50 bk 50 rt 90 fd 1 lt 90]
 end
 
 to p
-  repeat 10 [fd 10 bk 10 rt 90 fd 1 lt 90]
+  repeat 2 [fd 2 bk 2 rt 90 fd 1 lt 90]
 end
 
-to nlp
-  pu fd 10 lt 90 fd 25*10 rt 90 pd
+to nlp :n
+  pu fd 2 lt 90 fd :n * 2 rt 90 pd
 end
 
 to p1 :n # Electro pixel
@@ -866,159 +869,159 @@ end
 
 # Pixel logo ice
 
-to ic1 :n
-  setpc
-  p2 :n
-end
+# to ic1 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic2 :n
-  setpc
-  p2 :n
-end
+# to ic2 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic3 :n
-  setpc
-  p2 :n
-end
+# to ic3 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic4 :n
-  setpc
-  p2 :n
-end
+# to ic4 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic5 :n
-  setpc
-  p2 :n
-end
+# to ic5 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic6 :n
-  setpc
-  p2 :n
-end
+# to ic6 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic7 :n
-  setpc
-  p2 :n
-end
+# to ic7 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic8 :n
-  setpc
-  p2 :n
-end
+# to ic8 :n
+#   setpc
+#   p2 :n
+# end
 
-to ic9 :n
-  setpc
-  p2 :n
-end
+# to ic9 :n
+#   setpc
+#   p2 :n
+# end
 
-# Pixel logo water
+# # Pixel logo water
 
-to wa1 :n
-  setpc
-  p3 :n
-end
+# to wa1 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa2 :n
-  setpc
-  p3 :n
-end
+# to wa2 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa3 :n
-  setpc
-  p3 :n
-end
+# to wa3 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa4 :n
-  setpc
-  p3 :n
-end
+# to wa4 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa5 :n
-  setpc
-  p3 :n
-end
+# to wa5 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa6 :n
-  setpc
-  p3 :n
-end
+# to wa6 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa7 :n
-  setpc
-  p3 :n
-end
+# to wa7 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa8 :n
-  setpc
-  p3 :n
-end
+# to wa8 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa9 :n
-  setpc
-  p3 :n
-end
+# to wa9 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa11 :n
-  setpc
-  p3 :n
-end
+# to wa11 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa12 :n
-  setpc
-  p3 :n
-end
+# to wa12 :n
+#   setpc
+#   p3 :n
+# end
 
-to wa13 :n
-  setpc
-  p3 :n
-end
+# to wa13 :n
+#   setpc
+#   p3 :n
+# end
 
 # Pixel logo fire
 
-to fi1 :n
-  setpc
-  p4 :n
-end
+# to fi1 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi2 :n
-  setpc
-  p4 :n
-end
+# to fi2 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi3 :n
-  setpc
-  p4 :n
-end
+# to fi3 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi4 :n
-  setpc
-  p4 :n
-end
+# to fi4 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi5 :n
-  setpc
-  p4 :n
-end
+# to fi5 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi6 :n
-  setpc
-  p4 :n
-end
+# to fi6 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi7 :n
-  setpc
-  p4 :n
-end
+# to fi7 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi8 :n
-  setpc
-  p4 :n
-end
+# to fi8 :n
+#   setpc
+#   p4 :n
+# end
 
-to fi9 :n
-  setpc
-  p4 :n
-end
+# to fi9 :n
+#   setpc
+#   p4 :n
+# end
 
 # Numbered tiles
 
@@ -1028,158 +1031,158 @@ to square1 :c :s :n # :c = color :s = shadow :n = next number horizontal/vertica
   # setpc [150 100 60] # background old
   # setpc [49 108 189] darkblue
   # setpc [100 230 255] lightblue
-  repeat 4 [pu repeat 25 [p] pd nlp]  # Linie 1-4
-  pu repeat 7 [p] pd setpc :s repeat 12 [p] pu repeat 6 [p] pd nlp # Linie 5
-  repeat 2 [pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp] # Linie 6-7
-  pu repeat 10 [p] pd setpc :c repeat  5 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 8
-  repeat 8 [pu repeat 11 [p] pd setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp] # Linie 9-16
-  pu repeat 8 [p] pd setpc :s p p p setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp # Linie 17
-  pu repeat 8 [p] pd setpc :c repeat 6 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 18
-  pu repeat 9 [p] pd setpc :c repeat 5 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 19
-  pu repeat 10 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 20
-  pu repeat 11 [p] pd setpc :c repeat 3 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 21-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25]  # Linie 1-4
+  pu repeat 7 [p] pd setpc :s repeat 12 [p] pu repeat 6 [p] pd nlp 25 # Linie 5
+  repeat 2 [pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp 25] # Linie 6-7
+  pu repeat 10 [p] pd setpc :c repeat  5 [p] setpc :s p pu repeat 9 [p] pd nlp 25 # Linie 8
+  repeat 8 [pu repeat 11 [p] pd setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp 25] # Linie 9-16
+  pu repeat 8 [p] pd setpc :s p p p setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp 25 # Linie 17
+  pu repeat 8 [p] pd setpc :c repeat 6 [p] setpc :s p pu repeat 10 [p] pd nlp 25 # Linie 18
+  pu repeat 9 [p] pd setpc :c repeat 5 [p] setpc :s p pu repeat 10 [p] pd nlp 25 # Linie 19
+  pu repeat 10 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 10 [p] pd nlp 25 # Linie 20
+  pu repeat 11 [p] pd setpc :c repeat 3 [p] setpc :s p pu repeat 10 [p] pd nlp 25 # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 21-25
   newNumber :n
 end
 
 to square2 :c :s :n
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
-  pu repeat 5 [p] pd setpc :s repeat 15 [p] pu repeat 5 [p] pd nlp # Linie 5
-  repeat 2 [pu repeat 5 [p] pd setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp] # Linie 6-7
-  pu repeat 8 [p] pd setpc :c repeat 5 [p] setpc :s p  pu repeat 11 [p] pd nlp # Linie 8
-  pu repeat 10 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 10 [p] pd nlp # Linie 9
-  pu repeat 11 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 10
-  pu repeat 12 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 8 [p] pd nlp # Linie 11
-  pu repeat 13 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 12
-  pu repeat 14 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 13
-  pu repeat 15 [p] pd setpc :c repeat 3 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 14
-  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 15
-  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 15
-  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 17
-  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 18
-  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p  pu repeat 6 [p] pd nlp # Linie 19
-  pu repeat 8 [p] pd setpc :c repeat 9 [p] setpc :s p  pu repeat 7 [p] pd nlp # Linie 20
-  pu repeat 9 [p] pd setpc :c repeat 7 [p] setpc :s p  pu repeat 8 [p] pd nlp # Linie 21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 1-4
+  pu repeat 5 [p] pd setpc :s repeat 15 [p] pu repeat 5 [p] pd nlp 25 # Linie 5
+  repeat 2 [pu repeat 5 [p] pd setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp 25] # Linie 6-7
+  pu repeat 8 [p] pd setpc :c repeat 5 [p] setpc :s p  pu repeat 11 [p] pd nlp 25 # Linie 8
+  pu repeat 10 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 10 [p] pd nlp 25 # Linie 9
+  pu repeat 11 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 9 [p] pd nlp 25 # Linie 10
+  pu repeat 12 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 8 [p] pd nlp 25 # Linie 11
+  pu repeat 13 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 12
+  pu repeat 14 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 13
+  pu repeat 15 [p] pd setpc :c repeat 3 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 14
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 15
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 15
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 17
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 18
+  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p  pu repeat 6 [p] pd nlp 25 # Linie 19
+  pu repeat 8 [p] pd setpc :c repeat 9 [p] setpc :s p  pu repeat 7 [p] pd nlp 25 # Linie 20
+  pu repeat 9 [p] pd setpc :c repeat 7 [p] setpc :s p  pu repeat 8 [p] pd nlp 25 # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 22-25
   newNumber :n
 end
 
 to square3 :c :s :n
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
-  pu repeat 8 [p] pd setpc :s repeat 7 [p] pu repeat 10 [p] pd nlp # Linie 5
-  pu repeat 6 [p] pd setpc :s p p setpc :c repeat 7 [p] setpc :s p p pu repeat 8 [p] pd nlp # Linie 6
-  pu repeat 6 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 7
-  pu repeat 6 [p] pd setpc :c p p p pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 8
-  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 9
-  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 10
-  pu repeat 14 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 11
-  pu repeat 8 [p] pd setpc :s repeat 6 [p] setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp # Linie 12
-  repeat 2 [pu repeat 8 [p] pd setpc :c repeat 9 [p] setpc :s p pu repeat 7 [p] pd nlp] # Linie 13-14
-  pu repeat 14 [p] pd setpc :c repeat 4 [p] setpc :s p  pu repeat 6 [p] pd nlp # Linie 15
-  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 16
-  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 17
-  pu repeat 6 [p] pd setpc :s p p p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 18
-  pu repeat 6 [p] pd setpc :c p p p setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp # Linie 19
-  pu repeat 6 [p] pd setpc :c repeat 10 [p] setpc :s  p pu repeat 8 [p] pd nlp # Linie 20
-  pu repeat 8 [p] pd setpc :c repeat 7 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 1-4
+  pu repeat 8 [p] pd setpc :s repeat 7 [p] pu repeat 10 [p] pd nlp 25 # Linie 5
+  pu repeat 6 [p] pd setpc :s p p setpc :c repeat 7 [p] setpc :s p p pu repeat 8 [p] pd nlp 25 # Linie 6
+  pu repeat 6 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 7
+  pu repeat 6 [p] pd setpc :c p p p pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 8
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 9
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 10
+  pu repeat 14 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 11
+  pu repeat 8 [p] pd setpc :s repeat 6 [p] setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 12
+  repeat 2 [pu repeat 8 [p] pd setpc :c repeat 9 [p] setpc :s p pu repeat 7 [p] pd nlp 25] # Linie 13-14
+  pu repeat 14 [p] pd setpc :c repeat 4 [p] setpc :s p  pu repeat 6 [p] pd nlp 25 # Linie 15
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 16
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 17
+  pu repeat 6 [p] pd setpc :s p p p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 18
+  pu repeat 6 [p] pd setpc :c p p p setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 19
+  pu repeat 6 [p] pd setpc :c repeat 10 [p] setpc :s  p pu repeat 8 [p] pd nlp 25 # Linie 20
+  pu repeat 8 [p] pd setpc :c repeat 7 [p] setpc :s p pu repeat 9 [p] pd nlp 25 # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 22-25
   newNumber :n
 end
 
 to square4 :c :s :n
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
-  pu repeat 11 [p] pd setpc :s repeat 9 [p] pu repeat 5 [p] pd nlp # Linie 5
-  repeat 2 [pu repeat 11 [p] pd setpc :c repeat 8 [p] setpc :s p pu repeat 5 [p] pd nlp] # Linie 6-7
-  repeat 3 [pu repeat 14 [p] pd setpc :c p p setpc :s p  pu repeat 8 [p] pd nlp] # Linie 8-10
-  pu repeat 6 [p] pd setpc :s repeat 8 [p] setpc :c p p setpc :s repeat 4 [p] pu repeat 5 [p] pd nlp # Linie 11
-  pu repeat 5 [p] pd setpc :s p setpc :c repeat 13 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 12
-  pu repeat 5 [p] pd setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 13
-  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c p p setpc :s p pu repeat 8 [p] pd nlp # Linie 14
-  repeat 7[pu repeat 5 [p] pd setpc :c p p setpc :s p pu repeat 6 [p] pd setpc :c p p setpc :s p pu repeat 8 [p] pd nlp] # Linie 15-21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 1-4
+  pu repeat 11 [p] pd setpc :s repeat 9 [p] pu repeat 5 [p] pd nlp 25 # Linie 5
+  repeat 2 [pu repeat 11 [p] pd setpc :c repeat 8 [p] setpc :s p pu repeat 5 [p] pd nlp 25] # Linie 6-7
+  repeat 3 [pu repeat 14 [p] pd setpc :c p p setpc :s p  pu repeat 8 [p] pd nlp 25] # Linie 8-10
+  pu repeat 6 [p] pd setpc :s repeat 8 [p] setpc :c p p setpc :s repeat 4 [p] pu repeat 5 [p] pd nlp 25 # Linie 11
+  pu repeat 5 [p] pd setpc :s p setpc :c repeat 13 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 12
+  pu repeat 5 [p] pd setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 13
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c p p setpc :s p pu repeat 8 [p] pd nlp 25 # Linie 14
+  repeat 7[pu repeat 5 [p] pd setpc :c p p setpc :s p pu repeat 6 [p] pd setpc :c p p setpc :s p pu repeat 8 [p] pd nlp 25] # Linie 15-21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 22-25
   newNumber :n
 end
 
 to square5 :c :s :n
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
-  pu repeat 7 [p] pd setpc :s repeat 10 [p] pu repeat 8 [p] pd nlp # Linie 5
-  pu repeat 5 [p] pd setpc :s p p setpc :c repeat 10 [p] setpc :s p p pu repeat 6 [p] pd nlp # Linie 6
-  pu repeat 4 [p] pd setpc :s p setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 7
-  pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 8
-  pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 8 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 4 [p] pd nlp # Linie 9
-  repeat 2 [pu repeat 17 [p] pd setpc :c p p p setpc :s p pu repeat 4 [p] pd nlp] # Linie 10-11
-  pu repeat 15 [p] pd setpc :s p p setpc :c p p p setpc :s p  pu repeat 4 [p] pd nlp # Linie 12
-  pu repeat 5 [p] pd setpc :s repeat 10 [p] setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 13
-  pu repeat 4 [p] pd setpc :s p setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 14
-  pu repeat 4 [p] pd setpc :c repeat 13 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 15
-  pu repeat 4 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 16 [p] pd nlp # Linie 16
-  repeat 2 [pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 17 [p] pd nlp] # Linie 17-18
-  pu repeat 4 [p] pd setpc :c repeat 4 [p] setpc :s repeat 13 [p] pu repeat 4 [p] pd nlp # Linie 19
-  repeat 2 [pu repeat 4 [p] pd setpc :c repeat 16 [p] setpc :s p pu repeat 4 [p] pd nlp] # Linie 20-21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 1-4
+  pu repeat 7 [p] pd setpc :s repeat 10 [p] pu repeat 8 [p] pd nlp 25 # Linie 5
+  pu repeat 5 [p] pd setpc :s p p setpc :c repeat 10 [p] setpc :s p p pu repeat 6 [p] pd nlp 25 # Linie 6
+  pu repeat 4 [p] pd setpc :s p setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 7
+  pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 8
+  pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 8 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 4 [p] pd nlp 25 # Linie 9
+  repeat 2 [pu repeat 17 [p] pd setpc :c p p p setpc :s p pu repeat 4 [p] pd nlp 25] # Linie 10-11
+  pu repeat 15 [p] pd setpc :s p p setpc :c p p p setpc :s p  pu repeat 4 [p] pd nlp 25 # Linie 12
+  pu repeat 5 [p] pd setpc :s repeat 10 [p] setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 13
+  pu repeat 4 [p] pd setpc :s p setpc :c repeat 14 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 14
+  pu repeat 4 [p] pd setpc :c repeat 13 [p] setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 15
+  pu repeat 4 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 16 [p] pd nlp 25 # Linie 16
+  repeat 2 [pu repeat 4 [p] pd setpc :c p p p setpc :s p pu repeat 17 [p] pd nlp 25] # Linie 17-18
+  pu repeat 4 [p] pd setpc :c repeat 4 [p] setpc :s repeat 13 [p] pu repeat 4 [p] pd nlp 25 # Linie 19
+  repeat 2 [pu repeat 4 [p] pd setpc :c repeat 16 [p] setpc :s p pu repeat 4 [p] pd nlp 25] # Linie 20-21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 22-25
   newNumber :n
 end
 
 to square6 :c :s :n
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
-  pu repeat 8 [p] pd setpc :s repeat 8 [p] pu repeat 9 [p] pd nlp # Linie 5
-  pu repeat 6 [p] pd setpc :s p p setpc :c repeat 8 [p] setpc :s p p pu repeat 7 [p] pd nlp # Linie 6
-  pu repeat 5 [p] pd setpc :s p setpc :c repeat 12 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 7
-  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 8
-  repeat 3 [pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp] # Linie 9-11
-  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 12
-  pu repeat 5 [p] pd setpc :c repeat 5 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 13
-  pu repeat 5 [p] pd setpc :c repeat 13 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 14
-  pu repeat 5 [p] pd setpc :c repeat 12 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 15
-  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 16 [p] pd nlp # Linie 16
-  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 9 [p] pd setpc :s p p pu repeat 5 [p] pd nlp # Linie 17
-  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd setpc :s p p setpc :c p setpc :s p pu repeat 5 [p] pd nlp # Linie 18
-  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 6 [p] setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 19
-  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 20
-  pu repeat 9 [p] pd setpc :c repeat 7 [p] setpc :s p pu repeat 8 [p] pd nlp # Linie 21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 1-4
+  pu repeat 8 [p] pd setpc :s repeat 8 [p] pu repeat 9 [p] pd nlp 25 # Linie 5
+  pu repeat 6 [p] pd setpc :s p p setpc :c repeat 8 [p] setpc :s p p pu repeat 7 [p] pd nlp 25 # Linie 6
+  pu repeat 5 [p] pd setpc :s p setpc :c repeat 12 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 7
+  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 8
+  repeat 3 [pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25] # Linie 9-11
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 12
+  pu repeat 5 [p] pd setpc :c repeat 5 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 13
+  pu repeat 5 [p] pd setpc :c repeat 13 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 14
+  pu repeat 5 [p] pd setpc :c repeat 12 [p] setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 15
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 16 [p] pd nlp 25 # Linie 16
+  pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 9 [p] pd setpc :s p p pu repeat 5 [p] pd nlp 25 # Linie 17
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 6 [p] pd setpc :s p p setpc :c p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 18
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 6 [p] setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 19
+  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 20
+  pu repeat 9 [p] pd setpc :c repeat 7 [p] setpc :s p pu repeat 8 [p] pd nlp 25 # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 22-25
   newNumber :n
 end
 
 to square7 :c :s :n
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
-  pu repeat 9 [p] pd setpc :s p p p pu repeat 13 [p] pd nlp # Linie 5
-  repeat 2 [pu repeat 9 [p] pd setpc :c p p setpc :s p pu repeat 13 [p] pd nlp] # Linie 6-7
-  pu repeat 9 [p] pd setpc :c p p p setpc :s p pu repeat 12 [p] pd nlp # Linie 8
-  pu repeat 9 [p] pd setpc :c p p p setpc :s p pu repeat 12 [p] pd nlp # Linie 9
-  pu repeat 10 [p] pd setpc :c p p setpc :s p pu repeat 12 [p] pd nlp # Linie 10
-  pu repeat 10 [p] pd setpc :c p p p setpc :s p pu repeat 11 [p] pd nlp # Linie 11
-  pu repeat 11 [p] pd setpc :c p p setpc :s p pu repeat 11 [p] pd nlp # Linie 12
-  pu repeat 11 [p] pd setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp # Linie 13
-  pu repeat 12 [p] pd setpc :c p p p setpc :s p pu repeat 9 [p] pd nlp # Linie 14
-  pu repeat 13 [p] pd setpc :c p p p setpc :s p pu repeat 8 [p] pd nlp # Linie 15
-  pu repeat 14 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp # Linie 16
-  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 17
-  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 18
-  pu repeat 6 [p] pd setpc :s repeat 9 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 19
-  repeat 2 [pu repeat 6 [p] pd setpc :c repeat 12 [p] setpc :s p pu repeat 6 [p] pd nlp] # Linie 20-21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 1-4
+  pu repeat 9 [p] pd setpc :s p p p pu repeat 13 [p] pd nlp 25 # Linie 5
+  repeat 2 [pu repeat 9 [p] pd setpc :c p p setpc :s p pu repeat 13 [p] pd nlp 25] # Linie 6-7
+  pu repeat 9 [p] pd setpc :c p p p setpc :s p pu repeat 12 [p] pd nlp 25 # Linie 8
+  pu repeat 9 [p] pd setpc :c p p p setpc :s p pu repeat 12 [p] pd nlp 25 # Linie 9
+  pu repeat 10 [p] pd setpc :c p p setpc :s p pu repeat 12 [p] pd nlp 25 # Linie 10
+  pu repeat 10 [p] pd setpc :c p p p setpc :s p pu repeat 11 [p] pd nlp 25 # Linie 11
+  pu repeat 11 [p] pd setpc :c p p setpc :s p pu repeat 11 [p] pd nlp 25 # Linie 12
+  pu repeat 11 [p] pd setpc :c p p p setpc :s p pu repeat 10 [p] pd nlp 25 # Linie 13
+  pu repeat 12 [p] pd setpc :c p p p setpc :s p pu repeat 9 [p] pd nlp 25 # Linie 14
+  pu repeat 13 [p] pd setpc :c p p p setpc :s p pu repeat 8 [p] pd nlp 25 # Linie 15
+  pu repeat 14 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 16
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 17
+  pu repeat 15 [p] pd setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 18
+  pu repeat 6 [p] pd setpc :s repeat 9 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 19
+  repeat 2 [pu repeat 6 [p] pd setpc :c repeat 12 [p] setpc :s p pu repeat 6 [p] pd nlp 25] # Linie 20-21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 22-25
   newNumber :n
 end
 
 to square8 :c :s :n
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 1-4
-  pu repeat 9 [p] pd setpc :s repeat 7 [p] pu repeat 9 [p] pd nlp # Linie 5
-  pu repeat 7 [p] pd setpc :s p p setpc :c repeat 7 [p] setpc :s p p pu repeat 7 [p] pd nlp # Linie 6
-  pu repeat 6 [p] pd setpc :s p setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 7
-  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p  pu repeat 5 [p] pd nlp # Linie 8
-  repeat 2 [pu repeat 5 [p] pd setpc :c p p p setpc :s p  pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp] # Linie 9-10
-  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 11
-  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 12
-  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 13
-  pu repeat 6 [p] pd setpc :s p setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp # Linie 14
-  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp # Linie 15
-  repeat 2 [pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp] # Linie 16-17
-  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c repeat 3 [p] setpc :s p pu repeat 5 [p] pd nlp # Linie 18
-  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp # Linie 19
-  pu repeat 7 [p] pd setpc :c repeat 10 [p] setpc :s p pu repeat 7 [p] pd nlp # Linie 20
-  pu repeat 9 [p] pd setpc :c repeat 6 [p] setpc :s p pu repeat 9 [p] pd nlp # Linie 21
-  repeat 4 [pu repeat 25 [p] pd nlp] # Linie 22-25
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 1-4
+  pu repeat 9 [p] pd setpc :s repeat 7 [p] pu repeat 9 [p] pd nlp 25 # Linie 5
+  pu repeat 7 [p] pd setpc :s p p setpc :c repeat 7 [p] setpc :s p p pu repeat 7 [p] pd nlp 25 # Linie 6
+  pu repeat 6 [p] pd setpc :s p setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 7
+  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p  pu repeat 5 [p] pd nlp 25 # Linie 8
+  repeat 2 [pu repeat 5 [p] pd setpc :c p p p setpc :s p  pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25] # Linie 9-10
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 11
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 12
+  pu repeat 7 [p] pd setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 13
+  pu repeat 6 [p] pd setpc :s p setpc :c repeat 11 [p] setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 14
+  pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 15
+  repeat 2 [pu repeat 5 [p] pd setpc :c p p p setpc :s p pu repeat 7 [p] pd setpc :c p p p setpc :s p pu repeat 5 [p] pd nlp 25] # Linie 16-17
+  pu repeat 5 [p] pd setpc :c repeat 4 [p] setpc :s p pu repeat 5 [p] pd setpc :s p setpc :c repeat 3 [p] setpc :s p pu repeat 5 [p] pd nlp 25 # Linie 18
+  pu repeat 6 [p] pd setpc :c repeat 4 [p] setpc :s repeat 5 [p] setpc :c p p p setpc :s p pu repeat 6 [p] pd nlp 25 # Linie 19
+  pu repeat 7 [p] pd setpc :c repeat 10 [p] setpc :s p pu repeat 7 [p] pd nlp 25 # Linie 20
+  pu repeat 9 [p] pd setpc :c repeat 6 [p] setpc :s p pu repeat 9 [p] pd nlp 25 # Linie 21
+  repeat 4 [pu repeat 25 [p] pd nlp 25] # Linie 22-25
   newNumber :n
 end
 
@@ -1234,20 +1237,20 @@ end
 # Others
 
 to nlBoard
-  pu fd 250 lt 90 fd 8*250 rt 90 pd
+  pu fd 50 lt 90 fd 8*50 rt 90 pd
 end
 
 to nlPiece :n
-  pu fd 7 lt 90 fd :n*7 rt 90 pd
+  pu fd 2 lt 90 fd :n*2 rt 90 pd
   #pu fd 100 lt 90 fd :n*100 rt 90 pd
 end
 
 to place :x :y :dx :dy
-  setxy (:x - 1)*250 + :dx (:y - 1)*250 + :dy
+  setxy (:x - 5)*50 + :dx (:y - 5)*50 + :dy
 end
 
 to newNumber :n
   if :n = 0 [ # Horizontal
-    pu bk 250 rt 90 fd 250 lt 90 pd
+    pu bk 50 rt 90 fd 50 lt 90 pd
     ]
 end
