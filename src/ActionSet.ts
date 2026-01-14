@@ -33,8 +33,6 @@ export type ActionSet = {
   ct(): void;
   wait(centiseconds: number): Promise<void> | void;
 
-  toRadians(angle: number): number;
-
   // Make the compiler remain silent
   [s: string]: (a: any, b: any) => void;
 };

@@ -55,6 +55,7 @@ import { DefinedBuiltIns } from "./ir/builtInCommands.js";
 import * as esprima from "esprima";
 import { CustomESTreeWalker, mapThisToDoubleUnderscore, mapThisToStr } from "./CustomESTreeWalker.js";
 import { getAllFuncs } from "./compilerUtils.js";
+import { json } from "node:stream/consumers";
 
 // some goofy shenanigans to make this work in the browser. 
 declare namespace escodegen {
@@ -89,10 +90,10 @@ function mapThis(n: MemberExpression) {
   }
   throw Error("currently only identifiers are supported for members of a this-expression");
 }
-function mapId(s: string) {
-  return "_" + s;
-}
 
+function mapId(s: string) {
+  return "" + s;
+}
 
 export class Compiler {
   act: ActionSet 
@@ -113,11 +114,23 @@ export class Compiler {
   }
   
   private compileActionSet(): string {
-    const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(this.act));
     let classStr = this.act.constructor.toString();
-    classStr = classStr.slice(0, 6) + "_bruh " + classStr.slice(6);
+    classStr = classStr.slice(0, 6) + "_coolclassname" + classStr.slice(6);
+    // This is quite hacky: it only works because usually the constructor starts with `class {...` or `class <identifer> {...`.
+    // we can just add a valid javascript identier in the following places:            here /\      or here /\
+    // this works in both cases, but in the first case our string becomes the new identifier, 
+    // in the second one the new identifier is the old identifier prefixed with our string. 
+    console.log("====== input class ======");
     console.log(classStr);
-    const classAst = esprima.parseScript(classStr).body[0] as ClassDeclaration;
+    let classAst;
+    try {
+      classAst = esprima.parseScript(classStr).body[0] as ClassDeclaration;
+    } catch (error) {
+      console.log("==== esprima failed ====")
+      console.log(classStr);
+      throw error 
+    }
+
     if (classAst.superClass) {
       throw new Error("subclasses not supported!");
     }
@@ -144,7 +157,9 @@ export class Compiler {
         }
       }
     }
-    scriptBody.push(new VariableDeclaration(globals.map((id) => new VariableDeclarator(id, null)), "let"))
+    if (globals.length > 0) {
+      scriptBody.push(new VariableDeclaration(globals.map((id) => new VariableDeclarator(id, null)), "let"))
+    }
     let c = new CustomESTreeWalker(mapId, mapThis);
     const confun = c.walk(con.value);
     scriptBody.push(confun.body);
@@ -153,8 +168,6 @@ export class Compiler {
       assert(m.type == "MethodDefinition", "something other than a method definition in ActionSet class");
       let method = m as MethodDefinition;
       if (method.kind != "method") {console.log("skipped method of kind: " + method.kind); continue;}
-      console.log("======= body of actionset ========");
-      console.log(m);
       assert(method.key.type == "Identifier");
       let methodid = method.key as Identifier;
       let fun = c.walk(method.value);
@@ -163,18 +176,14 @@ export class Compiler {
     }
     
     let script = new Script(scriptBody);
-    console.log("====== generated ======");
-    let res = escodegen.generate(script);
+    console.log("====== generated code ======");
+    let res = lib.generate(script);
     console.log(res);
     return res;
   }
 
   public runnableFromCode(script: string): (stopper?: Stopper, runid?: number) => Promise<void> {
     const prefix = `
-    const _console = console;
-    const _Promise = Promise;
-    const _setTimeout = setTimeout;
-    const _Math = Math;
     const _pi = Math.PI, _e = Math.E;
     const _random = (max) => {return Math.random() * max};
     const _mod = (a, b) => {return a % b};
@@ -215,7 +224,7 @@ export class Compiler {
     
     // Curryfication! yay!
     return (stopper?: Stopper, runid?: number) => {
-      return new Function("_act", "_ctx2", "_stopper", "_runid", 
+      return new Function("_act", "ctx2", "_stopper", "_runid", 
         prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`)(this.act, this.act.ctx, stopper, runid) ;
     }
   }
@@ -278,11 +287,15 @@ export class Compiler {
       console.log(slicedCode);
       throw Error("esprima failed: ", error);
     }
-    const argregex = /\(([^\)]*)\)/; // first capture group contains list of arguments
-    const argStr = methodCode.match(argregex)[1]; 
-    const argIds = argStr.split(/,\s+/);
     const newBodyAst = c.walk(bodyAst);
     let body = newBodyAst.body;
+
+    const argregex = /\(([^\)]*)\)/; // first capture group contains list of arguments
+    const argStr = methodCode.match(argregex)[1]; 
+    if (argStr == "") {
+      return new BlockStatement(body) as Statement;
+    }
+    let argIds = argStr.split(/,\s+/);
     let variableDeclarators = argIds.map((id, index) => new VariableDeclarator(new Identifier(localIdMap(id)), args[index]))
 
     body.unshift(new VariableDeclaration(variableDeclarators, "let") as Statement);
