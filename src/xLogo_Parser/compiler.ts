@@ -241,7 +241,7 @@ export class Compiler {
     const ast = parseCode(logocode.toLowerCase());
 
     //ast.accept(new DebugVisitor(), 0)
-    const esast = ast.accept(new CompilerVisitor(generateCall), 0);
+    const esast = ast.accept(new CompilerVisitor(generateCall), {depth: 0, parenttype: "Program"});
     return esast;
   }
 
@@ -293,7 +293,13 @@ export class Compiler {
   }
 }
 
-export class CompilerVisitor extends ASTVisitor<number, any> {
+type AstParentType = "FunctionDefinition" | "Loop" | "Program";
+type CompilerInfo = {
+  depth: number,
+  parenttype: AstParentType,
+}
+
+export class CompilerVisitor extends ASTVisitor<CompilerInfo, any> {
   generateCall: generateCallFunction;
 
   constructor(generateCall: generateCallFunction) {
@@ -301,7 +307,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     this.generateCall = generateCall;
   }
 
-  public defaultNode(ast: XLogoAST, args: number): BaseNode {
+  public defaultNode(ast: XLogoAST, args: CompilerInfo): BaseNode {
     throw new Error("not implemented yet!")
   }
 
@@ -311,12 +317,12 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     return _aggregate;
   }
 
-  public visitSeq(ast: Seq, args: number): BaseNode[] | Program {
-    let body = this.visitChildren(ast, args + 1);
+  public visitSeq(ast: Seq, args: CompilerInfo): BaseNode[] | Program {
+    let body = this.visitChildren(ast, {...args, depth: args.depth + 1});
     if (!body) throw new Error("body undefined");
     if (!isBody(body)) throw new Error("type error");
 
-    if (args == 0) {
+    if (args.depth == 0) {
       return new Script(body) as Program;
     } else {
       // assumption: we are in progdeclaration
@@ -330,15 +336,16 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     }
   }
 
-  public visitBuiltInCommand(ast: BuiltInCommand, args: number) {
-    const callArgs = this.visitChildren(ast, args + 1) as any[];
+  public visitBuiltInCommand(ast: BuiltInCommand, args: CompilerInfo) {
+    const callArgs = this.visitChildren(ast, {...args, depth: args.depth + 1}) as any[];
     const normalizedCommandName = builtinToActionSetName(ast.command, ast.commandName);
     switch (normalizedCommandName) {
       case "stop":
-        if (args == 3) { // in a program declaration (which is at level 3) a stop has the meaning of a return statement.
+        if (args.parenttype == "FunctionDefinition" || args.parenttype == "Program") { // in a program declaration (which is at level 3) a stop has the meaning of a return statement.
           return new ReturnStatement(null);
+        } else {
+          return new BreakStatement(null);
         }
-        return new BreakStatement(null);
       case "wait":
         return new BlockStatement(
           [this.generateCall(normalizedCommandName, callArgs), 
@@ -351,7 +358,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
             ), new ReturnStatement(null), null)]
         )
       case "setpc": case "setsc": // all the commands which take a color as input
-        assert(callArgs.length == 1);
+        assert(callArgs.length == 1, "setpc should only have exactly one argument. has " + callArgs.length);
         const arg = callArgs[0];
         if (arg.type != "ArrayExpression") {
           const newExpr = new CallExpression(new Identifier("_numOrCol2Col"), callArgs);
@@ -365,8 +372,8 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     }
   }
 
-  public visitProgDecl(ast: ProgDecl, args: number): BaseNode {
-    const statements = this.visitChildren(ast, args + 1)[0]; // TODO figure out why visitChildren gives back an array of array of object
+  public visitProgDecl(ast: ProgDecl, args: CompilerInfo): BaseNode {
+    const statements = this.visitChildren(ast, {...args, parenttype: "FunctionDefinition", depth: args.depth + 1})[0]; // TODO figure out why visitChildren gives back an array of array of object
     if (ast.name === "main") { // insert entrypoint into script. in code this would look like: (() => {...})()
       return new ExpressionStatement(new AwaitExpression(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(statements), false), [])));
     }
@@ -375,7 +382,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     return new AsyncFunctionDeclaration(new Identifier(funcname), params, new BlockStatement(statements));
   }
 
-  public visitMakeStmt(ast: MakeStmt, args: number): BaseNode {
+  public visitMakeStmt(ast: MakeStmt, args: CompilerInfo): BaseNode {
     // TODO how do we handle assignments before declaration? the implementation of xlogoonline doesn't care. 
     assert(ast.declName instanceof VarDecl);
 
@@ -383,7 +390,7 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     assert(varname.length > 0);
     const varnameMangled = varNameMangle(varname);
     const id = new Identifier(varnameMangled);
-    const assigner = this.visitChildren(ast, args + 1)[0];
+    const assigner = this.visitChildren(ast, {...args, depth: args.depth + 1})[0];
     if (ast.declName.name.startsWith("\"")) {
       return new VariableDeclaration([new VariableDeclarator(id, assigner)], "let")
     } else if (ast.declName.name.startsWith(":")) {
@@ -393,11 +400,11 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     }
   }
 
-  public visitFuncExpr(ast: FuncExpr, args: number): BaseNode {
+  public visitFuncExpr(ast: FuncExpr, args: CompilerInfo): BaseNode {
     const actionsetfuncs = ["random", "mod", "power", "sqrt", "log", "abs", "sin", "cos", "tan", "arcsin", "arccos", "arctan"]
     const consts = ["pi", "e"];
     if (actionsetfuncs.includes(ast.name)) {
-      const callArgs = this.visitChildren(ast, args + 1);
+      const callArgs = this.visitChildren(ast, {...args, depth: args.depth + 1});
       return new CallExpression(new Identifier("_" + ast.name), callArgs);
     } else if (consts.includes(ast.name)) {
       return new Identifier("_" + ast.name);
@@ -406,13 +413,13 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     }
   }
 
-  public visitProgCallStmt(ast: ProgCallStmt, args: number) {
-    const callArgs = this.visitChildren(ast, args + 1);
+  public visitProgCallStmt(ast: ProgCallStmt, args: CompilerInfo) {
+    const callArgs = this.visitChildren(ast, {...args, depth: args.depth + 1});
     return new CallExpression(new Identifier(ast.progName), callArgs);
   }
 
-  public visitUnaryOpExpr(ast: UnaryOpExpr, args: number): BaseNode {
-    const arg = this.visitChildren(ast, args + 1);
+  public visitUnaryOpExpr(ast: UnaryOpExpr, args: CompilerInfo): BaseNode {
+    const arg = this.visitChildren(ast, {...args, depth: args.depth + 1});
     assert(arg.length = 1);
     if (["-", "+"].includes(ast.operator)) {
       return new UnaryExpression(ast.operator, arg[0]);
@@ -421,8 +428,8 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     }
   }
 
-  public visitBinaryOpExpr(ast: BinaryOpExpr, args: number): BaseNode {
-    const opArgs = this.visitChildren(ast, args + 1);
+  public visitBinaryOpExpr(ast: BinaryOpExpr, args: CompilerInfo): BaseNode {
+    const opArgs = this.visitChildren(ast, {...args, depth: args.depth + 1});
     assert(opArgs.length == 2);
     let op: string = ast.operator;
     if (["+", "-", "*", "/", "%", "<", ">", "<=", ">=", "=", "!=", "&&", "||"].includes(op)) {
@@ -435,12 +442,12 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     }
   }
 
-  public visitNumberConst(ast: NumberConst, args: number): BaseNode {
+  public visitNumberConst(ast: NumberConst, args: CompilerInfo): BaseNode {
     return new Literal(ast.valueAsNumber, ast.valueAsNumber.toString())
   }
 
-  public visitPrintStmt(ast: PrintStmt, args: number): BaseNode {
-    let argsOfCall = this.visitChildren(ast, args + 1);
+  public visitPrintStmt(ast: PrintStmt, args: CompilerInfo): BaseNode {
+    let argsOfCall = this.visitChildren(ast, {...args, depth: args.depth + 1});
     if (Array.isArray(argsOfCall) && argsOfCall.length == 0) {
       const input = ast.argString();
       assert(input)
@@ -449,28 +456,28 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
     return this.generateCall("print", argsOfCall);
   }
 
-  public visitVarExpr(ast: VarExpr, args: number): BaseNode {
+  public visitVarExpr(ast: VarExpr, args: CompilerInfo): BaseNode {
     assert(ast.name.startsWith(":"), "varname doesn't start with :");
     const varname = ast.name.slice(1);
     return new Identifier(varNameMangle(varname));
   }
 
-  public visitColorConst(ast: ColorConst, args: number) {
+  public visitColorConst(ast: ColorConst, args: CompilerInfo) {
     return new ArrayExpression([new Literal(ast.color.red.valueOf(), ast.color.red.toString()),
       new Literal(ast.color.green.valueOf(), ast.color.green.toString()),
       new Literal(ast.color.blue.valueOf(), ast.color.blue.toString())
     ]);
   }
 
-  public visitColorExpr(ast: ColorExpr, args: number) {
+  public visitColorExpr(ast: ColorExpr, args: CompilerInfo) {
     // TODO this at the moment only handles constants. Should be extended to handle expressions as well
     // Ts is probably not what twin wanted fr ong ☠️. Mostly i dont know what expressions can show up here but if you do setpc [...] its literal nodes so ts works fine for now.
-    const colorArray = this.visitChildren(ast, args + 1);
+    const colorArray = this.visitChildren(ast, {...args, depth: args.depth + 1});
     return new ArrayExpression(colorArray);
   }
 
-  public visitRepeatStmt(ast: RepeatStmt, args: number) {
-    const [num, body] = this.visitChildren(ast, args + 1);
+  public visitRepeatStmt(ast: RepeatStmt, args: CompilerInfo) {
+    const [num, body] = this.visitChildren(ast, {...args, parenttype: "Loop", depth: args.depth + 1});
     const runningVar = new Identifier(this.nextIdentifier());
     return new ForStatement(
       new VariableDeclaration([new VariableDeclarator(runningVar, new Literal(0, "0"))], "let"), 
@@ -479,20 +486,20 @@ export class CompilerVisitor extends ASTVisitor<number, any> {
       new BlockStatement(body));
   }
   
-  public visitWhileStmt(ast: WhileStmt, args: number) {
-    const [test, body] = this.visitChildren(ast, args + 1);
+  public visitWhileStmt(ast: WhileStmt, args: CompilerInfo) {
+    const [test, body] = this.visitChildren(ast, {...args, parenttype: "Loop", depth: args.depth + 1});
     return new WhileStatement(test, new BlockStatement(body));
   }
 
-  public visitIfElseStmt(ast: IfElseStmt, args: number) {
-    let [test, body, orelse] = this.visitChildren(ast, args + 1);
+  public visitIfElseStmt(ast: IfElseStmt, args: CompilerInfo) {
+    let [test, body, orelse] = this.visitChildren(ast, {...args, depth: args.depth + 1});
     if (orelse) {
       orelse = new BlockStatement(orelse);
     }
     return new IfStatement(test, new BlockStatement(body), orelse);
   }
 
-  public visitBoolConst(ast: BoolConst, args: number) {
+  public visitBoolConst(ast: BoolConst, args: CompilerInfo) {
     const bool = ast.valueAsBool;
     return new Literal(bool, bool ? "true" : "false");
   }
@@ -536,6 +543,7 @@ function builtinToActionSetName(command: DefinedBuiltIns, commandname: string): 
     case DefinedBuiltIns.SETY: return "sety";
     case DefinedBuiltIns.SETHEADING: return "setheading";
     case DefinedBuiltIns.WAIT: return "wait";
+    case DefinedBuiltIns.STOP: return "stop";
   }
   throw new Error("builtin command not implemented yet: " + commandname);
 }
