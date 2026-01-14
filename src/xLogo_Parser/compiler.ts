@@ -95,10 +95,10 @@ function mapId(s: string) {
 
 
 export class Compiler {
-  act: CanvasActionSet
+  act: ActionSet 
   appliedStrategy: CompileStrategy
 
-  constructor(act: CanvasActionSet) {
+  constructor(act: ActionSet) {
     this.act = act;
   }
 

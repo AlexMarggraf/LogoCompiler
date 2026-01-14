@@ -252,4 +252,42 @@ describe("Compiler", () => {
       assert.ok(result < 30, "strategy: " + strategy + " having waited " + result.toString() + " times")
     }
   })
+  it("stop test", async (t) => {
+    let results: number[] = [];
+    const actionset = {print: (res: number) => { results = results.concat(res); }};
+    const c = new Compiler(actionset as unknown as ActionSet)
+    const code = `
+    to main
+      fun
+      print 1234
+    end
+    to fun
+      make "a 0
+      repeat 10 [ # only 3 iterations should happen here
+        print :a
+        make :a :a + 1
+        if (:a > 2) [
+          stop
+        ]
+      ]
+      print :a
+      if (1 > 0) [
+        stop
+      ]
+      print 123 # should not be printed because we return in the preceding if statement
+    end
+    `;
+    for (let strategy of ["direct_access", "array_access"] as CompileStrategy[]) {
+      results = [];
+      const script = c.compileCode(code, strategy);
+      await c.runnableFromCode(script)();
+
+      assert.equal(results.length, 5, "strategy: " + strategy)
+      assert.equal(results[0], 0, "strategy: " + strategy);
+      assert.equal(results[1], 1, "strategy: " + strategy);
+      assert.equal(results[2], 2, "strategy: " + strategy);
+      assert.equal(results[3], 3, "strategy: " + strategy);
+      assert.equal(results[4], 1234, "strategy: " + strategy);
+    }
+  })
 })
