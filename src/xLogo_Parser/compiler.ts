@@ -212,8 +212,6 @@ export class Compiler {
         }
       };
     `;
-    console.log("==== prefix ====");
-    console.log(prefix);
     
     // Curryfication! yay!
     return (stopper?: Stopper, runid?: number) => {
@@ -378,7 +376,7 @@ export class CompilerVisitor extends ASTVisitor<CompilerInfo, any> {
       return new ExpressionStatement(new AwaitExpression(new CallExpression(new AsyncArrowFunctionExpression([], new BlockStatement(statements), false), [])));
     }
     const funcname = funcNameMangle(ast.name);
-    const params = ast.args.map((arg) => {return new Identifier(arg.name.slice(1));})
+    const params = ast.args.map((arg) => {return new Identifier(varNameMangle(arg.name.slice(1)));})
     return new AsyncFunctionDeclaration(new Identifier(funcname), params, new BlockStatement(statements));
   }
 
@@ -415,7 +413,7 @@ export class CompilerVisitor extends ASTVisitor<CompilerInfo, any> {
 
   public visitProgCallStmt(ast: ProgCallStmt, args: CompilerInfo) {
     const callArgs = this.visitChildren(ast, {...args, depth: args.depth + 1});
-    return new CallExpression(new Identifier(ast.progName), callArgs);
+    return new CallExpression(new Identifier(funcNameMangle(ast.progName)), callArgs);
   }
 
   public visitUnaryOpExpr(ast: UnaryOpExpr, args: CompilerInfo): BaseNode {
@@ -559,14 +557,13 @@ function isBody(body: any): body is Array<BaseNode> {
   return true;
 }
 
-// At the moment these name mangling functions are just identity 
-//   but they could become useful when dealing with name collisions. 
+// these deal with with name collisions. 
 function varNameMangle(name: string): string {
-  return "" + name;
+  return "logovar_" + name;
 }
 
 function funcNameMangle(name: string): string {
-  return "" + name;
+  return "logoproc_" + name;
 }
 
 // Convert number (integer from 0 to 255) to 0 padded hex string. 
