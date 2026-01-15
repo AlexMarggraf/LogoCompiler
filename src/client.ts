@@ -57,13 +57,14 @@ size();
 const ctx = canvas.getContext("2d");
 const act = new CanvasActionSet(ctx);
 const compiler = new Compiler(act);
-let runningCode: Promise<void> | undefined = undefined;
+let runningCode: Promise<boolean | void> | undefined = undefined;
 let rendering = false;
+let interrupted = false;
 let stopper: Stopper = {runid: 0};
 if (!ctx) throw new Error("No 2D context");
-runButton.addEventListener("click", runCode);
+runButton.addEventListener("click", () => {runCode()});
 compileButton.addEventListener("click", () => {compileSource()});
-benchButton.addEventListener("click", benchmarkCode);
+benchButton.addEventListener("click", () => {runCode(true)});
 
 let strategy = "direct_access"
 strategyDropDown.value = strategy;
@@ -93,7 +94,7 @@ fileinput?.addEventListener('change', () => {
   }
 });
 
-function compileSource(benchmark:boolean=false): [number, number] | null{
+function compileSource(benchmark:boolean=false): number | null{
   let compiledCode: string = "";
   let compileStart: number = 0;
   let compileEnd: number = 0;
@@ -108,7 +109,7 @@ function compileSource(benchmark:boolean=false): [number, number] | null{
 
   compiledContainer.value = compiledCode;
   if(benchmark) {
-    return [compileStart, compileEnd];
+    return compileEnd - compileStart;
   }
 
   return null;
@@ -140,14 +141,13 @@ function size() {
 }
 
 // This Method runs the actual code
-async function runCode() {
+async function runCode(benchmark: boolean = false) {
+  console.log(runningCode);
   if(rendering) {
     stopper.runid++;
-    act.cs();
-    runButton.textContent = "Run Code"
+    interrupted = true;
+    resetRendering();
   } else {
-    runButton.textContent = "Stop";
-    let script = compiledContainer.value;
     stopper.runid++;
     if (runningCode) {
       // console.log("awaiting promise with runid:", stopper.runid - 1);
@@ -155,25 +155,68 @@ async function runCode() {
       await runningCode; // This is the code running
     }
     // console.log("starting new promise with runid:", stopper.runid);
-    runningCode = (compiler.runnableFromCode(script)(stopper, stopper.runid));
+    let runnable = compiler.runnableFromCode(compiledContainer.value);
+    if (benchmark) {
+      let compileTimes = [], runTimes = [], noRuns = 10;
+      benchResult.textContent = 'Running...';
+      for (let i = 0; i < noRuns; i++) {
+        compileTimes[i] = compileSource(true);
+      }
+      runnable = compiler.runnableFromCode(compiledContainer.value); // in case the compiler changed something in the code field, we should update it here
+      for (let i = 0; i < noRuns; i++) {
+        startRendering();
+        const runStart = performance.now();
+        runningCode = runnable(stopper, stopper.runid).then(resetRendering);
+        await runningCode;
+        const runEnd = performance.now();
+        if (interrupted) {
+          benchResult.textContent = "interrupted";
+          interrupted = false;
+          return; // in case someone stops the benchmark
+        }
+        runTimes[i] = runEnd - runStart;
+      }
+      const avg = (array: number[]): number => array.reduce((sum: number, currVal: number) => sum + currVal, 0) / array.length;
+      const std = (array: number[]): number => {
+        let a = avg(array);
+        return Math.sqrt(array.reduce((sum: number, currVal: number) => sum + (currVal - a) ** 2, 0)) / (array.length - 1);
+      };
+      // performance.now is at most microsecond precise, so it only makes sense to show the first 3 digits after the comma
+      benchResult.textContent = `Compile time: [avg: ${avg(compileTimes).toFixed(3)}, sd: ${std(compileTimes).toFixed(3)}], Run time: [avg: ${(avg(runTimes)).toFixed(3)}, sd: ${std(runTimes).toFixed(3)}] (in ms, ${runTimes.length} runs)`
+    } else {
+      startRendering();
+      runningCode = runnable(stopper, stopper.runid).then(resetRendering);
+    }
   }
-
-  rendering = !rendering;
 }
 
-async function benchmarkCode() {
-  if(rendering) {
-    act.cs();
-    rendering = !rendering;
-  }
-
-  let compileTime: [number, number] = compileSource(true);
-  let compileStart = compileTime[0];
-  let compileEnd = compileTime[1];
-
-  const runStart = performance.now();
-  await runCode();
-  const runEnd = performance.now();
-
-  benchResult.textContent = `Compile time: ${compileEnd - compileStart}ms, Run time: ${runEnd - runStart}ms`
+function startRendering() {
+  act.cs();
+  benchButton.textContent = "Stop";
+  runButton.textContent = "Stop";
+  rendering = true;
 }
+
+function resetRendering() {
+  benchButton.textContent = "Benchmark";
+  runButton.textContent = "Run Code";
+  rendering = false;
+}
+
+
+// async function benchmarkCode() {
+//   if(rendering) {
+//     act.cs();
+//     rendering = !rendering;
+//   }
+
+//   let compileTime: [number, number] = compileSource(true);
+//   let compileStart = compileTime[0];
+//   let compileEnd = compileTime[1];
+
+//   const runStart = performance.now();
+//   await runCode();
+//   const runEnd = performance.now();
+
+//   benchResult.textContent = `Compile time: ${compileEnd - compileStart}ms, Run time: ${runEnd - runStart}ms`
+// }

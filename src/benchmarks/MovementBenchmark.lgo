@@ -3,20 +3,22 @@ movementBenchmark
 end
 
 to movementBenchmark
-  fd 100
-  rt 90
-  bk 100
-  lt 90
-  fd 100
-  rt 90
-  bk 100
-  lt 90
-  fd 100
-  rt 90
-  bk 100
-  lt 90
-  fd 100
-  rt 90
-  bk 100
-  lt 90
+  repeat 10000 [
+    fd 100
+    rt 90
+    bk 100
+    lt 90
+    fd 100
+    rt 90
+    bk 100
+    lt 90
+    fd 100
+    rt 90
+    bk 100
+    lt 90
+    fd 100
+    rt 90
+    bk 100
+    lt 90
+  ]
 end

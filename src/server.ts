@@ -15,7 +15,11 @@ const server = http.createServer((req, res) => {
       path.join(__dirname, "../ui/index.html"),
       "utf8"
     );
-    res.writeHead(200, { "Content-Type": "text/html" });
+    res.writeHead(200, { "Content-Type": "text/html", 
+      // these headers are needed for the browser to allow precise performance information
+      // for more information see https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/High_precision_timing#reduced_precision
+      "Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp" 
+    }); 
     res.end(html);
     return;
   }

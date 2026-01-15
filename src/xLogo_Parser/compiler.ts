@@ -222,6 +222,7 @@ export class Compiler {
       };
     `;
     
+    console.log(prefix + `return new Promise (async (_resolve) => { ` + script + ` console.log("promise fulfilled"); _resolve();});`)
     // Curryfication! yay!
     return (stopper?: Stopper, runid?: number) => {
       return new Function("_act", "ctx2", "_stopper", "_runid", 
@@ -275,8 +276,7 @@ export class Compiler {
       return new ExpressionStatement(new AwaitExpression(new CallExpression(new Identifier(ACT_PREFIX + "wait"), args)));
     }
     const methodCode: string = actionset[callname].toString();
-    let localIdMap = (s: string) => "_" + s; // TODO make the customESTreeWalker accept another mapping for local variables.
-    const c = new CustomESTreeWalker(localIdMap, mapThis);
+    const c = new CustomESTreeWalker(null, mapThis);
     const slicedCode = methodCode.slice(methodCode.indexOf("{") + 1, methodCode.lastIndexOf("}"));
     let bodyAst;
     try {
@@ -296,7 +296,7 @@ export class Compiler {
       return new BlockStatement(body) as Statement;
     }
     let argIds = argStr.split(/,\s+/);
-    let variableDeclarators = argIds.map((id, index) => new VariableDeclarator(new Identifier(localIdMap(id)), args[index]))
+    let variableDeclarators = argIds.map((id, index) => new VariableDeclarator(new Identifier(id), args[index]))
 
     body.unshift(new VariableDeclaration(variableDeclarators, "let") as Statement);
 
@@ -426,7 +426,7 @@ export class CompilerVisitor extends ASTVisitor<CompilerInfo, any> {
 
   public visitProgCallStmt(ast: ProgCallStmt, args: CompilerInfo) {
     const callArgs = this.visitChildren(ast, {...args, depth: args.depth + 1});
-    return new CallExpression(new Identifier(funcNameMangle(ast.progName)), callArgs);
+    return new AwaitExpression(new CallExpression(new Identifier(funcNameMangle(ast.progName)), callArgs));
   }
 
   public visitUnaryOpExpr(ast: UnaryOpExpr, args: CompilerInfo): BaseNode {
