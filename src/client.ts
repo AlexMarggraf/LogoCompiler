@@ -62,7 +62,7 @@ let rendering = false;
 let stopper: Stopper = {runid: 0};
 if (!ctx) throw new Error("No 2D context");
 runButton.addEventListener("click", runCode);
-compileButton.addEventListener("click", compileSource);
+compileButton.addEventListener("click", () => {compileSource()});
 benchButton.addEventListener("click", benchmarkCode);
 
 let strategy = "direct_access"
@@ -93,8 +93,25 @@ fileinput?.addEventListener('change', () => {
   }
 });
 
-function compileSource() {
-  compiledContainer.value = compiler.compileCode(sourceContainer.value, strategy as CompileStrategy);
+function compileSource(benchmark:boolean=false): [number, number] | null{
+  let compiledCode: string = "";
+  let compileStart: number = 0;
+  let compileEnd: number = 0;
+
+  if(benchmark) {
+    compileStart = performance.now();
+    compiledCode = compiler.compileCode(sourceContainer.value, strategy as CompileStrategy);
+    compileEnd = performance.now();
+  } else {
+    compiledCode = compiler.compileCode(sourceContainer.value, strategy as CompileStrategy);
+  }
+
+  compiledContainer.value = compiledCode;
+  if(benchmark) {
+    return [compileStart, compileEnd];
+  }
+
+  return null;
 }
 
 function size() {
@@ -145,6 +162,18 @@ async function runCode() {
 }
 
 async function benchmarkCode() {
-  // benchmark the code here using compileCode() and runCode()
-  benchResult.textContent = `Compile time: ${Math.floor(Math.random() * 10)}ms, Run time: ${Math.floor(Math.random() * 100)}ms` // Update result here
+  if(rendering) {
+    act.cs();
+    rendering = !rendering;
+  }
+
+  let compileTime: [number, number] = compileSource(true);
+  let compileStart = compileTime[0];
+  let compileEnd = compileTime[1];
+
+  const runStart = performance.now();
+  await runCode();
+  const runEnd = performance.now();
+
+  benchResult.textContent = `Compile time: ${compileEnd - compileStart}ms, Run time: ${runEnd - runStart}ms`
 }

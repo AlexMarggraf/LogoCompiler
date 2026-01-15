@@ -45,6 +45,7 @@ export class CanvasActionSet implements ActionSet{
   private penColor: [number, number, number];
   private screenColor: [number, number, number];
   private penDown: boolean;
+  private execTime: number;
 
   public constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx
