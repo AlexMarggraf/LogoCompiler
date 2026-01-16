@@ -1,1 +1,84 @@
+\section{Logo Overview}
+\label{sec:logo-overview}
+To know what we had to implement, it is good to have an overview over what constructs the turtle graphics language Logo supports. 
+Here are the relevant components.
+
+\subsection{Basic Commands}
+\begin{itemize}
+    \item Movement of the turtle: \begin{itemize}
+        \item \texttt{fd $k$}, \texttt{bk $k$}: go $k$ steps\footnote{number of steps refers to the number of pixels} forward or backward respectively
+        \item \texttt{rt $\theta$}, \texttt{lt $\theta$}: turn $\theta$ degrees to the right or left respectively
+        \item \texttt{setx $x$}, \texttt{sety $y$}, \texttt{setxy $x$ $y$}: set the position of the turtle or just one component of it
+        \item \texttt{home}: go to the origin (same as \texttt{setxy 0 0})
+        \item \texttt{setheading $\theta$}: set the direction in which the turtle points, in degrees
+    \end{itemize}
+    \item State of the turtle: \begin{itemize}
+        \item \texttt{setpc $c$}: set the pen color to $c$, where $c$ can be a color by name but also a list of numbers
+        \item \texttt{setsc $c$}: set the background color to $c$
+        \item \texttt{setpw $w$}: set the width of the pen to $w$
+        \item \texttt{pu}, \texttt{pd}: disable or enable the pen, respectively (pen up, pen down)
+    \end{itemize}
+    \item Clearing the screen: \begin{itemize}
+        \item \texttt{wash}: clear the screen but keep the state of the turtle (pen state, position and direction)
+        \item \texttt{cs}: clear the screen and the state of the turtle
+    \end{itemize}
+    \item Miscellaneous: \begin{itemize}
+        \item \texttt{print $v$}: print $v$ to the console
+        \item \texttt{wait $h$}: wait $h$ hundredths of a second
+    \end{itemize}
+\end{itemize}
+
+\subsection{Variables}
+\begin{itemize} 
+    \item \texttt{make "$n$ $v$}: declare variable with name $n$ and initialize it with the value $v$
+    \item \texttt{make :$n$ $v$}: assign the value $v$ to the variable with name $n$
+\end{itemize}
+
+\subsection{Control Structures}
+\begin{itemize} 
+    \item \texttt{repeat $k$ [$s$]}: repeat the statements $s$ $k$ times
+    \item \texttt{if $c$ [$i$] [$o$]}: if condition $c$ is fulfilled, execute statements $i$ otherwise the statements $o$
+    \item \texttt{while [$c$] [$\ldots$]}: repeat the statements inside the square brackets until the condition $c$ is false
+    \item \texttt{to $n$ $p$ \\\quad$s$ \\end}: declare a procedure with name $n$ which executes the statements $s$. $p$ is the list of parameters accepted by that procedure which can be used by the statements $s$
+\end{itemize}
+
+% TODO maybe add example of all the constructs of Logo
+
 \section{Implementation}
+Our implementation consists of a compiler which compiles from Logo to JavaScript. 
+The compiled code uses an object which we call action set. 
+This action set defines what happens for each basic command in the Logo code. 
+This means that for each basic command, a method with the same name exists on the action set which defines it's behaviour. 
+In a visual application, such an action set renders the commands in a canvas, but this can be adapted to other circumstances (e.g. for testing). 
+Calls on such an action set \texttt{act} can be done in multiple ways in JavaScript, here are the three we decided to test:
+\begin{enumerate}
+    \item as a member expression: \texttt{act.fd(100)} (in our code, this is called \emph{direct access})
+    \item as a computed member expression: \texttt{act['fd'](100)} (in our code, this is called \emph{array access})
+    \item or pasting the source code of the method to be called into the call site (in our code, this is called \emph{hard coded})
+\end{enumerate}
+
+\subsection{Compiler}
+We use the existing parser from the xLogoOnline project to get an abstract representation (abstract syntax tree or AST) of the Logo code.
+This AST is then transformed into a JavaScript AST, which is converted back to a string using the library escodegen (source????????????). 
+The resulting string can then be run in various JavaScript environments. 
+
+Note that all of the constructs in Logo have matching constructs in javascript. 
+This means that our compiler is rather simple in that we mostly just map Logo AST nodes to the corresponding JavaScript AST nodes. 
+
+\subsection{Action Set Calls}
+The basic commands are mapped to action set calls in the compiler. How those are generated depends on the strategy the compiler is configured in. 
+The cases \emph{direct access} and \emph{array access} are straight forward: 
+
+\begin{tabular}{|l|l|l|}
+    \hline
+    Logo code & \emph{direct access} & \emph{array access} \\
+    \hline
+    \texttt{setxy 42 0}& \texttt{act.setxy(42, 0)} & \texttt{act['setxy'](42, 0)}\\
+    \hline
+\end{tabular}
+
+However, we had to do a bit more to implement the strategy \emph{hard coded}. 
+% TODO
+
+\subsection{On wait}
+%% TODO
