@@ -4,33 +4,30 @@ end
 
 to whileBenchmark
   make "a 100
-  while :a > 0 [
+  while [:a > 0] [
   fd 100
   bk 100
-  :a = :a - 1
+    make :a :a - 1
   ]
-  :a = 100
-  while :a > 0 [
-  fd 100
-  bk 100
-  :a = :a - 1
-  ]
-  :a = 100
-  while :a > 0 [
-  fd 100
-  bk 100
-  :a = :a - 1
-  ]
-  :a =100
-  while :a > 0 [
-  fd 100
-  bk 100
-  :a = :a - 1
-  ]
-  :a = 100
-  while :a > 0 [
-  fd 100
-  bk 100
-  :a = :a - 1
-  ]
+  fd 100 rt 90
+  make :a 100
+    while [:a > 0] [
+    fd 100
+    bk 100
+    make :a :a - 1
+    ]
+    fd 100 rt 90
+   make :a 100
+   while [:a > 0] [
+    fd 100
+    bk 100
+    make :a :a - 1
+   ]
+   fd 100 rt 90
+   make :a 100
+   while [:a > 0] [
+    fd 100
+    bk 100
+   make :a :a - 1
+   ]
 end
