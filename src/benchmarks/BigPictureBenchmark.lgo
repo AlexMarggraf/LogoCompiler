@@ -4,7 +4,7 @@ end
 
 to start :s
 
-  cs ht
+  cs
   # chessboard :scale
   chessboard :s
 
