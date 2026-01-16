@@ -1,1 +1,44 @@
-\section{Polymorphic Inline Caches - an Overview}
+\section{Polymorphic Inline Caches}
+Our compiler tests various approaches as to how exactly the compiled code should look like. We compare the performance of those results. 
+To know why different approaches might behave differently from a performance point of view, we present one possible optimization modern JavaScript-engines employ.
+What follows is an introductoin to polymorphic inline caches. 
+\subsection{Terminology}
+\begin{itemize}
+    \item A method-call on an object $o$ is also called a \emph{message send} with \emph{receiver} $o$.
+    \item A programming language is AOT-compiled if the code is compiled before the program is run (i.e. at compile time). 
+    \item A programming language is JIT-compiled if the code is compiled at runtime.
+    \item A place in the code where a message send happens is called a \emph{call site}.
+\end{itemize}
+\subsection{Overview}
+From this point on, we only consider object-oriented languages which are compiled to machine code (either JIT or AOT).
+Otherwise the overhead from interpretation of the language would dominate and it would not make sense to optimize the way it is done with inline caches. 
+
+Message sends in object-oriented languages are very expensive if no caching is implemented in the runtime. 
+A reason for this is the inheritance rules of those languages that have to be ensured. 
+The consequence of this is that before each message send, an expensive lookup procedure must be called which determines, based on the type of the object, which piece of machine code is run. 
+
+The first optimization one can make is to store the results of this lookup procedure in a simple lookup cache (lookup table) which maps the type of the receiver together with the name of the message to the address of the corresponding machine code. 
+So at the call site, instead of calling the lookup procedure, the lookup cache is consulted and the expensive lookup procedure is only performed on a cache miss. 
+This optimization improves performance considerably. (source???????????????????????????)
+
+However, this lookup cache still implies at least one indirection per message send. 
+Inline caching addresses this problem by storing the address of the procedure corresponding to the last message send directly at the call site, together with a check that ensures the type of the object is still the same (note that the message name is assumed to be constant per call site so it doesn't have to be checked). 
+When an inline cache miss happens, the correct procedure has to be found - either through the lookup table or the lookup procedure - and it's address inserted at the call site. 
+Additionally, the check has to be updated. 
+Inline caches work under the assumption that the receiver type of a call site doesn't change often. 
+
+Now what happens if this assumption doesn't work, i.e. the receiver type of a call site changes all the time?
+Then we have more overhead compared to the simple lookup table: instead of just consulting the lookup table, we also have to update the call site in each call. 
+To circumvent this, polymorphic inline caches do not only store one address in a call site, but several. 
+So at each call site, there is conceptually switch statement on the type of the receiver which has call instructions with the procedure corresponding to that type. 
+In case of a cache miss (the receiver's type is not in the polymorphic inline cache of this call site), this call site is extended with that type and the corresponding procedure. 
+
+What happens in modern JavaScript engines is that depending on the behaviour of a call site, different methods of caching are employed. 
+If the receiver type of a call site doesn't change (a monomorphic call site), it uses an inline cache. 
+If the receiver type changes (a polymorphic call site), a polymorphic inline cache is used. 
+In call sites where the type changes a lot (megamorphic call sites), more dynamic approaches are needed which are not covered in this overview. 
+
+\subsection{Relevance to our Project}
+We implement a compiler which has different modes, varying the way methods are called.
+The benchmark shows how the different modes impact performance, i.e. how well the JavaScript engine is able to optimize the compiled code. 
+
