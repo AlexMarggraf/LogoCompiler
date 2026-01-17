@@ -19,7 +19,7 @@ The consequence of this is that before each message send, an expensive lookup pr
 
 The first optimization one can make is to store the results of this lookup procedure in a simple lookup cache (lookup table) which maps the type of the receiver together with the name of the message to the address of the corresponding machine code. 
 So at the call site, instead of calling the lookup procedure, the lookup cache is consulted and the expensive lookup procedure is only performed on a cache miss. 
-This optimization improves performance considerably. (source???????????????????????????)
+This optimization improves performance considerably. (\cite{pics})
 
 However, this lookup cache still implies at least one indirection per message send. 
 Inline caching addresses this problem by storing the address of the procedure corresponding to the last message send directly at the call site, together with a check that ensures the type of the object is still the same (note that the message name is assumed to be constant per call site so it doesn't have to be checked). 

@@ -63,7 +63,9 @@ When referencing a variable, one must precede the name with a colon.
     \hline
     \texttt{while [$c$] [$\ldots$]}& repeat the statements inside the square brackets until the condition $c$ is false \\
     \hline
-    \texttt{to $n$ $p$ \newline \phantom{mm}$s$ \newline end}& declare a procedure with name $n$ which executes the statements $s$. $p$ is the list of parameters accepted by that procedure which can be used by the statements $s$ \\
+    \texttt{to $n$ $p$ \newline \phantom{mm}$s$ \newline end}& declare a procedure with name $n$ which executes the statements $s$. $p$ is the list of parameters accepted by that procedure which can be used by the statements $s$. Procedures cannot return anything \\
+    \hline
+    \texttt{stop}& If used inside a procedure this is an early return, inside a loop (\texttt{repeat} or \texttt{while}) it serves as a break statement, exiting just the loop \\
     \hline
 \end{tabular}
 
@@ -93,23 +95,22 @@ This means that for each basic command, a method with the same name exists on th
 In a visual application, such an action set renders the commands in a canvas, but this can be adapted to other circumstances (e.g. for testing). 
 Calls on such an action set \texttt{act} can be done in multiple ways in JavaScript, here are the three we decided to test:
 \begin{enumerate}
-    \item as a member expression: \texttt{act.fd(100)} (in our code, this is called \emph{direct access})
-    \item as a computed member expression: \texttt{act['fd'](100)} (in our code, this is called \emph{array access})
-    \item or pasting the source code of the method to be called into the call site (in our code, this is called \emph{hard coded})
+    \item as a member expression: \texttt{act.fd(100)} (in this report called \emph{direct access})
+    \item as a computed member expression: \texttt{act['fd'](100)} (in this report called \emph{array access})
+    \item pasting the source code of the method to be called into the call site (in this report called \emph{hard coded})
 \end{enumerate}
 
 \subsection{Compiler}
 We use the existing parser from the xLogoOnline project to get an abstract representation (abstract syntax tree or AST) of the Logo code.
-This AST is then transformed into a JavaScript AST, which is converted back to a string using the library escodegen (source????????????). 
+This AST is then transformed into a JavaScript AST, which is converted back to a string using the library escodegen\cite{escodegen}. 
 The resulting string can then be run in various JavaScript environments. 
 
-Note that all of the constructs in Logo have matching constructs in javascript. 
+Note that all of the constructs in Logo have matching constructs in javascript\footnote{\texttt{repeat} gets transformed to a \texttt{for} loop, \texttt{stop} gets to a \texttt{return} or \texttt{break} based on the context it appears in and procedures to functions}. 
 This means that our compiler is rather simple in that we mostly just map Logo AST nodes to the corresponding JavaScript AST nodes. 
 
 \subsection{Action Set Calls}
 The basic commands (see Section \ref{sec:basic-commands}) are mapped to action set calls in the compiler. How those are generated depends on the strategy the compiler is configured in. 
-The cases \emph{direct access} and \emph{array access} are straight forward: 
-
+The cases \emph{direct access} and \emph{array access} are straight forward: \\
 \begin{tabular}{|l|l|l|}
     \hline
     Logo code & \emph{direct access} & \emph{array access} \\
