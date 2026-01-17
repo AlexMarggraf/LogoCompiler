@@ -57,7 +57,7 @@ strategyDropDown.value = strategy;
 strategyDropDown.addEventListener("change", () => {strategy = strategyDropDown.value;})
 
 size();
-audio.volume = 0.05;
+audio.volume = 0;
 audio.play();
 
 async function runCode(doBenchmark: boolean = false) {
