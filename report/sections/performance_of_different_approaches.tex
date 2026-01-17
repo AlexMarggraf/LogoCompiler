@@ -1,1 +1,43 @@
 \section{Performance of Different Approaches}
+
+There are now three different ways to compile the code, the direct approach, the array approach and the hard-coded approach.
+One might now wonder which one of these approaches is the fastest one.
+To compare these three approaches, multiple benchmarks were introduced in order to test the performance of the approached for different functions.
+The first benchmarks were to test the basic functionalities to draw on the canvas and to write simple code.
+Here benchmarks for movement, pen manipulations but also repeat blocks, condition blocks and while blocks were implemented.
+Since these benchmarks only test the basic functionality, three additional benchmarks to test more applicable cases were added.
+So a benchmark for recursions, one for a big picture and a benchmark for an animation were also introduced.
+For all the benchmarks, the compile time as well as the runtime was measured.
+In order to get a proper measurement, the average over ten executions was calculated since one execution might vary in time.
+The result of these benchmarks are shown in the following graphic\ref{fig:compTime}.
+
+\begin{figure}[H]
+    \includegraphics[scale=1]{resources/compiletime_shortandmedium_largeandhuge}
+    \caption{The measurement of the compile time.}
+    \label{fig:compTime}
+\end{figure}
+
+In\ref{fig:compTime} the average of the measured compile time for eah benchmark and compiler approach is shown.
+It can be seen that for all benchmarks, the hard-coded approach is the slowest one and the direct as well as the array approach gave pretty similar results.
+The benchmark for recursion on the other hand also shows a difference in the direct and array approach, here the direct approach is being faster than the array approach.
+For the more complex benchmarks like the big picture benchmark and the animation benchmark, we can see that the differences observed before are not as visible anymore.
+Although the hard-coded approach is slower for the big picture benchmark and the array approach is faster for the animation benchmark. \newline \newline
+
+After looking at the compile time, the runtime was also measured since the compiled code is different using the three approaches and this might also lead to significant differences.
+
+\begin{figure}[H]
+    \includegraphics[scale=1]{resources/runtime_small_medium}
+    \caption{The measurement of the run time.}
+    \label{fig:runTime}
+\end{figure}
+
+In this graph\ref{fig:runTime} the difference in runtime of the code obtained by using the different compiler approaches can be observed.
+Here the animation benchmark is missing since the runtime of this benchmark is not as significant as the others and this result is also shown in the comparison to xLogoOnline.
+For the actual runtime of the code, it is also obtained that the hard-coded approach leads to an increased runtime.
+The direct approach is also almost always faster than the array approach with two exceptions.
+The array approach is faster for the while benchmarks and the condition benchmark.
+Although only for the while benchmark, the difference in runtime compared to the direct approach is significant. \newline
+So it can be said that the hard-coded approach is the slowest approach of these three if the compile time and the runtime are compared.
+In general for the benchmarks the direct approach leads to a shorter runtime but longer compile time compared to the array approach. \newline
+Whether the direct approach or the array approach is faster, cannot be said since it is a trade-off between compile time and runtime.
+If the code has to be compiled multiple times compared to be run, the array approach might be faster but if the code is compiled once and run very often, the direct approach might lead to better results.
