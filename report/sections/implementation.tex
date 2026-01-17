@@ -1,46 +1,71 @@
 \section{Logo Overview}
 \label{sec:logo-overview}
 To know what we had to implement, it is good to have an overview over what constructs the turtle graphics language Logo supports. 
-Here are the relevant components.
+Here are the relevant components. This is not the full language, just the part relevant for this report. 
 
 \subsection{Basic Commands}
-\begin{itemize}
-    \item Movement of the turtle: \begin{itemize}
-        \item \texttt{fd $k$}, \texttt{bk $k$}: go $k$ steps\footnote{number of steps refers to the number of pixels} forward or backward respectively
-        \item \texttt{rt $\theta$}, \texttt{lt $\theta$}: turn $\theta$ degrees to the right or left respectively
-        \item \texttt{setx $x$}, \texttt{sety $y$}, \texttt{setxy $x$ $y$}: set the position of the turtle or just one component of it
-        \item \texttt{home}: go to the origin (same as \texttt{setxy 0 0})
-        \item \texttt{setheading $\theta$}: set the direction in which the turtle points, in degrees
-    \end{itemize}
-    \item State of the turtle: \begin{itemize}
-        \item \texttt{setpc $c$}: set the pen color to $c$, where $c$ can be a color by name but also a list of numbers
-        \item \texttt{setsc $c$}: set the background color to $c$
-        \item \texttt{setpw $w$}: set the width of the pen to $w$
-        \item \texttt{pu}, \texttt{pd}: disable or enable the pen, respectively (pen up, pen down)
-    \end{itemize}
-    \item Clearing the screen: \begin{itemize}
-        \item \texttt{wash}: clear the screen but keep the state of the turtle (pen state, position and direction)
-        \item \texttt{cs}: clear the screen and the state of the turtle
-    \end{itemize}
-    \item Miscellaneous: \begin{itemize}
-        \item \texttt{print $v$}: print $v$ to the console
-        \item \texttt{wait $h$}: wait $h$ hundredths of a second
-    \end{itemize}
-\end{itemize}
+\label{sec:basic-commands}
+\begin{tabular}{|p{4.7cm}|p{10.4cm}|}
+    \hline
+    \multicolumn{2}{|l|}{\textbf{Movement of the turtle}}\\ 
+    \hline
+    \texttt{fd $k$}, \texttt{bk $k$}& go $k$ steps\footnote{number of steps refers to the number of pixels} forward or backward respectively \\
+    \hline
+    \texttt{rt $\theta$}, \texttt{lt $\theta$}& turn $\theta$ degrees to the right or left respectively \\
+    \hline
+    \texttt{setx $x$}, \texttt{sety $y$}, \texttt{setxy $x$ $y$}& set the position of the turtle or just one component of it \\
+    \hline
+    \texttt{home}& go to the origin (same as \texttt{setxy 0 0}) \\
+    \hline
+    \texttt{setheading $\theta$}& set the direction in which the turtle points, in degrees \\
+    \hline
+    \multicolumn{2}{|l|}{\textbf{State of the turtle}} \\
+    \hline
+    \texttt{setpc $c$}& set the pen color to $c$, where $c$ can be a color by name or a list of 3 numbers (RGB values from 0 to 255) \\
+    \hline
+    \texttt{setsc $c$}& set the background color to $c$ \\
+    \hline
+    \texttt{setpw $w$}& set the width of the pen to $w$ \\
+    \hline
+    \texttt{pu}, \texttt{pd}& disable or enable the pen, respectively (pen up, pen down) \\
+    \hline
+    \multicolumn{2}{|l|}{\textbf{Clearing the screen}} \\
+    \hline
+    \texttt{wash}& clear the screen but keep the state of the turtle (pen state, position and direction) \\
+    \hline
+    \texttt{cs}& clear the screen and the state of the turtle \\
+    \hline
+    \multicolumn{2}{|l|}{\textbf{Miscellaneous}} \\
+    \hline
+    \texttt{print $v$}& print $v$ to the console \\
+    \hline
+    \texttt{wait $h$}& wait $h$ hundredths of a second \\
+    \hline
+\end{tabular}
 
 \subsection{Variables}
-\begin{itemize} 
-    \item \texttt{make "$n$ $v$}: declare variable with name $n$ and initialize it with the value $v$
-    \item \texttt{make :$n$ $v$}: assign the value $v$ to the variable with name $n$
-\end{itemize}
+\begin{tabular}{|p{4.7cm}|p{10.4cm}|}
+    \hline
+    \texttt{make "$n$ $v$}& declare variable with name $n$ and initialize it with the value $v$ \\
+    \hline
+    \texttt{make :$n$ $v$}& assign the value $v$ to the variable with name $n$ \\
+    \hline
+\end{tabular}
+
+When referencing a variable, one must precede the name with a colon. 
 
 \subsection{Control Structures}
-\begin{itemize} 
-    \item \texttt{repeat $k$ [$s$]}: repeat the statements $s$ $k$ times
-    \item \texttt{if $c$ [$i$] [$o$]}: if condition $c$ is fulfilled, execute statements $i$ otherwise the statements $o$
-    \item \texttt{while [$c$] [$\ldots$]}: repeat the statements inside the square brackets until the condition $c$ is false
-    \item \texttt{to $n$ $p$ \\\quad$s$ \\end}: declare a procedure with name $n$ which executes the statements $s$. $p$ is the list of parameters accepted by that procedure which can be used by the statements $s$
-\end{itemize}
+\begin{tabular}{|p{4.7cm}|p{10.4cm}|}
+    \hline
+    \texttt{repeat $k$ [$s$]}& repeat the statements $s$ $k$ times \\
+    \hline
+    \texttt{if $c$ [$i$] [$o$]}& if condition $c$ is fulfilled, execute statements $i$ otherwise the statements $o$ \\
+    \hline
+    \texttt{while [$c$] [$\ldots$]}& repeat the statements inside the square brackets until the condition $c$ is false \\
+    \hline
+    \texttt{to $n$ $p$ \newline \phantom{mm}$s$ \newline end}& declare a procedure with name $n$ which executes the statements $s$. $p$ is the list of parameters accepted by that procedure which can be used by the statements $s$ \\
+    \hline
+\end{tabular}
 
 \subsection{Examples}
 The entry point of the source code is the procedure which is called \texttt{main}. 
@@ -58,7 +83,7 @@ to square :l
 end
 \end{lstlisting}
 
-% TODO maybe add more examples of all the constructs of Logo
+% TODO maybe add more examples of all the constructs of Logo (recursion, colors, etc.)
 
 \section{Implementation}
 Our implementation consists of a compiler which compiles from Logo to JavaScript. 
@@ -82,7 +107,7 @@ Note that all of the constructs in Logo have matching constructs in javascript.
 This means that our compiler is rather simple in that we mostly just map Logo AST nodes to the corresponding JavaScript AST nodes. 
 
 \subsection{Action Set Calls}
-The basic commands are mapped to action set calls in the compiler. How those are generated depends on the strategy the compiler is configured in. 
+The basic commands (see Section \ref{sec:basic-commands}) are mapped to action set calls in the compiler. How those are generated depends on the strategy the compiler is configured in. 
 The cases \emph{direct access} and \emph{array access} are straight forward: 
 
 \begin{tabular}{|l|l|l|}
