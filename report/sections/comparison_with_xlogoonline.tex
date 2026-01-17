@@ -9,12 +9,12 @@ In order to keep the results pretty visible, we split the benchmarks up into the
 The benchmarks are the same as for the comparison between the compilers.
 
 \begin{figure}[H]
-    \includegraphics[scale=1]{resources/endtoend_smallandmedium}
+    \includegraphics[width=\textwidth]{resources/endtoend_smallandmedium}
     \caption{The measurement of the benchmarks for simple programs.}
     \label{fig:endToEndShortMedium}
 \end{figure}
 
-Here in\ref{fig:endToEndShortMedium} it can be obtained that the results for xLogo vary in the measured time for each benchmark and the margin of error is big.
+Here in \ref{fig:endToEndShortMedium} it can be obtained that the results for xLogo vary in the measured time for each benchmark and the margin of error is big.
 But for simpler tasks, it is obtained that the hard-coded approach is still the slowest of them all with xLogo being the second slowest.
 Where an actual difference between the direct approach, the array approach and xLogo cna be seen is for the benchmarks for condition blocks and for recursions.
 For condition blocks, the xLogo is not much slower than the compiler approached but for the recursion, xLogo is significantly slower than all the compiler approaches.
@@ -23,7 +23,7 @@ For recursions xLogo is almost five times slower than the complier approaches. \
 In the following graph\ref{fig:endtoEndLargeHuge}, the comparison between the three compiler approaches and xLogo for the big picture benchmark and the animation benchmark can be seen.
 
 \begin{figure}[H]
-    \includegraphics[scale=1]{resources/endtoend_large_huge}
+    \includegraphics[width=\textwidth]{resources/endtoend_large_huge}
     \caption{The measurement of the compile time for more complex programs.}
     \label{fig:endtoEndLargeHuge}
 \end{figure}

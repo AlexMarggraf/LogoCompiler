@@ -110,14 +110,16 @@ This means that our compiler is rather simple in that we mostly just map Logo AS
 
 \subsection{Action Set Calls}
 The basic commands (see Section \ref{sec:basic-commands}) are mapped to action set calls in the compiler. How those are generated depends on the strategy the compiler is configured in. 
-The cases \emph{direct access} and \emph{array access} are straight forward: \\
-\begin{tabular}{|l|l|l|}
+The cases \emph{direct access} and \emph{array access} are straight forward: 
+\begin{center}
+  \begin{tabular}{|l|l|l|}
     \hline
     Logo code & \emph{direct access} & \emph{array access} \\
     \hline
     \texttt{setxy 42 0}& \texttt{act.setxy(42, 0)} & \texttt{act['setxy'](42, 0)}\\
     \hline
-\end{tabular}
+  \end{tabular}
+\end{center}
 
 However, we had to do a bit more to implement the strategy \emph{hard coded}. 
 The goal of this strategy is to - instead of calling a method on the action set - paste the source code of said action set call to the call site. 
