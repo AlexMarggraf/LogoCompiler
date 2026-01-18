@@ -1,23 +1,40 @@
 \section{Conclusion}
 
-Our goal was it to write our own web aplication to allow users to write, compile, render and benchmark code,
-as well as to test compiling strategies and compare our implementation against the XLogoImplementation.
-We successfully managed to develop the afformentioned web application which allows users to select
-.lgo files or write their own code, compile the code using direct access, array acces and hard-coded
-approaches, run the code and see the result rendered on to the screen as well as benchmark the code
-and get the results displayed. Furthermore we found that the different compiling strategies we
-implemented performed roughly equaly but the hard-coded approach leads to slower compile times.
-Additionally we also found that the XLogoOnline implementation performs roughly equal with our implementation
-for smaller programs but struggles to keep up the more complex and long the programs get. These results suggest
-that on a large scale it doesn't matter too much whether the code is accessed using member expression or computed
-member expression. It also seems as tho as our approach to hard-code the functions instead of accessing them tends
-to lead to slightly slower runtimes. Compiling is essentially equaly performant for the array access and direct acces
-modes but is roughly twice as slow when sellecting the hard-coded approach. This is probably due to the high ammount
-of boilerplate code which needs to be generated as code has to be reparsed using esprima and functions have to be explicitly 
-reimplemented before being able to use them. Our findings show that the XLogoOnline implementation struggles to keep
-up with our implementation the more complex the programs become. This shows that compiling may lead to higher
-performance when it comes to code execution. It has to be said that a fair comparison between 
-XLogoOnline and our implementation is not possible. Our application is much less powerfull as 
-XLogoOnline provides four different versions of their service and has many features we don't. Furthermore
-the renderers being used are also vastly different and will hugely impact performance. We also used a rather small 
-ammount of basic benchmarking programs which may impact the generalizability of our evaluation. 
+Our goal was to write our own web application to allow users to write,
+compile, render, and benchmark code, as well as to test compiling
+strategies and compare our implementation against the XLogo
+implementation. We successfully managed to develop the aforementioned
+web application, which allows users to select .lgo files or write
+their own code, compile the code using direct access, array access, and
+hard-coded approaches, run the code, and see the result rendered onto
+the screen, as well as benchmark the code and get the results displayed.
+
+Furthermore, we found that the different compiling strategies we
+implemented performed roughly equally, but the hard-coded approach led
+to slower compile times. Additionally, we also found that the
+XLogoOnline implementation performs roughly equal to our implementation
+for smaller programs but struggles to keep up as the programs become
+more complex and longer.
+
+These results suggest that on a large scale it does not matter too much
+whether the code is accessed using member expressions or computed member
+expressions. It also seems that our approach of hard-coding the
+functions instead of accessing them tends to lead to slightly slower
+runtimes. Compiling is essentially equally performant for the array
+access and direct access modes, but is roughly twice as slow when
+selecting the hard-coded approach. This is probably due to the high
+amount of boilerplate code that needs to be generated, as code has to be
+reparsed using Esprima and functions have to be explicitly reimplemented
+before being able to use them.
+
+Our findings show that the XLogoOnline implementation struggles to keep
+up with our implementation as the complexity of the programs increases.
+This indicates that compiling may lead to better performance when it
+comes to code execution. However, it must be said that a fair comparison
+between XLogoOnline and our implementation is not possible. Our
+application is much less powerful, as XLogoOnline provides four
+different versions of their service and includes many features that we
+do not. Furthermore, the renderers being used are also vastly different
+and will greatly impact performance. We also used a rather small amount
+of basic benchmarking programs, which may impact the generalizability
+of our evaluation.
