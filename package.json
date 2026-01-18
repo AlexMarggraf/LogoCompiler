@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npx tsc && cpy music/*.mp3 dist/music/ && cpy deps/* dist/deps/ && npm run esbuild",
+    "build": "npx tsc && npm run esbuild",
     "esbuild": "esbuild dist/client.js --bundle --outfile=dist/out.js --format=esm --target=esnext --log-limit=0",
     "dev": "concurrently \"npm run esbuild -- --watch\" \"tsc -w\"",
     "start": "node dist/server.js",

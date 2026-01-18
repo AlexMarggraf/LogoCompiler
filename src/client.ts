@@ -1,22 +1,6 @@
 import {CanvasActionSet } from "./ActionSet.js";
 import { Compiler, CompileStrategy, Stopper } from "./xLogo_Parser/compiler.js";
 
-const playlist = [
-  "music/game4.mp3",
-  "music/game5.mp3",
-  "music/game6.mp3",
-  "music/game7.mp3",
-  "music/game8.mp3",
-  "music/game9.mp3",
-  "music/game10.mp3",
-  "music/game11.mp3",
-  "music/game12.mp3",
-  "music/game13.mp3",
-  "music/game.mp3",
-  "music/game2.mp3",
-  "music/game3.mp3"
-];
-
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const compiledContainer = document.getElementById('compiled_field') as HTMLTextAreaElement;
 const sourceContainer = document.getElementById('source_field') as HTMLTextAreaElement;
@@ -27,7 +11,6 @@ const compileButton = document.getElementById('compile_button') as HTMLButtonEle
 const benchButton = document.getElementById('benchmark_button') as HTMLButtonElement;
 const strategyDropDown = document.getElementById('strategy') as HTMLSelectElement;
 const benchResult = document.getElementById('benchmark_result') as HTMLLabelElement;
-const audio = document.getElementById('music') as HTMLAudioElement;
 const runInput = document.getElementById('runInput') as HTMLInputElement;
 
 const ctx = canvas.getContext("2d");
@@ -40,7 +23,6 @@ let rendering = false;
 let benchmarking = false;
 let interrupted = false;
 let stopper: Stopper = {runid: 0};
-let current = 0;
 let noRuns = 10;
 
 runButton.addEventListener("click", () => {runCode()});
@@ -48,8 +30,6 @@ compileButton.addEventListener("click", () => {compileSource()});
 benchButton.addEventListener("click", () => {runCode(true)});
 fileinput.addEventListener("input", filenameChanged);
 window.addEventListener('resize', size);
-document.addEventListener('click', playAudioOnce);
-audio.addEventListener('ended', nextSong);
 runInput.addEventListener('input', noRunsChanged)
 
 let strategy = "direct_access"
@@ -57,8 +37,6 @@ strategyDropDown.value = strategy;
 strategyDropDown.addEventListener("change", () => {strategy = strategyDropDown.value;})
 
 size();
-audio.volume = 0;
-audio.play();
 
 async function runCode(doBenchmark: boolean = false) {
   if(rendering) {
@@ -206,22 +184,6 @@ function noRunsChanged() {
   if (typeof value === "number"){
     noRuns = value;
   }
-}
-
-function playAudioOnce() {
-  audio.play();
-  document.removeEventListener('click', playAudioOnce);
-}
-
-function nextSong() {
-  /* if (current < 12) {
-    current++;
-  } else {
-    current = 0;
-  }
-
-  audio.src = playlist[current];
-  audio.play(); */
 }
 
 function startRendering() {
