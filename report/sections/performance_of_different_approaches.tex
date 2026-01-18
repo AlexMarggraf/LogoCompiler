@@ -5,11 +5,14 @@ One might now wonder which one of these approaches is the fastest one.
 To compare these three approaches, multiple benchmarks were introduced in order to test the performance of the approached for different functions.
 The first benchmarks were to test the basic functionalities to draw on the canvas and to write simple code.
 Here benchmarks for movement, pen manipulations but also repeat blocks, condition blocks and while blocks were implemented.
+In order to get a proper understanding of ow these approach differ in compile time, we used short benchmarks and also longer benchmarks for the basics functionalities.
 Since these benchmarks only test the basic functionality, three additional benchmarks to test more applicable cases were added.
 So a benchmark for recursions, one for a big picture and a benchmark for an animation were also introduced.
 For all the benchmarks, the compile time as well as the runtime was measured.
 In order to get a proper measurement, the average over ten executions was calculated since one execution might vary in time.
-The result of these benchmarks are shown in the following graphic\Cref{fig:compTime}.
+
+\subsection{Performance of Different Approaches in Short Benchmarks}
+The results of the benchmarks for basic functionalities using the short benchmarks are shown in the following graphic\Cref{fig:compTime}.
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{resources/compiletime_shortandmedium_largeandhuge}
@@ -37,7 +40,40 @@ For the actual runtime of the code, it is also obtained that the hard-coded appr
 The direct approach is also almost always faster than the array approach with two exceptions.
 The array approach is faster for the while benchmarks and the condition benchmark.
 Although only for the while benchmark, the difference in runtime compared to the direct approach is significant. \newline
-So it can be said that the hard-coded approach is the slowest approach of these three if the compile time and the runtime are compared.
-In general for the benchmarks the direct approach leads to a shorter runtime but longer compile time compared to the array approach. \newline
+So it can be said that the hard-coded approach is the slowest approach for short benchmarks of these three if the compile time and the runtime are compared.
+In general for the shorter benchmarks the direct approach leads to a shorter runtime but longer compile time compared to the array approach. \newline
 Whether the direct approach or the array approach is faster, cannot be said since it is a trade-off between compile time and runtime.
 If the code has to be compiled multiple times compared to be run, the array approach might be faster but if the code is compiled once and run very often, the direct approach might lead to better results.
+To check the behavior of the approaches for longer programs, the compile time and runtime was also analyzed for longer benchmarks.
+
+
+\subsection{Performance of Different Approaches in Short Benchmarks}
+Using the shorter benchmarks, some overhead and smaller influences may have had a big impact on the result.
+This means that for longer benchmarks, there could be a different outcome than for the short benchmarks.
+In order to eliminate such smaller impacts, the benchmarks for the basic functionalities were changes such that the main method was repeated 15000 times.
+Whilst doing that, the influence of smaller influences on the runtime is minimized.
+These results can be seen in the following graph\Cref{fig:compTimeLong}.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{resources/compiletime_smallandmedium_largeandhuge_long}
+    \caption{The measurement of the compile time for the long benchmarks.}
+    \label{fig:compTimeLong}
+\end{figure}
+
+Here it can be seen that the changes did not have big impact on the compile time.
+The increase in compile time comes from the added repeat statement in the main function. \newline \newline
+
+The addition of the repeat statements had a bigger impact on the runtime.
+This impact on the runtime was also measured.
+
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{resources/runtime_small_medium_long}
+    \caption{The measurement of the runtime for the long benchmarks.}
+    \label{fig:runTimeLong}
+\end{figure}
+
+The results for the runtime of the longer can be seen in\Cref{fig:runTimeLong}.
+Here we can actually see that all the approaches almost have the same runtime.
+This is different from before where the hard-coded approach was much slower for shorter benchmarks.
+For the longer benchmarks, the hard-coded approach seems to be the approach with the shortest runtime for the most benchmarks.
+If the code is compiled once and run multiple times, the hard-coded approach might outperform the other two approaches.
