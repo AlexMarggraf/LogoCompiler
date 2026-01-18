@@ -19,22 +19,31 @@ At first the behavior for the shorter benchmarks was analyzed since most program
 
 Here in\Cref{fig:endToEndShortMedium} it can be obtained that the results for xLogo vary in the measured time for each benchmark and the margin of error is big.
 But for simpler tasks, it is obtained that the hard-coded approach is still the slowest of them all with xLogo being the second slowest.
-Where an actual difference between the direct approach, the array approach and xLogo cna be seen is for the benchmarks for condition blocks and for recursions.
+Where an actual difference between the direct approach, the array approach and xLogo cna be seen is for the benchmarks for condition blocks, while loops and for recursions.
 For condition blocks, the xLogo is not much slower than the compiler approached but for the recursion, xLogo is significantly slower than all the compiler approaches.
-For recursions xLogo is almost five times slower than the complier approaches. \newline
+For while loops, xLogo also tends to be faster than the three compiler approaches.
+For recursions xLogo is almost five times slower than the complier approaches.
+So for most of the shorter benchmarks, in the end it can not be easily said if xLogo or th compilers are faster.\newline
 
 \subsection{Comparison With XLogoOnline Using Longer Benchmarks}
 
-It is also important to check if this behavior is still visible for longer benchmarks.
-So in order to analyze this, the longer benchmarks were also run in XLogo.
+Since for shorter benchmarks both xLogo and the compilers showed similar performance, it is important to check if this behavior is still visible for longer benchmarks.
+So in order to analyze this, the longer benchmarks were also run in xLogo.
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{resources/endtoend_smallandmedium_Long}
-    \caption{The measurement of the benchmarks for simple programs.}
+    \caption{The measurement of the long benchmarks for simple programs.}
     \label{fig:endToEndShortMediumLong}
 \end{figure}
 
-% TODO Add further analysis here, correct graphic was deleted and will be added soon
+In\Cref{fig:endToEndShortMediumLong} it can be seen that all approaches are faster than xLogo.
+For longer benchmarks, the result is much more clear than for shorter benchmarks.
+Here all three compilers are faster than xLogo for all benchmarks.
+Here it can be seen that the difference in performance for movement commands and condition blocks is noticeable but not as dominant as for the other benchmarks.
+For pen manipulation commands, repeat blocks and while loops, the three compilers are twice as fast as xLogo.
+The recursion benchmark was not changed, but it shows the same trend as the other benchmarks.
+So it can be said that for small and simpler programs the performance difference between the compilers and xLogo is insignificant but as the programs are becoming larger and more complex,
+the compilers are performing better than xLogo.
 
 \subsection{Comparison With XLogoOnline For Complex and Large Programs}
 
@@ -49,11 +58,13 @@ In the following graph\Cref{fig:endtoEndLargeHuge}, the comparison between the t
 For both benchmarks, it can be seen that the three compilers perform better than xLogo for complex programs, as already seen for the recursion benchmark.
 For big pictures, xLogo is about three to four times slower than the compiled versions.
 There is also a difference in the time, it takes xLogo to finish the animations compared to the compilers.
-It is important to state tha the time it takes for the animation to finish is heavily dependent on the time it takes to draw each frame.
+It is important to state that the time it takes for the animation to finish is heavily dependent on the time it takes to draw each frame.
 Since xLogo takes twice as long as the compilers to finish the animation, it can be said that xLogo takes significantly longer to draw each frame of the animation. \newline \newline
 
-So we can say that for simple and small programs, containing almost only basics commands, xLogo is as fast as the direct approach and the array approach.
+So we can say that for simpler, smaller and shorter programs, containing almost only basics commands, xLogo is as fast or faster than the direct approach and the array approach and in this case xLogo is faster than the hard-coded approach.
 But if the programs become larger and more complex like adding while loops, condition blocks or adding animations or recursions,
 the performance of the compilers becomes better than xLogo.
-For the simpler and smaller programs, xLogo is faster than the hard-coded approach but if the programs become more complex, the hard-coded approach also becomes faster than xLogo.
-So for realistic scenarios and complex programs with many condition blocks, loops, animations and recursions, the direct and array approach become significantly better and superior compared to xLogo.
+So for realistic scenarios and complex programs with many condition blocks, loops, animations and recursions, the three compiler approach become significantly better and superior compared to xLogo.
+It should also be noted that for larger repetitions and images the renderer of xLogo starts to become more laggy and stutters as for the compiled version,
+the rendered image is still running as smooth as before.
+This is also an advantage of the compiled approach with a new renderer.
