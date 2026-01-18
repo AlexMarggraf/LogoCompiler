@@ -1,6 +1,6 @@
 \section{Logo Overview}
 \label{sec:logo-overview}
-To know what we had to implement, it is good to have an overview over what constructs the turtle graphics language Logo supports. 
+To know what we had to implement, it is good to have an overview of what constructs the turtle graphics language Logo supports. 
 Here are the relevant components. This is not the full language, just the part relevant for this report. 
 
 \subsection{Basic Commands}
@@ -86,12 +86,12 @@ end
 % TODO maybe add more examples of all the constructs of Logo (recursion, colors, etc.)
 
 \section{Implementation}
-Our implementation consists of a compiler which compiles from Logo to JavaScript. 
-The compiled code uses an object which we call action set. 
+Our implementation consists of a compiler that compiles from Logo to JavaScript. 
+The compiled code uses an object that we call an action set. 
 This action set defines what happens for each basic command in the Logo code. 
-This means that for each basic command, a method with the same name exists on the action set which defines it's behaviour. 
-In a visual application, such an action set renders the commands in a canvas, but this can be adapted to other circumstances (e.g. for testing). 
-Calls on such an action set \texttt{act} can be done in multiple ways in JavaScript, here are the three we decided to test:
+This means that for each basic command, a method with the same name exists on the action set, which defines its behavior. 
+In a visual application, such an action set renders the commands in a canvas, but this can be adapted to other circumstances (e.g., for testing). 
+Calls on such an action set \texttt{act} can be done in multiple ways in JavaScript; here are the three we decided to test:
 \begin{enumerate}
     \item as a member expression: \texttt{act.fd(100)} (in this report called \emph{direct access})
     \item as a computed member expression: \texttt{act['fd'](100)} (in this report called \emph{array access})
@@ -103,10 +103,10 @@ We use the existing parser from the xLogoOnline project to get an abstract repre
 This AST is then transformed into a JavaScript AST, which is converted back to a string using the library escodegen\cite{escodegen}. 
 The resulting string can then be run in various JavaScript environments. 
 \\\\
-Note that all of the constructs in Logo have matching constructs in javascript\footnote{\texttt{repeat} gets transformed to a \texttt{for} loop, \texttt{stop} to a \texttt{return} or \texttt{break} based on the context it appears in and procedures to functions}. 
+Note that all the constructs in Logo have matching constructs in JavaScript\footnote{\texttt{repeat} gets transformed to a \texttt{for} loop, \texttt{stop} to a \texttt{return} or \texttt{break} based on the context it appears in and procedures to functions}. 
 This means that our compiler is rather simple in that we mostly just map Logo AST nodes to the corresponding JavaScript AST nodes. 
 \subsection{Action Set Calls}
-The basic commands (see Section \ref{sec:basic-commands}) are mapped to action set calls in the compiler. How those are generated depends on the strategy the compiler is configured in. 
+The basic commands (see Section \ref{sec:basic-commands}) are mapped to action set calls in the compiler. How those are generated depends on the strategy the compiler is configured with. 
 The cases \emph{direct access} and \emph{array access} are straight forward: \\
 \begin{tabular}{|l|l|l|}
     \hline
@@ -117,13 +117,14 @@ The cases \emph{direct access} and \emph{array access} are straight forward: \\
 \end{tabular}
 However, we had to do a bit more to implement the strategy \emph{hard coded}. 
 The goal of this strategy is to - instead of calling a method on the action set - paste the source code of said action set call to the call site. 
-To get the source code of a method we use the \texttt{toString} method defined on the methods of an object. 
-This string is then parsed with esprima and the resulting AST is transformed in the following manner:
-All the parameters of a method become local variables which get declared and initialized at the beginning of the resulting call site. 
-All member expressions on \texttt{this} (which represents the actionset) get modified to have the \texttt{\_\_act\_} prefix instead of \texttt{this.}.
-And all of this code gets wrapped in a scope so as to not redefine the same variable if a method gets called twice\footnote{This could be circumvented by renaming the local variables but due to time constraints, we weren't able to do that}. 
-\\\\
-To see this in action, we can take a look at what happens when transforming the call \texttt{rt 100} to a \emph{hard coded} call. 
+To get the source code of a method, we use the \texttt{toString} method defined on the methods of an object. 
+This string is then parsed with esprima, and the resulting AST is transformed in the following manner:
+\begin{itemize}
+  \item The parameters of a method become local variables that get declared and initialized at the beginning of the resulting call site. 
+  \item Member expressions on \texttt{this} (which represents the action set) get modified to have the \texttt{\_\_act\_} prefix instead of \texttt{this.}.
+  \item All of this code gets wrapped in a scope to not redefine the same variable if a method gets called twice\footnote{This could be circumvented by renaming the local variables, but due to time constraints we weren't able to do that}. 
+\end{itemize}
+To see this in action, we take a look at what happens when transforming the call \texttt{rt 100} to a \emph{hard coded} call. 
 \begin{lstlisting}[language=javascript, caption={This is what \texttt{act.rt.toString()} returns.}, label=lst:rt_javascript]
 rt(angle) {
   this.turtleAngle = (this.turtleAngle + angle) % 360;
@@ -136,7 +137,7 @@ becomes
   __act_turtleAngle = (__act_turtleAngle + angle) % 360;
 }
 \end{lstlisting}
-If inside a method, a method call to \texttt{this} happens, the same rule is applied. We opted not to recursively hard code these calls as well, since recursion would pose a problem. 
+If inside a method there is a call to a member of \texttt{this}, the same rule is applied. We opted not to recursively hard code these calls as well, since recursion would pose a problem. 
 Another thing to note is that identifiers in logo get a prefix in the resulting JavaScript code to avoid naming collisions with the source code of the action set. 
 In the following example we transform the call \texttt{fd :l}.
 \begin{lstlisting}[language=javascript, caption={This is what \texttt{act.fd.toString()} returns.}, label=lst:fd_javascript]
@@ -169,22 +170,23 @@ becomes
   __act_turtleY = newY;
 }
 \end{lstlisting}
-Now one might wonder where the objects and functions with the prefix \texttt{\_\_act\_} are defined, which should correspond to fields and methods in the action set respectively. 
-Our approach is to compile the action set so that fields become global variables and methods become functions which all have the required prefix. 
+Now one might wonder where the objects and functions with the prefix \texttt{\_\_act\_} are defined, which should correspond to fields and methods in the action set, respectively. 
+Our approach is to compile the action set so that fields become global variables and methods become functions, which all have the required prefix. 
+We then preface the rest of the code with this version of the action set code, such that all the necessary variables and functions are defined. 
 \\\\
 To do this, we use that the method \texttt{act.constructor.toString} returns the source code of the action set class. 
 First, we compile the constructor of this class by transforming the assignments of members to global variable definitions. 
 Then we iterate over all methods and convert them to functions. 
-\\\\
+
 \subsection{Executing the Compiled Code}
 In JavaScript, one can use the function \texttt{eval(code)} to execute JavaScript code, given as a string. 
 \texttt{eval} inherits the scope of the caller, which means that we can ``pass'' the action set by just defining a variable with the same name as is used in the compiled code and then calling \texttt{eval} (see first part of Listing \ref{lst:eval_vs_function}).
-However, \texttt{eval} does not work well with bundlers\footnote{we use esbuild as a bundler for our project} and is quite error prone because of the implicit inclusion of all these objects. 
+However, \texttt{eval} does not work well with bundlers\footnote{we use esbuild as a bundler for our project} and is quite error-prone because of the implicit inclusion of all these objects. 
 \\\\
 So we opted to use the \texttt{Function} class.
-Using the \texttt{Function} class, one can construct a callable object which executes arbitrary code but it behaves like a normal function.
-This means that one can define parameters which have to be supplied to the callable explicitly (see second part of Listing \ref{lst:eval_vs_function}). 
-In our case, the action set and the canvas-context have to be supplied to this callable object. 
+Using the \texttt{Function} class, one can construct a callable object that executes arbitrary code, but it behaves like a normal function.
+This means that one can define parameters that have to be supplied to the callable explicitly (see the second part of Listing \ref{lst:eval_vs_function}). 
+In our case, the action set and the canvas context have to be supplied to this callable object. 
 \\\\
 \begin{lstlisting}[language=javascript, caption={Code snippet showing different ways to run arbitrary code in JavaScript}, label=lst:eval_vs_function]
 // using eval
@@ -197,11 +199,11 @@ callable(2, 4) // outputs 6 to the console
 
 \subsection{On Asynchronicity}
 One implementation detail that wasn't mentioned yet is that the \texttt{wait} command introduces asynchronicity into the running code. 
-This means that Logo code procedures using the \texttt{wait} command must correspond to async-functions in JavaScript. 
+This means that Logo code procedures using the \texttt{wait} command must correspond to async functions in JavaScript. 
 Since we only had limited time to spend on the implementation, we just assume all of the functions to be async and call them using the await expression. 
 To justify this decision, one can mention that await expressions on function calls behave semantically the same as normal function calls if the function being called never uses actual asynchronous code \cite{asyncdesc}.
 \\\\
 A benefit from wait calls that we get is that we can interrupt the code whenever such a wait call is made. 
-This is done by having what we call a stopper object which is passed to the running code. 
-After each wait call, it is checked whether the value of the stopper object has changed and if so, the program is terminated. 
-Such a stopper object can then be used to stop running code in a application. 
+This is done by having what we call a stopper object, which is passed to the running code. 
+After each wait call, it is checked whether the value of the stopper object has changed, and if so, the program is terminated. 
+Such a stopper object can then be used to stop running code in an application. 
