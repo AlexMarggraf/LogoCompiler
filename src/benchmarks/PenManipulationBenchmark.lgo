@@ -1,5 +1,7 @@
 to main
+repeat 15000 [
 penManipulationBenchmark
+]
 end
 
 to penManipulationBenchmark

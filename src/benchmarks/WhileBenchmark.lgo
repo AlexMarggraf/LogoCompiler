@@ -1,30 +1,32 @@
 to main
+repeat 15000 [
 whileBenchmark
+]
 end
 
 to whileBenchmark
-  make "a 100
+  make "a 4
   while [:a > 0] [
   fd 100
   bk 100
     make :a :a - 1
   ]
   fd 100 rt 90
-  make :a 100
+  make :a 4
     while [:a > 0] [
     fd 100
     bk 100
     make :a :a - 1
     ]
     fd 100 rt 90
-   make :a 100
+   make :a 4
    while [:a > 0] [
     fd 100
     bk 100
     make :a :a - 1
    ]
    fd 100 rt 90
-   make :a 100
+   make :a 4
    while [:a > 0] [
     fd 100
     bk 100
