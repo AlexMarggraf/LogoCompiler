@@ -1,1 +1,22 @@
 \section{Abstract}
+
+This report documents the development of a Logo compiling and rendering 
+web application and compares different approaches in compiling regarding 
+compile time and run time. Furthermore, the web application is also compared 
+to the commercial web app XLogoOnline, which allows users to write and run 
+Logo code, to understand how compiling versus interpreting code changes the 
+performance of the applications.
+To achieve this, we built three compilers which used different approaches 
+for method calling—namely member expression, computed member expression, 
+and hard-coding—and our own renderer, making it accessible through a 
+user interface. To test the implementation, we implemented a benchmarking 
+functionality and wrote our own benchmarks, designed to test different 
+aspects of the programming language.
+We successfully managed to build the aforementioned application and found 
+that at runtime the three different compilers were roughly equally performant, 
+but at compile time the hard-coded approach takes considerably longer. We 
+also found that the interpreted approach has performance trade-offs the 
+more complex the program is. These findings suggest that our tested compiling 
+strategies have small effects on the actual performance of the compiled code, 
+and that interpreting might considerably slow down execution time for larger 
+programs.

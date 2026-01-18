@@ -9,7 +9,7 @@ Since these benchmarks only test the basic functionality, three additional bench
 So a benchmark for recursions, one for a big picture and a benchmark for an animation were also introduced.
 For all the benchmarks, the compile time as well as the runtime was measured.
 In order to get a proper measurement, the average over ten executions was calculated since one execution might vary in time.
-The result of these benchmarks are shown in the following graphic\ref{fig:compTime}.
+The result of these benchmarks are shown in the following graphic\Cref{fig:compTime}.
 
 \begin{figure}[H]
     \includegraphics[width=\textwidth]{resources/compiletime_shortandmedium_largeandhuge}
@@ -17,7 +17,7 @@ The result of these benchmarks are shown in the following graphic\ref{fig:compTi
     \label{fig:compTime}
 \end{figure}
 
-In\ref{fig:compTime} the average of the measured compile time for eah benchmark and compiler approach is shown.
+In\Cref{fig:compTime} the average of the measured compile time for eah benchmark and compiler approach is shown.
 It can be seen that for all benchmarks, the hard-coded approach is the slowest one and the direct as well as the array approach gave pretty similar results.
 The benchmark for recursion on the other hand also shows a difference in the direct and array approach, here the direct approach is being faster than the array approach.
 For the more complex benchmarks like the big picture benchmark and the animation benchmark, we can see that the differences observed before are not as visible anymore.
@@ -31,7 +31,7 @@ After looking at the compile time, the runtime was also measured since the compi
     \label{fig:runTime}
 \end{figure}
 
-In this graph\ref{fig:runTime} the difference in runtime of the code obtained by using the different compiler approaches can be observed.
+In this graph\Cref{fig:runTime} the difference in runtime of the code obtained by using the different compiler approaches can be observed.
 Here the animation benchmark is missing since the runtime of this benchmark is not as significant as the others and this result is also shown in the comparison to xLogoOnline.
 For the actual runtime of the code, it is also obtained that the hard-coded approach leads to an increased runtime.
 The direct approach is also almost always faster than the array approach with two exceptions.

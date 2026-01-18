@@ -1,0 +1,54 @@
+\section{Introduction}
+
+Logo is an educational programming language that was developed in 1967
+and is commonly used for its simple and intuitive turtle graphics. \cite{wikipediaLogo}
+The PrimaLogo project of the University of Basel and ETH Zürich uses
+Logo to teach children in the 5th and 6th grades the basics of
+programming. To teach, they used the XLogoOnline website, developed
+in collaboration with the University of Trier, which allowes users to
+write and execute Logo code. The concrete usage of the language is
+outlined in the Section \ref{sec:logo-overview}. \\\\
+The main problem with the XLogoOnline implementation is that it is
+interpreted, which can lead to poor performance. This motivated us
+to implement a compiler for the Logo language to improve performance
+and to understand how different compilation techniques affected
+performance in both compile time and run time.\\\\
+Our initial goal was to integrate a compiler into the existing
+XLogoOnline implementation, but we abandoned this idea because
+it proved too challenging. Instead, we decided to build a standalone
+web application that allowes users to write, compile, render, and
+benchmark Logo code.\\\\
+To compile Logo code, we started with the raw code itself. Our
+implementation requires the code to be present in a .lgo file, as
+used by XLogoOnline, or it can be written directly in the
+application. Files ending in .lgo are essentially text files with
+a different extension. This allows the program to easily parse the contents
+into a string, which is then converted into an AST using the
+grammar, lexer, and parser of XLogoOnline.\\\\
+With the AST prepared, we use our compiler to generate a
+JavaScript AST, which is later transformed into executable code.
+The compiler iterates over the AST and uses the action set, which
+contains all built-in functions of the renderer, to convert Logo
+AST nodes into JavaScript AST nodes. In some cases, additional
+steps are necessary to ensure correct execution; these are
+described in the Implementation section.\\\\
+The compiler supports different modes for code generation. The
+default mode is direct access, where each function call of the
+action set uses member expression. The array access mode uses
+computed member expression to access the functions of the action set. The direct mode
+avoids function calls entirely and instead implements the
+functions directly in the code. After generating the JavaScript AST,
+we use Escodegen \cite{escodegen} to produce the final JavaScript code, which is
+then used for rendering.\\\\
+To render the code, the application uses a prefix containing
+mathematical functions, constants, and helper functions, along with
+the compiled code, to produce the final executable script. This
+script is run asynchronously on the HTML canvas element, which
+provides all necessary functionality for a basic turtle graphics
+renderer.\\\\
+Benchmarking our compiler was straightforward. We executed a
+predetermined routine of running scripts ten times, calculated
+the average execution time and runtime, and computed the standard
+deviation. These results were displayed directly in the application.
+The benchmarks themselves tested various aspects of the Logo
+language, such as loops and recursion.
