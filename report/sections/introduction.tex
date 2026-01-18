@@ -19,10 +19,9 @@ it proved too challenging. Instead, we decided to build a standalone
 web application that allowes users to write, compile, render, and
 benchmark Logo code.\\\\
 To compile Logo code, we started with the raw code itself. Our
-implementation requires the code to be present in a .lgo file, as
+implementation requires the code to be present in a text file, as
 used by XLogoOnline, or it can be written directly in the
-application. Files ending in .lgo are essentially text files with
-a different extension. This allows the program to easily parse the contents
+application. This allows the program to easily parse the contents
 into a string, which is then converted into an AST using the
 grammar, lexer, and parser of XLogoOnline.\\\\
 With the AST prepared, we use our compiler to generate a
@@ -48,7 +47,7 @@ provides all necessary functionality for a basic turtle graphics
 renderer.\\\\
 Benchmarking our compiler was straightforward. We executed a
 predetermined routine of running scripts ten times, calculated
-the average execution time and runtime, and computed the standard
+the average compile time and runtime, and computed the standard
 deviation. These results were displayed directly in the application.
 The benchmarks themselves tested various aspects of the Logo
 language, such as loops and recursion.
